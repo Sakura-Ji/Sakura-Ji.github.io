@@ -1,0 +1,111 @@
+site_name: Sakura-Ji
+site_url: https://example.com/
+nav:
+    - Home: index.md
+    - About: about.md
+    - 编程语言:
+        - Programing_Language/Introduction.md
+        - C:
+            - Programing_Language/C/C_language.md
+            - 指针: Programing_Language/C/pointer.md
+theme:
+  name: material
+  palette:
+
+    # Palette toggle for light mode
+    - scheme: default
+      primary: cyan
+      accent: pink
+      toggle:
+        icon: material/weather-night 
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: teal
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+  #Site language       
+  language: en
+  
+  #Setting up navigation
+  features:
+    - navigation.tabs
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - search.suggest # 搜索输入一些字母时推荐补全整个单词
+    - search.highlight # 搜索出的文章关键词加入高亮
+    - content.code.copy # 可以通过按钮复制代码
+    - search.share #搜索的内容链接可复制
+    - navigation.footer #页脚出现上一页和下一页的链接
+    - content.action.edit #配合ediu_uri使用 
+
+#搜索插件      
+plugins:
+  - search:
+      lang: en
+  - tags
+
+#代码块配置
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+  - attr_list #[Subscribe to our newsletter](#){ .md-button } 就是在链接到下一个内容的后面 加上{ .md-button } 使其展现的像按钮
+  - md_in_html
+  - pymdownx.superfences
+
+  - tables #启用表格
+  #对图表的支持
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - footnotes #脚注
+    #文本美化突出
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.arithmatex:
+      generic: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - toc:
+      permalink: true # 固定标题位置为当前位置
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+
+
+#页眉,页脚的配置
+#右下角
+extra:
+  social:
+    - icon: fontawesome/brands/github #图标
+      link: https://github.com/jiwen101 #网址链接
+      name: Github | Jiwen101 #鼠标悬停显示
+
+copyright: Sakura-Ji CC-BY-4.0 # 左下角的版权声明
+
+repo_url: https://github.com/jiwen101/jiwen101.github.io #右上角github的链接跳转
+repo_name: jiwen101.github.io  #右上角github上的名字
+icon:
+      repo: fontawesome/brands/github #图标
+edit_uri: edit/main/docs/ #点击可链接到github上
+
