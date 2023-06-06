@@ -8,6 +8,8 @@ nav:
         - C:
             - Programing_Language/C/C_language.md
             - 指针: Programing_Language/C/pointer.md
+            - 数组: Programing_Language/C/array.md
+            - 链表: Programing_Language/C/link.md  
 theme:
   name: material
   palette:
@@ -43,7 +45,7 @@ theme:
     - search.share #搜索的内容链接可复制
     - navigation.footer #页脚出现上一页和下一页的链接
     - content.action.edit #配合ediu_uri使用 
-
+    - content.code.annotate #代码块注释
 #搜索插件      
 plugins:
   - search:
@@ -63,7 +65,10 @@ markdown_extensions:
   - attr_list #[Subscribe to our newsletter](#){ .md-button } 就是在链接到下一个内容的后面 加上{ .md-button } 使其展现的像按钮
   - md_in_html
   - pymdownx.superfences
-
+  #表情图标:
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
   - tables #启用表格
   #对图表的支持
   - pymdownx.superfences:

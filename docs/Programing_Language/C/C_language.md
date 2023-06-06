@@ -1,3 +1,36 @@
+
+`C语言的基础模板`
+
+```C title="start"
+#include <stdio.h>
+
+int main()
+{
+	
+	return 0;
+}
 ```
-在这里我将复习C语言的基本作用，以及使用方法技巧和陷阱
+
+```C
+#include <stdio.h>
+
+int main()
+{
+	printf("我爱死GitHub了 \n");
+	return 0;
+}
+
+char * My_strcpy(char *dest , const char *src)
+{
+	while(*src)
+	{
+		*dest = *src;
+		dest++;
+		src++;
+	}
+	return dest;
+}
 ```
+
+
+
