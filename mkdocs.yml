@@ -31,7 +31,7 @@ theme:
         name: Switch to light mode
 
   #Site language       
-  language: en
+  language: zh
   
   #Setting up navigation
   features:
@@ -103,13 +103,13 @@ extra_javascript:
 extra:
   social:
     - icon: fontawesome/brands/github #图标
-      link: https://github.com/jiwen101 #网址链接
-      name: Github | Jiwen101 #鼠标悬停显示
+      link: https://github.com/Sakura-Ji #网址链接
+      name: Github | Sakura-Ji #鼠标悬停显示
 
 copyright: Sakura-Ji CC-BY-4.0 # 左下角的版权声明
 
-repo_url: https://github.com/jiwen101/jiwen101.github.io #右上角github的链接跳转
-repo_name: jiwen101.github.io  #右上角github上的名字
+repo_url: https://github.com/Sakura-Ji/Sakura-Ji.github.io #右上角github的链接跳转
+repo_name: Sakura-Ji.github.io  #右上角github上的名字
 icon:
       repo: fontawesome/brands/github #图标
 edit_uri: edit/main/docs/ #点击可链接到github上
