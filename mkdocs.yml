@@ -1,16 +1,19 @@
 site_name: Sakura-Ji
 site_url: https://example.com/
 nav:
-    - Home: index.md
-    - About: about.md
+    - 简介: 
+      - index.md
+      - Noname: Respect/idea.md 
     - 编程语言:
         - Programing_Language/Introduction.md
         - C:
             - Programing_Language/C/C_language.md
+            - main: Programing_Language/C/main.md
             - 指针: Programing_Language/C/pointer.md
             - 数组: Programing_Language/C/array.md
-            - 链表: Programing_Language/C/link.md  
-theme:
+            - 链表: Programing_Language/C/link.md 
+            - 文件: Programing_Language/C/floder.md
+theme:           
   name: material
   palette:
 
