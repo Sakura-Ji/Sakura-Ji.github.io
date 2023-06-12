@@ -1,5 +1,7 @@
 site_name: Sakura-Ji
-site_url: https://example.com/
+site_url: https://Sakura-Ji.github.io
+site_author: 纪博文
+site_description: 纪博文的个人网站
 nav:
     - 简介: 
       - index.md
@@ -13,6 +15,13 @@ nav:
             - 数组: Programing_Language/C/array.md
             - 链表: Programing_Language/C/link.md 
             - 文件: Programing_Language/C/floder.md
+            - 堆栈: Programing_Language/C/stack.md
+    - 嵌入式编程:
+        - EmbeddedSyS/Eintroduct.md
+    - Linux配置:
+        - LinuxConfig/Lintroduct.md
+    - GodTool:
+        - Tool/MapDepot.md
 theme:           
   name: material
   palette:
@@ -61,6 +70,8 @@ markdown_extensions:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
+      linenums: true # 显示行号
+        # auto_title: true # 显示编程语言名称
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
