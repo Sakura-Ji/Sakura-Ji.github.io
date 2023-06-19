@@ -5,7 +5,7 @@ site_description: 纪博文的个人网站
 nav:
     - 简介: 
       - index.md
-      - Noname: Respect/idea.md 
+      - NoIdea: Respect/idea.md 
     - 编程语言:
         - Programing_Language/Introduction.md
         - C:
@@ -16,10 +16,13 @@ nav:
             - 链表: Programing_Language/C/link.md 
             - 文件: Programing_Language/C/floder.md
             - 堆栈: Programing_Language/C/stack.md
+            - 模块: Programing_Language/C/keywords.md
     - 嵌入式编程:
         - EmbeddedSyS/Eintroduct.md
-    - Linux配置:
-        - LinuxConfig/Lintroduct.md
+    - Linux系统:
+        - LinuxSystem/Lintroduct.md
+        - Gcc编译器: LinuxSystem/Gccinfo.md
+        - MakeFile: LinuxSystem/Makefile.md
     - GodTool:
         - Tool/MapDepot.md
 theme:           
