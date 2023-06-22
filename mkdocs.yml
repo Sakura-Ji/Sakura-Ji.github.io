@@ -78,6 +78,8 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
 
   - attr_list #[Subscribe to our newsletter](#){ .md-button } 就是在链接到下一个内容的后面 加上{ .md-button } 使其展现的像按钮
   - md_in_html
