@@ -23,6 +23,7 @@ nav:
         - LinuxSystem/Lintroduct.md
         - Gcc编译器: LinuxSystem/Gccinfo.md
         - MakeFile: LinuxSystem/Makefile.md
+        - Linux文件IO: LinuxSystem/file.md
     - GodTool:
         - Tool/MapDepot.md
 theme:           
@@ -78,9 +79,18 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+
+  #此配置启用内容选项卡，并允许在内容选项卡内嵌套任意内容，包括代码块和...更多内容选项卡
   - pymdownx.tabbed:
       alternate_style: true
-
+  #定义列表和任务列表
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  #文中使用缩写，鼠标悬停显示所有文字
+  - abbr
+  #文中使用缩写，点击显示文章片段，待研究
+  - pymdownx.snippets
   - attr_list #[Subscribe to our newsletter](#){ .md-button } 就是在链接到下一个内容的后面 加上{ .md-button } 使其展现的像按钮
   - md_in_html
   - pymdownx.superfences
