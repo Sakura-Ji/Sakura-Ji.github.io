@@ -371,7 +371,7 @@ int main()
     
     ```
 
-```c title="父进程检测子进程状态1"
+```c title="父进程检测子进程状态"
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -408,3 +408,4 @@ int main()
 
 ```
 
+为什么我的网站不更新啊啊啊
