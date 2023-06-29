@@ -109,7 +109,7 @@ graph LR
 
 ## 实践
 
-### 前知
+### 函数
 
 * 获取当前进程的PID函数: `getpid` 
 * 获取当前进程的父进程的PID函数: `getppid`
@@ -370,3 +370,41 @@ int main()
     }
     
     ```
+
+```c title="父进程检测子进程状态"
+
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/wait.h>
+int main()
+{
+  pid_t pid = fork();
+  if(pid == 0)
+  {
+    printf("i am son,son-pid:%d\n",getpid());
+    sleep(5);
+    printf("son die\n");
+  }
+  else if(pid > 0)
+  {
+    printf("i am father,father-pid:%d\n",getpid());
+    wait(NULL);
+    printf("检测到son die，启动新的进程\n");
+    pid_t pid1 = fork();
+    if(pid1 == 0)
+   {
+     printf("这是新的子进程,新的子进程pid是:%d\n",getpid());
+     sleep(5);
+      printf("新的子进程死亡\n");
+   }
+    else if(pid1 > 0)
+   {
+     wait(NULL);
+     printf("这是新的父进程,新的父进程pid是:%d",getpid());
+   }
+  }
+}
+
+```
+
