@@ -371,7 +371,7 @@ int main()
     
     ```
 
-```c title="父进程检测子进程状态"
+```c title="父进程检测子进程状态1"
 
 #include <stdio.h>
 #include <sys/types.h>
