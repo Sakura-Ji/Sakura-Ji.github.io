@@ -125,6 +125,15 @@ graph LR
 * 进程等待函数:
     * `wait` -- 阻塞等待任意子进程结束，为其收尸
     * `waitpid` --  等待指定子进程结束，为其收尸
+* `system`函数:接受一个命令字符串作为参数，并在操作系统中运行该命令
+* `exec`函数族:提供了一个在进程中启动另一个程序执行,会覆盖原有进程，一般和vfork连用,包含6个函数
+    * int execl(const char *path, const char *arg, ...);
+    * int execlp(const char *file, const char *arg, ...);
+    * int execle(const char *path, const char *arg, ..., char * const envp[]);
+    * int execv(const char *path, char *const argv[]);
+    * int execvp(const char *file, char *const argv[]);
+    * int execve(const char *path, char *const argv[], char *const envp[]);
+    
 
 !!! example "函数原型"
 
@@ -216,7 +225,8 @@ graph LR
 
         ```c
 
-        头文件:#include <sys/types.h>
+        所属头文件:
+        #include <sys/types.h>
         #include <sys/wait.h>
         函数原型:pid_t wait(int *status);
         形参:NULL
@@ -244,6 +254,65 @@ graph LR
         wait(NULL) 等价的 waitpid(-1,NULL,0)；
 
         ```
+    === "system"
+
+        ```c
+        
+        所属头文件:
+        #include <stdlib.h>
+        int system(const char *command);
+        形参:command -- 可执行程序
+        
+        执行操作:
+        1.创建一个子进程来执行命令。
+        2.在子进程中调用命令行解释器（shell），并将传入的命令作为参数传递给它。
+        3.等待命令的执行完成。
+        4.返回命令的退出状态码（返回值为命令的退出状态码）。
+        
+        system函数的返回值有以下几种情况:
+        1.如果命令成功执行并正常退出，system函数返回命令的退出状态码。
+        2.如果创建子进程失败或无法执行命令，system函数返回一个非零值。
+        3.如果command为NULL，system函数会检查命令解释器是否可用。
+        
+        注意事项:
+        在使用system函数时，要确保传递给它的命令字符串是可信任的，以防止命令注入安全漏洞。
+        * system函数会阻塞当前进程，直到命令执行完成。
+        * system函数的执行结果可能受到操作系统和命令行解释器的限制。
+        * 可以通过检查返回值来判断命令是否成功执行。
+        ```
+    === "exec函数族"
+
+        `exec`函数族是一组在操作系统中用于执行其他程序的函数。这些函数将当前进程替换为新的程序，新程序的代码、数据和堆栈会覆盖原来的进程。`exec`函数族通常与`fork`或`vfork`函数一起使用，用于在新的进程中执行不同的程序。
+
+        `exec`函数族包括以下函数：
+        
+        1. `int execl(const char *path, const char *arg, ...);`
+            - `execl`函数使用可变参数列表，接受一个字符串参数列表来指定新程序的路径和命令行参数。参数列表以NULL结尾。
+            - 示例：`execl("/bin/ls", "ls", "-l", NULL);`
+        
+        2. `int execv(const char *path, char *const argv[]);`
+            - `execv`函数接受一个字符串数组来指定新程序的路径和命令行参数。字符串数组的最后一个元素必须是NULL。
+            - 示例：`char *args[] = { "ls", "-l", NULL }; execv("/bin/ls", args);`
+        
+        3. `int execle(const char *path, const char *arg, ..., char *const envp[]);`
+            - `execle`函数使用可变参数列表，并接受一个字符串参数列表和一个环境变量数组来指定新程序的路径、命令行参数和环境变量。
+            - 示例：`execle("/bin/ls", "ls", "-l", NULL, envp);`
+        
+        4. `int execve(const char *path, char *const argv[], char *const envp[]);`
+            - `execve`函数接受一个字符串数组和一个环境变量数组来指定新程序的路径、命令行参数和环境变量。
+            - 示例：`char *args[] = { "ls", "-l", NULL }; execve("/bin/ls", args, envp);`
+        
+        5. `int execlp(const char *file, const char *arg, ...);`
+            - `execlp`函数类似于`execl`，但会在系统的搜索路径中查找可执行文件。
+            - 示例：`execlp("ls", "ls", "-l", NULL);`
+        
+        6. `int execvp(const char *file, char *const argv[]);`
+            - `execvp`函数类似于`execv`，但会在系统的搜索路径中查找可执行文件。
+            - 示例：`char *args[] = { "ls", "-l", NULL }; execvp("ls", args);`
+        
+        这些`exec`函数在调用成功时不会返回，只有在出错时才会返回-1，并设置错误码`errno`。它们会将当前进程的代码、数据和堆栈替换为要执行的新程序，并开始执行新程序的入口点。
+        
+        `exec`函数族提供了一种方便且常用的方式来执行其他程序，通常与`fork`或`vfork`函数一起使用，以实现进程的替换和程序的执行。
 
 ### 创建进程
 
@@ -253,159 +322,241 @@ graph LR
 
 **方式二:** 通过函数 `fork()` 或者 `vfork()`
 
-```c title="初识fork"
-
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-int main()
-{
-  pid_t pid = fork();
-  if(pid == 0)
-  {
-    printf("i am son\n");
-  }
-  else if(pid > 0)
-  {
-    printf("i am father\n");
-  }
-
-}
-
-```
-
-![Multi-fork1](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Multi-fork1.png)
-
- 
-
-=== "使用3个fork"
-
-    ```c
-
-    #include <stdio.h>
-    #include <sys/types.h>
-    #include <unistd.h>
-    int main()
-    {
-        fork();
-        fork();
-        fork();
-        printf("nihao\n");
-    }
-
-    ```
-=== "展开3个fork"
-
-    ```c title="进程"
+!!! example
     
-    #include <stdio.h>
-    #include <sys/types.h>
-    #include <unistd.h>
+    === "初识fork" 
     
-    int main()
-    {
-      pid_t pid1 = fork();//创建一个子进程并复制父进程
-      
-      if(pid1 == 0)
-      {
-        pid_t pid2 = fork();//创建一个子进程并复制父进程
+        1.fork的特点就是:fork会复制父进程，创建一个完全相同的子进程。
+        父进程和子进程会在fork调用之后同时执行。(先后顺序不确定)
+
+        ```c 
+        #include <stdio.h>
+        #include <unistd.h>
+        #include <sys/types.h>
+        int main()
+        {
+          pid_t pid = fork();
+          if(pid == 0)
+          {
+            printf("i am son\n");
+          }
+          else if(pid > 0)
+          {
+            printf("i am father\n");
+          }
         
-        if(pid2 == 0)
-          {
-            pid_t pid3 =fork();//创建一个子进程并复制父进程
-            if(pid3 == 0 )
-              {
-                printf("nihao\n");
-              }
-            else if(pid3 > 0)
-              {
-                printf("nihao\n");
-              }
-          }
-        else if(pid2 > 0)
-          {
-            pid_t pid4 =fork();//创建一个子进程并复制父进程
-            if(pid4 == 0 )
-              {
-                printf("nihao\n");
-              }
-            else if(pid4 > 0)
-              {
-                printf("nihao\n");
-              }
-          }
-      }
-      else if(pid1 > 0)
-      {
+        }
         
-        pid_t pid5 = fork();//创建一个子进程并复制父进程
+        ```
+
+        ![Multi-fork1](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Multi-fork1.png)
+    
+    === "初识Vfork"
         
-        if(pid5 == 0)
+        1.vfork的特点:共享父进程的资源,子进程会在父进程的地址空间中运行，
+        直到子进程调用exec或者_exit函数后，子进程才会独立于父进程运行。
+
+        ```c
+        #include <sys/types.h>
+        #include <unistd.h>
+        #include <stdio.h>
+        int main()
+        {
+          pid_t pid = vfork();//pid_t pid = fork();
+          
+          if(pid == 0)
           {
-            pid_t pid6 =fork();//创建一个子进程并复制父进程
-            if(pid6 == 0 )
-              {
-                printf("nihao\n");
-              }
-            else if(pid6 > 0)
-              {
-                printf("nihao\n");
-              }
+            sleep(2);//加入sleep，是为了证明会先子进程，父进程在等
+            printf("i am son pid:%d and i start,my father's pid:%d \n",getpid(),getppid());
+            sleep(2);
+            printf("son pid:%d finish,my father's pid:%d \n",getpid(),getppid());
+            _exit(0);//规定使用_exit(0)退出，防止出现核心已转储的错误
           }
-        else if(pid5 > 0)
+          else if(pid > 0)
           {
-            pid_t pid7 =fork();//创建一个子进程并复制父进程
-            if(pid7 == 0 )
-              {
-                printf("nihao\n");
-              }
-            else if(pid7 > 0)
-              {
-                printf("nihao\n");
-              }
+            printf("i am farher process\n");
           }
+          else 
+          {
+            perror("vfork");
+            return -1;
+          }
+          
+        }
+        ```
+
+        ![vfork](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/vfork.png)
+
+    === "二者的区别"
+
+        ```c
+
+        #include <sys/types.h>
+        #include <unistd.h>
+        #include <stdio.h>
+        int num = 100;
+        int main()
+        {
+        
+          pid_t pid = fork();//pid_t pid = vfork();
+          
+          if(pid == 0)
+          {
+            num++;
+            printf("i am son,num = %d\n",num);
+            _exit(0);//规定使用_exit(0)退出，防止出现核心已转储的错误
+          }
+          else if(pid > 0)
+          {
+            printf("i am father,num = %d\n",num);
+          }
+          else 
+          {
+            perror("vfork");
+            return -1;
+          }
+          
+        }
+        ```
+        
+        ![vfork2](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/vfork2.png)
+
+### 举例
+!!! example
     
-      }
-      return 0;
-    }
+    === "使用fork打印8个nihao"
     
-    ```
+        === "使用3个fork"
+        
+            ```c
+        
+            #include <stdio.h>
+            #include <sys/types.h>
+            #include <unistd.h>
+            int main()
+            {
+                fork();
+                fork();
+                fork();
+                printf("nihao\n");
+            }
+        
+            ```
+        === "展开3个fork"
+        
+            ```c title="进程"
+            
+            #include <stdio.h>
+            #include <sys/types.h>
+            #include <unistd.h>
+            
+            int main()
+            {
+              pid_t pid1 = fork();//创建一个子进程并复制父进程
+              
+              if(pid1 == 0)
+              {
+                pid_t pid2 = fork();//创建一个子进程并复制父进程
+                
+                if(pid2 == 0)
+                  {
+                    pid_t pid3 =fork();//创建一个子进程并复制父进程
+                    if(pid3 == 0 )
+                      {
+                        printf("nihao\n");
+                      }
+                    else if(pid3 > 0)
+                      {
+                        printf("nihao\n");
+                      }
+                  }
+                else if(pid2 > 0)
+                  {
+                    pid_t pid4 =fork();//创建一个子进程并复制父进程
+                    if(pid4 == 0 )
+                      {
+                        printf("nihao\n");
+                      }
+                    else if(pid4 > 0)
+                      {
+                        printf("nihao\n");
+                      }
+                  }
+              }
+              else if(pid1 > 0)
+              {
+                
+                pid_t pid5 = fork();//创建一个子进程并复制父进程
+                
+                if(pid5 == 0)
+                  {
+                    pid_t pid6 =fork();//创建一个子进程并复制父进程
+                    if(pid6 == 0 )
+                      {
+                        printf("nihao\n");
+                      }
+                    else if(pid6 > 0)
+                      {
+                        printf("nihao\n");
+                      }
+                  }
+                else if(pid5 > 0)
+                  {
+                    pid_t pid7 =fork();//创建一个子进程并复制父进程
+                    if(pid7 == 0 )
+                      {
+                        printf("nihao\n");
+                      }
+                    else if(pid7 > 0)
+                      {
+                        printf("nihao\n");
+                      }
+                  }
+            
+              }
+              return 0;
+            }
+            
+            ```
 
-```c title="父进程检测子进程状态"
+        ![3-fork](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/3-fork.png)
 
-#include <stdio.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <sys/wait.h>
-int main()
-{
-  pid_t pid = fork();
-  if(pid == 0)
-  {
-    printf("i am son,son-pid:%d\n",getpid());
-    sleep(5);
-    printf("son die\n");
-  }
-  else if(pid > 0)
-  {
-    printf("i am father,father-pid:%d\n",getpid());
-    wait(NULL);
-    printf("检测到son die，启动新的进程\n");
-    pid_t pid1 = fork();
-    if(pid1 == 0)
-   {
-     printf("这是新的子进程,新的子进程pid是:%d\n",getpid());
-     sleep(5);
-      printf("新的子进程死亡\n");
-   }
-    else if(pid1 > 0)
-   {
-     wait(NULL);
-     printf("这是新的父进程,新的父进程pid是:%d",getpid());
-   }
-  }
-}
+    === "父进程检测子进程状态" 
 
-```
-
-为什么我的网站不更新啊啊啊,旧网站更新 新的不启动为啥
+        ```c 
+         
+         #include <stdio.h>
+         #include <sys/types.h>
+         #include <unistd.h>
+         #include <sys/wait.h>
+         int main()
+         {
+           pid_t pid = fork();
+           if(pid == 0)
+           {
+             printf("i am son,son-pid:%d\n",getpid());
+             sleep(5);
+             printf("son die\n");
+           }
+           else if(pid > 0)
+           {
+             printf("i am father,father-pid:%d\n",getpid());
+             wait(NULL);
+             printf("检测到son die，启动新的进程\n");
+             pid_t pid1 = fork();
+             if(pid1 == 0)
+            {
+              printf("这是新的子进程,新的子进程pid是:%d\n",getpid());
+              sleep(5);
+               printf("新的子进程死亡\n");
+            }
+             else if(pid1 > 0)
+            {
+              wait(NULL);
+              printf("这是新的父进程,新的父进程pid是:%d",getpid());
+            }
+           }
+         }
+         
+        ```
+        ![father-son](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/father-son.png)
