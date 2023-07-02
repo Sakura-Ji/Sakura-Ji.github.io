@@ -1185,7 +1185,7 @@ int main()
                 {
                     char *q = file->d_name;//获取文件名
                     int num = strlen(q);//获取文件名的长度
-                    int a = strcmp(q+num-4,".txt");//比较后4个字母
+                    int a = strcmp(q+num-4,".mp3");//比较后4个字母
         
                     if(a == 0)
                     {
@@ -1323,10 +1323,10 @@ int main()
         
               int num = strlen(q);//获取文件名的长度
         
-              if(!strcmp(q+num-4,".txt"))//比较后4个字母
+              if(!strcmp(q+num-4,".mp3"))//比较后4个字母
               {
         
-                strcpy(*(song+i),q);//将.txt文件保存到数组里面
+                strcpy(*(song+i),q);//将.mp3文件保存到数组里面
         
                 //char *p = getcwd(buf, 255);//获取当前文件夹的路径，返回值*p和buf存入的值是相同的
                 
@@ -1338,7 +1338,7 @@ int main()
                 
                 sprintf(house,"%s/%s",buf,q);//使用sprintf进行拼接
 
-                printf("%s\n",t);
+                printf("%s\n",house);
         
                 i++;
         
@@ -1383,6 +1383,8 @@ int main()
             }    
         }
         ```
+
+    ![TMP3-1](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/TMP3-1.png)
 
 ??? note "字符串数组知识回顾"
 

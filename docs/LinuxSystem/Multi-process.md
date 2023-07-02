@@ -111,10 +111,10 @@ graph LR
 
 ### 函数
 
-* 获取当前进程的PID函数: `getpid` 
-* 获取当前进程的父进程的PID函数: `getppid`
-* 创建进程的函数: `fork` `vfork`
-* 结束进程的方法:
+1. 获取当前进程的PID函数: `getpid` 
+2. 获取当前进程的父进程的PID函数: `getppid`
+3. 创建进程的函数: `fork` `vfork`
+4. 结束进程的方法:
     1. 信号:
         * 使用 ++ctrl+c++ 结束进程
         * 使用 kill -9 pid
@@ -122,19 +122,19 @@ graph LR
         * 主函数 -- `return 0`
         * `exit(0)` -- 结束进程
         * `_exit(0)` --结束进程
-* 进程等待函数:
+5. 进程等待函数:
     * `wait` -- 阻塞等待任意子进程结束，为其收尸
     * `waitpid` --  等待指定子进程结束，为其收尸
-* `system`函数:接受一个命令字符串作为参数，并在操作系统中运行该命令
-* `exec`函数族:提供了一个在进程中启动另一个程序执行,会覆盖原有进程，一般和vfork连用,包含6个函数
+6. `system`函数:接受一个命令字符串作为参数，并在操作系统中运行该命令
+7. `exec`函数族:提供了一个在进程中启动另一个程序执行,会覆盖原有进程，一般和vfork连用,包含6个函数
     * int execl(const char *path, const char *arg, ...);
     * int execlp(const char *file, const char *arg, ...);
     * int execle(const char *path, const char *arg, ..., char * const envp[]);
     * int execv(const char *path, char *const argv[]);
     * int execvp(const char *file, char *const argv[]);
     * int execve(const char *path, char *const argv[], char *const envp[]);
+8. 获取某一路径下的某种类型的文件函数:`glob`
     
-
 !!! example "函数原型"
 
     === "getpid"
@@ -190,7 +190,7 @@ graph LR
         原型:pid_t vfork(void)
         所属头文件
         #include <unistd.h>
-        #include <sys/type.h>
+        #include <sys/types.h>
         参数:无
         返回值:在父进程中返回子进程的PID，在子进程中返回0，失败返回-1
         特点:vfork成功后，会创建一个子进程，子进程共用(独占)父进程资源，
@@ -280,18 +280,60 @@ graph LR
         * system函数的执行结果可能受到操作系统和命令行解释器的限制。
         * 可以通过检查返回值来判断命令是否成功执行。
         ```
+
+        ```c title="举例"
+        #include <stdio.h>
+        #include <stdlib.h>
+        
+        int main()
+        {
+          printf("**Begin**\n");
+          printf("\n");
+          system("ls -a");//与exec函数族不同，调用后不会结束当前进程
+          printf("\n");
+          printf("**THE END**\n");
+          return 0;
+        }
+        ```
+
+        ![system](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/system.png)
+        
     === "exec函数族"
 
-        `exec`函数族是一组在操作系统中用于执行其他程序的函数。这些函数将当前进程替换为新的程序，新程序的代码、数据和堆栈会覆盖原来的进程。`exec`函数族通常与`fork`或`vfork`函数一起使用，用于在新的进程中执行不同的程序。
+        **exec函数族定义:** 
 
-        `exec`函数族包括以下函数：
+        是一组在操作系统中用于执行其他程序的函数。
+        这些函数将当前进程替换为新的程序，新程序的代码、数据和堆栈会覆盖原来的进程。
+        `exec`函数族通常与`fork`或`vfork`函数一起使用，用于在新的进程中执行不同的程序。
+
+        **exec函数族使用场景:**
+
+        在一个进程中，想执行另外一个程序的时候，`vfork/fork`+ `exec函数族`
+        当该进程不能在为系统做出贡献的时候，可以用exec函数族让自己重生。
+
+        **exec函数族的特点:**
+
+        * **fork+exec函数族:** fork调用之后，会复制父进程资源，子进程中如果使用exec，
+                               原本的fork的资源会被新的exec所带的程序替换，只有pid号保持不变。
+
+        * **vfork+exec函数族:** 在调用exec函数族的时候，会重新得到新的空间，不再和父进程公共同一块空间，只有pid号保持不变。
+        
+        以上两种再使用exec函数族之后，使用的都是新的进程，并且与父进程都不是同一空间，所以经常使用的是vfork+exec函数族，这样
+        一开始就不用复制父进程的资源了(相对于fork来说)
+
+        **exec函数族包括以下函数:**
+
+        所需头文件:`#include <unistd.h>`
         
         1. `int execl(const char *path, const char *arg, ...);`
-            - `execl`函数使用可变参数列表，接受一个字符串参数列表来指定新程序的路径和命令行参数。参数列表以NULL结尾。
+            - `execl`函数使用 **可变参数列表** ，接受一个 ^^字符串参数列表^^ 来指定新程序的 ^^路径^^ 和 ^^命令行参数^^ 。参数列表以 ==NULL== 结尾。
+            - path:可执行程序的路径，使用 ^^完整的文件目录^^ 来查找对应的 **可执行文件** 。注意目录必须以“/”开头，否则将其视为文件名  
+            - arg: 可变传参(1. 写可执行程序自身 2. 写给执行程序传入的第一个参数 3. 写给执行程序传入的第二个参数···最后以NULL结尾)
             - 示例：`execl("/bin/ls", "ls", "-l", NULL);`
+            
         
         2. `int execv(const char *path, char *const argv[]);`
-            - `execv`函数接受一个字符串数组来指定新程序的路径和命令行参数。字符串数组的最后一个元素必须是NULL。
+            - `execv`函数接受一个 ^^字符串数组^^ 来指定新程序的 ^^路径^^ 和 ^^命令行参数^^ 。字符串数组的最后一个元素必须是 ==NULL== 。
             - 示例：`char *args[] = { "ls", "-l", NULL }; execv("/bin/ls", args);`
         
         3. `int execle(const char *path, const char *arg, ..., char *const envp[]);`
@@ -303,8 +345,9 @@ graph LR
             - 示例：`char *args[] = { "ls", "-l", NULL }; execve("/bin/ls", args, envp);`
         
         5. `int execlp(const char *file, const char *arg, ...);`
-            - `execlp`函数类似于`execl`，但会在系统的搜索路径中查找可执行文件。
-            - 示例：`execlp("ls", "ls", "-l", NULL);`
+            - `execlp`函数类似于`execl`，但会在系统的搜索路径中查找 **可执行文件** 。
+            - 示例1：`execlp("ls", "ls", "-l", NULL);`
+            - 示例2：`execlp("./hello","hello",NULL);`
         
         6. `int execvp(const char *file, char *const argv[]);`
             - `execvp`函数类似于`execv`，但会在系统的搜索路径中查找可执行文件。
@@ -313,6 +356,46 @@ graph LR
         这些`exec`函数在调用成功时不会返回，只有在出错时才会返回-1，并设置错误码`errno`。它们会将当前进程的代码、数据和堆栈替换为要执行的新程序，并开始执行新程序的入口点。
         
         `exec`函数族提供了一种方便且常用的方式来执行其他程序，通常与`fork`或`vfork`函数一起使用，以实现进程的替换和程序的执行。
+
+    === "glob"
+
+        ```c
+        所属头文件:
+        #include <glob.h>
+        函数原型:
+        int glob(const char *pattern, int flags,int (*errfunc) (const char *epath, int eerrno), glob_t *pglob);
+        函数形参: 
+        pattern:  获取某一路径下的某种类型的文件
+              	  举例："/home/sakuraji/mp3file/*.mp3"  
+        flags：0
+        errfunc：NULL
+        pglob：要保存的位置glob_t *类型   （glob  如下）
+        typedef struct {
+            size_t gl_pathc; /*找到的文件个数*/
+            char **gl_pathv;/*文件名:gl_pathv[0]  gl_pathv[1]  。。。。 */
+            size_t   gl_offs; /* 不管 */
+        } glob_t;
+
+        ```
+
+        ```c title="举例"
+
+        #include <stdio.h>
+        #include <glob.h>
+        int main()
+        {
+            glob_t song; //定义结构体变量
+            glob("/home/sakura-ji/Traing/mp3file/*.mp3",0,NULL,&song);
+            for(int i = 0; i < song.gl_pathc; i++)
+            {
+                printf("%s\n",song.gl_pathv[i]);
+            }
+            return 0;
+        }
+        
+        ```
+
+        ![glob](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/glob.png)
 
 ### 创建进程
 
@@ -398,7 +481,7 @@ graph LR
         int main()
         {
         
-          pid_t pid = fork();//pid_t pid = vfork();
+          pid_t pid = vfork();//pid_t pid = fork();
           
           if(pid == 0)
           {
@@ -560,3 +643,67 @@ graph LR
          
         ```
         ![father-son](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/father-son.png)
+
+    === "exec函数族的使用"
+
+        === "初使用"
+        
+            
+            ```c
+             
+            #include <stdio.h>
+            #include <unistd.h>
+            #include <sys/types.h>
+             
+            int main()
+            {
+                printf("12345\n");
+             
+                execl("/home/sakuraji/Tring/Multi-process/hello", "hello",NULL);//启动另一个程序执行,覆盖原有进程
+             
+                printf("67890\n");//不进行
+             
+                return 0;
+             
+            }
+            
+            ```
+            
+            ![Exec-Func](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Exec-Func.png)
+
+        === "与vfork连用"
+
+            ```c
+            
+            #include <stdio.h>
+            #include <unistd.h>
+            #include <sys/types.h>
+            #include <sys/wait.h>
+            int main()
+            {
+              pid_t pid = vfork();
+            
+              if(pid == 0)
+              {
+                printf("12345\n");
+                
+                execl("/home/sakuraji/Tring/Multi-process/hello", "hello",NULL);//启动另一个程序执行,覆盖原有进程
+                
+                printf("67890\n");//不运行
+            
+                _exit(0);//不运行
+              }
+              else if(pid > 0)
+              {
+                wait(NULL);//等待子进程消亡
+                printf("i am father\n");
+            }
+            
+              return 0;
+            
+            }
+            ```
+
+            ![exec-vfork](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/exec-vfork.png)
+
+
