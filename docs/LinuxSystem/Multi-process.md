@@ -134,7 +134,8 @@ graph LR
     * int execvp(const char *file, char *const argv[]);
     * int execve(const char *path, char *const argv[], char *const envp[]);
 8. 获取某一路径下的某种类型的文件函数:`glob`
-    
+9. 清理函数:不用自己调用，进程结束会自动调用`atexit`
+
 !!! example "函数原型"
 
     === "getpid"
@@ -396,6 +397,46 @@ graph LR
         ```
 
         ![glob](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/glob.png)
+    
+    === "atexit"
+        
+        1. 如果是非正常退出的情况，比如使用 ++ctrl+c++ 退出不会调用 `atexit`函数
+        ```c
+        
+        所属头文件:
+        #include <stdlib.h>
+        函数原型:
+        int atexit(void (*function)(void));
+        形参:
+        function  
+        返回值和形参均为void的函数
+
+        ```
+        ```c title="举例"
+
+        #include <stdio.h>
+        #include <stdlib.h>
+        
+        void cleanup() 
+        {
+            printf("Performing cleanup...\n");
+            // 执行一些清理操作
+        }
+        
+        int main() 
+        {
+            atexit(cleanup);
+        
+            printf("Program is running...\n");
+            // 其他的程序代码
+            
+            return 0;
+        }
+
+        ```
+        ![atexit](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/atexit.png)
+
+    
 
 ### 创建进程
 
@@ -605,44 +646,83 @@ graph LR
         ![3-fork](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/3-fork.png)
 
     === "父进程检测子进程状态" 
+        
+        === "Test1"
+            
+            ```c 
+             
+             #include <stdio.h>
+             #include <sys/types.h>
+             #include <unistd.h>
+             #include <sys/wait.h>
+             int main()
+             {
+               pid_t pid = fork();
+               if(pid == 0)
+               {
+                 printf("i am son,son-pid:%d\n",getpid());
+                 sleep(5);
+                 printf("son die\n");
+               }
+               else if(pid > 0)
+               {
+                 printf("i am father,father-pid:%d\n",getpid());
+                 wait(NULL);
+                 printf("检测到son die，启动新的进程\n");
+                 pid_t pid1 = fork();
+                 if(pid1 == 0)
+                {
+                  printf("这是新的子进程,新的子进程pid是:%d\n",getpid());
+                  sleep(5);
+                   printf("新的子进程死亡\n");
+                }
+                 else if(pid1 > 0)
+                {
+                  wait(NULL);
+                  printf("这是新的父进程,新的父进程pid是:%d",getpid());
+                }
+               }
+             }
+             
+            ```
 
-        ```c 
-         
-         #include <stdio.h>
-         #include <sys/types.h>
-         #include <unistd.h>
-         #include <sys/wait.h>
-         int main()
-         {
-           pid_t pid = fork();
-           if(pid == 0)
-           {
-             printf("i am son,son-pid:%d\n",getpid());
-             sleep(5);
-             printf("son die\n");
-           }
-           else if(pid > 0)
-           {
-             printf("i am father,father-pid:%d\n",getpid());
-             wait(NULL);
-             printf("检测到son die，启动新的进程\n");
-             pid_t pid1 = fork();
-             if(pid1 == 0)
+            ![father-son](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/father-son.png)
+        
+        === "Test2"
+
+            ```c
+            
+            #include <stdio.h>
+            #include <sys/types.h>
+            #include <unistd.h>
+            #include <sys/wait.h>
+            int main()
             {
-              printf("这是新的子进程,新的子进程pid是:%d\n",getpid());
-              sleep(5);
-               printf("新的子进程死亡\n");
+              pid_t pid;
+            loop:
+              //规定loop下不能定义变量
+              pid = fork();
+              if(pid == 0)
+              {
+                printf("i am son,son-pid:%d\n",getpid());
+                sleep(5);
+                printf("son die\n");
+              }
+              else if(pid > 0)
+              {
+                printf("i am father,my son pid is:%d,father-pid:%d\n",pid,getpid());//fork()在父进程中返回子进程的pid
+                pid_t a = wait(NULL);
+                if(a == pid)
+                {
+                  goto loop;
+                }
+                 
+              }
             }
-             else if(pid1 > 0)
-            {
-              wait(NULL);
-              printf("这是新的父进程,新的父进程pid是:%d",getpid());
-            }
-           }
-         }
-         
-        ```
-        ![father-son](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/father-son.png)
+
+            ```
+            ![father-son2](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/father-son2.png)
+
 
     === "exec函数族的使用"
 
@@ -705,5 +785,64 @@ graph LR
             ```
 
             ![exec-vfork](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/exec-vfork.png)
+    
+    === "顺序播放MP3文件"
 
+        ```c
 
+        #include <stdio.h>
+        #include <glob.h>
+        #include <stdlib.h>
+        #include <sys/wait.h>
+        #include <unistd.h>
+        #include <sys/types.h>
+        #include<wait.h>
+        
+        glob_t *s = NULL;//使用指针定义结构体类型的glob，指针只有地址，所以后面需要给指针开空间
+        pid_t pid;
+        int cur_i = 0;//当前在播放那一首歌，从第一首开始
+        
+        int main()
+        {
+          //1.获取歌单
+          s = (glob_t * )malloc(sizeof(glob_t));//开辟空间
+          glob("/home/sakura-ji/Traing/mp3file/*.mp3",0,NULL,s);
+          printf("歌曲名单为:\n");
+          for(int i = 0; i < s->gl_pathc; i++)
+          {
+          printf("%s\n",s->gl_pathv[i]);
+          }
+        
+        loop:
+        
+          pid = vfork();
+        
+          if(pid < 0)
+          {
+            perror("vfork");
+            return -1;
+          }
+          else if(pid == 0 )
+          {
+            execlp("mpg123", "mpg123", s->gl_pathv[cur_i],NULL);  
+          }
+          else
+          {
+            while(1)//使用waitpid为不阻塞等待，为了要一直监控子进程，所以使用while循环
+            {
+              int res = waitpid(pid, NULL, WNOHANG);//这是为了在子进程使用的过程中，父进程也要做事情，直到监测到子进程死亡
+              if(res == pid)
+              {
+                cur_i++;
+                if(cur_i == s->gl_pathc)
+                  cur_i = 0;
+                goto loop;
+              }
+            }
+          }
+        
+            return 0;
+        }
+        
+        ```
+        ![Tmp3-4](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Tmp3-4.png)
