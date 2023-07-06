@@ -23,9 +23,10 @@ nav:
         - LinuxSystem/Lintroduct.md
         - Gcc编译器: LinuxSystem/Gccinfo.md
         - MakeFile: LinuxSystem/Makefile.md
-        - Linux文件IO: LinuxSystem/File.md
+        - Linux文件: LinuxSystem/File.md
         - Linux进程: LinuxSystem/Multi-process.md
-        - Linuxt通信: LinuxSystem/Communication.md
+        - Linux通信: LinuxSystem/Communication.md
+        - Linux线程: LinuxSystem/Posix.md
     - GodTool:
         - Tool/MapDepot.md
 theme:           

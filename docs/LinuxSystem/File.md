@@ -44,13 +44,16 @@ EOF是文件结束标志，值为-1。 语句“c=fgetc(fp);”是从文件指�
 
         ```c 
         
+        所属头文件:
         #include <sys/types.h>
         #include <sys/stat.h>
         #include <fcntl.h>
+        函数原型:
         int open(const char *pathname, int flags);
         int open(const char *pathname, int flags, mode_t mode);
         
-        形参：pathname -- 打开文件的路径
+        形参:
+        pathname -- 打开文件的路径
         
         flags：
         以下三个宏，必须有一个：
@@ -61,8 +64,8 @@ EOF是文件结束标志，值为-1。 语句“c=fgetc(fp);”是从文件指�
         下面的宏，可选：
         
         O_CREAT(创建)   (只要选择该宏，必须给第三个参数)
-        O_CREAT如果文件不存在，创建
-        O_CREAT如果文件存在，只打开，mode失效
+        1. 如果文件不存在，创建
+        2. 如果文件存在，只打开，mode失效
         
         O_APPEND（追加写）  append
         O_TRUNC（清空写）  truncated
