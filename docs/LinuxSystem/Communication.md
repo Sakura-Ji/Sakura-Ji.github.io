@@ -22,7 +22,7 @@
 4. [共享内存(Shared Memory)](#Shared): 共享内存允许多个进程共享同一块内存区域，它是一种高效的IPC方式，因为数据无需复制就可以在进程之间传递。但需要注意的是，使用共享内存时需要借助其他机制如信号量或互斥锁来确保数据的同步和互斥访问。
 5. [信号量集(Semaphore)](#Semaphore): 信号量是一种计数器，用于多个进程之间的同步和互斥访问共享资源。它可以用来控制对共享内存的访问以及进程之间的顺序执行。
 6. [消息队列(Message Queue)](#Message): 消息队列是一种存储在内核中的消息链表，进程可以通过往队列中写入消息和从队列中读取消息来进行通信。消息队列可以实现按照特定的优先级来处理消息。
-7. 套接字(Socket): 套接字是一种用于在网络中进行进程间通信的通信机制，它可以用于不同主机上的进程相互通信，实现分布式应用程序之间的交互。
+7. [套接字(Socket):](#Socket) 套接字是一种用于在网络中进行进程间通信的通信机制，它可以用于不同主机上的进程相互通信，实现分布式应用程序之间的交互。
 
 ### 系统命令
 
@@ -581,7 +581,7 @@
 * 写FIFO文件的进程只能以WRONLY的方式打开FIFO文件
 * FIFO文件里面的内容被读取后就消失了，但普通文件的内容还会存在
 
-### 函数
+### 有名管道函数
 
 1. 检测用户对文件的权限(读，写，可执行)和检测文件是否存在的函数`access`
 2. 创建有名管道的函数`mkfifo`
@@ -808,7 +808,193 @@
 		成功返回0，失败返回-1。
 
         ```
+### 举例
 
+!!! example "通过有名管道实现半双工通信"
+
+    === "zhu通信"
+
+        ```c
+        
+        #include <stdio.h>
+        #include <sys/stat.h>
+        #include<sys/types.h>
+        #include <unistd.h>
+        #include <fcntl.h>
+        #include <string.h>
+        
+        #define TEXT "text.fifo"
+        #define DATA "data.fifo"
+        
+        int main()
+        {
+          // 检查text.fifo文件是否存在
+          if (access(TEXT, F_OK) == 0)
+          {
+            printf("text.fifo File exists\n");//存在
+          } 
+          else
+          {
+            printf("text.fifo File does not exist,creat it\n");//不存在
+            if(mkfifo(TEXT,0644) == -1)//创建文件
+            {
+              perror("mkfifo");
+              return -1;
+            }
+          }
+          // 检测data.fifo文件是否存在
+          if (access(DATA, F_OK) == 0)
+          {
+            printf("data.fifo File exists\n");//存在
+          } 
+          else
+          {
+            printf("data.fifo File does not exist,creat it\n");//不存在
+            if(mkfifo(DATA,0644) == -1)//创建文件
+            {
+              perror("mkfifo");
+              return -1;
+            }
+          }
+        
+          //打开 -- 写
+          printf("请向text.fifo管道文件中写入\n");
+          int fd = open(TEXT,O_WRONLY);
+          char w_buf[100] = {0};
+          if(fd == -1)
+          {
+            perror("zhu write open");
+            return -1;
+          }
+          
+          int fp = open(DATA,O_RDONLY);
+          char r_buf[100] = {0};
+        
+          if(fp == -1)
+          {
+            perror("zhu read open");
+            return -1;
+          }
+        
+          while(1)
+          {
+            printf("请在zhu通信中输入要写入的内容:\n");
+            scanf("%s",w_buf);
+            write(fd,w_buf,strlen(w_buf));
+            if(!strcmp(w_buf, "quit"))//防止陷入当一端关闭，管道摧毁，另一端出现bug
+            {
+              return 0;
+            }
+            memset(w_buf,0,100);
+        
+            read(fp,r_buf,100);
+            if(!strcmp(r_buf, "quit"))
+            {
+              return 0;
+            }
+            printf("zhu read:%s\n",r_buf);
+            memset(r_buf,0,100);
+          }
+        
+          return 0;
+          
+        }
+  
+        ```
+
+    === "cong通信"
+
+        ```c
+        
+        #include <stdio.h>
+        #include <sys/stat.h>
+        #include<sys/types.h>
+        #include <unistd.h>
+        #include <fcntl.h>
+        #include <string.h>
+        
+        #define TEXT "text.fifo"
+        #define DATA "data.fifo"
+        
+        int main()
+        {
+          // 检查text.fifo文件是否存在
+          if (access(TEXT, F_OK) == 0)
+          {
+            printf("text.fifo File exists\n");//存在
+          } 
+          else
+          {
+            printf("text.fifo File does not exist,creat it\n");//不存在
+            if(mkfifo(TEXT,0644) == -1)//创建文件
+            {
+              perror("mkfifo");
+              return -1;
+            }
+          }
+          // 检测data.fifo文件是否存在
+          if (access(DATA, F_OK) == 0)
+          {
+            printf("data.fifo File exists\n");//存在
+          } 
+          else
+          {
+            printf("data.fifo File does not exist,creat it\n");//不存在
+            if(mkfifo(DATA,0644) == -1)//创建文件
+            {
+              perror("mkfifo");
+              return -1;
+            }
+          }
+        
+          //打开 -- 写
+          printf("等待zhu系统发送信息\n");
+          int fd = open(TEXT,O_RDONLY);
+          char r_buf[100] = {0};
+          if(fd == -1)
+          {
+            perror("cong read open");
+            return -1;
+          }
+          
+          int fp = open(DATA,O_WRONLY);
+          char w_buf[100] = {0};
+        
+          if(fp == -1)
+          {
+            perror("cong write open");
+            return -1;
+          }
+        
+          while(1)
+          {
+        
+            printf("正在输出zhu系统发送的内容:\n");
+            read(fd,r_buf,100);
+            if(!strcmp(r_buf, "quit"))
+            {
+              return 0;
+            }
+            printf("cong read:%s\n",r_buf);
+            memset(r_buf,0,100);
+            
+            printf("cong系统正在回复ing\n");
+            scanf("%s",w_buf);
+            write(fp,w_buf,strlen(w_buf));
+            if(!strcmp(w_buf, "quit"))//防止陷入当一端关闭，管道摧毁，另一端出现bug
+            {
+              return 0;
+            }
+            memset(w_buf,0,100);
+        
+          }
+        
+          return 0;
+          
+        }
+
+        ```
+    ![mkfifo3](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/mkfifo3.png)
 
 ## 共享内存 {#Shared}
 
@@ -950,4 +1136,488 @@
 ## 信号量集 {#Semaphore}
 
 ## 消息队列 {#Message}
+
+## 套接字 {#Socket}
+
+### 理论
+
+套接字（Socket）是用于实现网络通信的一种机制，它是一种抽象的通信端点。
+
+在Linux系统编程中，使用套接字可以实现不同进程或不同计算机之间的通信,套接字使用文件描述符来进行标识和操作。
+
+常见的套接字类型包括:
+
+* 流套接字(SOCK_STREAM): 流套接字提供可靠的、面向连接的通信
+* 数据报套接字(SOCK_DGRAM): 数据报套接字则提供无连接的通信。
+
+在使用套接字进行网络编程时，需要注意处理错误和异常情况，以确保程序能够正确地处理连接、发送和接收数据等操作。
+另外，网络编程中的套接字相关操作通常是阻塞的，默认情况下会导致进程阻塞等待，因此可以使用非阻塞的操作或多线程来处理并发连接和请求。
+
+### 函数
+
+下面是用于创建和使用套接字的一些重要系统调用和函数：
+
+1. `socket()`:创建一个套接字，并返回一个文件描述符。
+2. `bind()`: 将套接字与特定的地址和端口绑定。
+3. `listen()`: 将一个流套接字转换为被动监听模式，等待连接请求。
+4. `accept()`: 接受连接请求，并返回一个新的套接字文件描述符，用于与客户端进行通信。
+5. `connect()`: 建立与服务器的连接。
+6. `send()`: 发送数据到套接字。
+7. `recv()`: 从套接字接收数据。
+8. `close()`: 关闭套接字。
+
+
+!!! example "函数原型"
+
+    === "socket"
+
+        ```c
+        所属头文件:
+        #include <sys/types.h>
+        #include <sys/socket.h>
+        函数原型:
+        int socket(int domain, int type, int protocol);
+        socket()函数接受三个参数: 
+            domain:指定套接字的通信域，表示使用哪种协议族。常见的取值包括:
+                AF_INET：IPv4协议族
+                AF_INET6：IPv6协议族
+                AF_UNIX：Unix域协议族（本地套接字）
+            type: 指定套接字的类型，表示通信方式。常见的取值包括:
+                SOCK_STREAM：面向连接的流式套接字，使用TCP协议
+                SOCK_DGRAM：无连接的数据报式套接字，使用UDP协议
+                SOCK_RAW：原始套接字，可以访问低层协议
+            protocol:指定协议的编号，使socket()函数能够更精确地选择协议。通常情况下，可以设置为0，表示由系统根据前两个参数自动选择。
+        返回值:
+            socket()函数成功创建套接字后，返回一个非负整数的文件描述符。调用失败时，返回-1，并设置errno变量来指示具体的错误原因。
+
+        ```
+        ```c title="举例"
+
+        #include <stdio.h>
+        #include <sys/types.h>
+        #include <sys/socket.h>
+        
+        int main()
+        {
+          int res = socket(AF_INET, SOCK_STREAM, 0);//选用IPV4协议族，使用TCP通信方式，自动选择协议编号
+          if(res == -1)
+          {
+            perror("socket");
+            return -1;
+          }
+          perror("socket");//增加效果，确定成功建立套接字
+          return 0;
+        }
+        ```
+        ![Socket](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Socket.png)
+
+    === "bind"
+
+        ```c
+        所属头文件:
+        #include <sys/types.h>
+        #include <sys/socket.h>
+        函数原型:
+        int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+        bind()函数接受三个参数:
+            sockfd: 套接字的文件描述符，即要进行绑定操作的套接字。
+            addr: 指向存放要绑定的地址信息的结构体指针，通常是struct sockaddr类型的指针。
+                  根据套接字的通信域（domain）的不同，可以使用struct sockaddr_in（IPv4）或
+                  struct sockaddr_in6（IPv6）等相关结构体。
+            addrlen: addr结构体的长度，以字节为单位。
+        返回值:
+            成功则返回 0，失败返回-1
+        ```
+        === "结构体struct sockaddr"
+            
+            1. 不好用推荐使用:`struct sockaddr_in` 用于表示IPv4地址,`struct sockaddr_in6` 用于表示IPv6地址等
+            ```c
+    
+            struct sockaddr {
+                sa_family_t sa_family;              // 地址族，如AF_INET、AF_INET6
+                char        sa_data[14];            // 地址数据
+            };
+            struct sockaddr 结构体包含两个成员:
+            sa_family: 表示地址族，即该套接字地址所属的协议族。常见的协议族有AF_INET(IPv4)和AF_INET6(IPv6)等。
+            sa_data: 用于存储套接字地址的实际数据。它的长度为14字节，足够存放各种类型的套接字地址数据（例如，IPv4地址和端口号）。
+            
+            需要根据具体的协议族使用对应的类型转换，将 struct sockaddr 转换为更具体的套接字地址结构体，
+            例如struct sockaddr_in用于表示IPv4地址，struct sockaddr_in6 用于表示IPv6地址等。
+
+            ```
+        === "结构体struct sockaddr_in"
+
+            ```c
+           
+            所需头文件:
+            #include <netinet/in.h>
+            结构体原型:
+            struct sockaddr_in {
+                sa_family_t sin_family;    // 地址族（Address Family），一般为AF_INET
+                in_port_t sin_port;        // 端口号
+                struct in_addr sin_addr;   // IPv4地址结构
+                unsigned char sin_zero[8]; // 填充字节，通常置为0
+            };
+            struct sockaddr_in结构体有以下几个成员:
+
+            sin_family: 指定地址族，一般为AF_INET，表示使用IPv4协议。
+            sin_port: 指定端口号，使用in_port_t类型，需要使用htons()函数将主机字节序转换为网络字节序。
+            sin_addr: 存放IPv4地址信息的结构体，类型为struct in_addr。
+            sin_zero: 用于填充字节，通常置为0。
+
+            ```
+            
+            ```c title="htons函数"
+
+            所需头文件:
+            #include <arpa/inet.h>
+            函数原型:
+            uint16_t htons(uint16_t hostshort);
+            参数和返回值:
+            函数接受一个16位无符号整数 hostshort 作为参数，并返回一个以网络字节序表示的对应值，类型为 uint16_t。
+            举例:
+            server_address.sin_port = htons(8080);
+            
+            ```
+
+            `struct in_addr` 是一个用于存储IPv4地址的结构体，定义如下:
+
+            ```c
+
+            struct in_addr {
+            in_addr_t s_addr; // IPv4地址
+            };
+            ```
+            `in_addr_t` 是一个无符号32位整型,用于存储IPv4地址,它的定义可以在不同系统中有所不同。
+
+            为了将IPV4地址,存储在套接字地址结构体中,需要使用相关的函数 `inet_addr()`
+
+            ```c title="inet_addr函数"
+            
+            所属头文件:
+            #include <arpa/inet.h>
+            函数原型:
+            in_addr_t inet_addr(const char *cp);
+            参数和返回值:
+            函数接受一个指向以点分十进制表示的IPv4地址的字符串 cp 作为参数，
+            并返回对应的网络字节序的32位二进制数，类型为 in_addr_t。
+            举例:
+            server_address.sin_addr.s_addr = inet_addr("127.0.0.1");
+            ```
+        
+        === "结构体struct sockaddr_in6"
+
+            ```c
+            #include <netinet/in.h>
+            
+            struct sockaddr_in6 {
+                sa_family_t     sin6_family;    // 地址族：AF_INET6
+                in_port_t       sin6_port;      // 端口号
+                uint32_t        sin6_flowinfo;  // 流信息
+                struct in6_addr sin6_addr;      // IPv6地址
+                uint32_t        sin6_scope_id;  // 地址作用域
+            };
+
+            struct sockaddr_in6结构体的成员如下：
+
+            sin6_family：地址族，始终为AF_INET6，表示IPv6地址。
+            sin6_port：端口号，使用in_port_t类型进行存储。通过htons()函数将端口号转换为网络字节序。
+            sin6_flowinfo：流信息，用于指定数据流的相关参数，一般置为0。
+            sin6_addr：IPv6地址，使用struct in6_addr结构体来存储。
+            sin6_scope_id：地址作用域，表示IPv6地址的范围。
+            
+            ```
+        ```c title="举例"
+        #include <stdio.h>
+        #include <sys/types.h>
+        #include <sys/socket.h>
+        #include <arpa/inet.h>
+        #include <netinet/in.h>
+        
+        int main()
+        {
+          int sockfd = socket(AF_INET, SOCK_STREAM, 0);//选用IPV4协议族，使用TCP通信方式，自动选择协议编号
+          if(sockfd == -1)
+          {
+            perror("socket");
+            return -1;
+          }
+          perror("socket");//增加效果，确定成功建立套接字
+        
+          struct sockaddr_in addr;//定义指向存放要绑定的地址信息的结构体指针
+          
+          addr.sin_family = AF_INET;//虽然上面选用了IPV4协议，需要再次指定IPV4协议族
+          addr.sin_port = htons(12345);//指定端口号，并将主机字节序转换为网络字节序。
+          addr.sin_addr.s_addr = inet_addr("127.0.0.1");//IPv4地址结构
+          
+          int res =bind(sockfd, (struct sockaddr *)&addr, sizeof(addr));//将套接字与特定的地址和端口绑定
+          //使用 (struct sockaddr *)&addr 强转是为了与原型一致，不强转也可以因为里面有填充字节sin_zero[8]
+          if(res == -1)
+          {
+            perror("bind");
+            return -1;
+          }
+        
+          perror("bind");//增加效果，确定成功绑定
+          return 0;
+        }
+        
+        ```
+        ![Bind](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Bind.png)
+
+    === "listen"
+
+        ```c
+
+        所属头文件:
+        #include <sys/types.h>
+        #include <sys/socket.h>
+        函数原型:
+        int listen(int sockfd, int backlog);
+        listen()函数接收两个参数:
+
+        sockfd：套接字的文件描述符，即要监听的套接字。
+        backlog：待处理连接请求的最大队列长度
+        返回值:
+        成功则返回 0，失败返回-1
+        
+        ```
+        ```c title="举例"
+
+        #include <stdio.h>
+        #include <sys/types.h>
+        #include <sys/socket.h>
+        #include <arpa/inet.h>
+        #include <netinet/in.h>
+        
+        
+        int main()
+        {
+          int sockfd = socket(AF_INET, SOCK_STREAM, 0);//选用IPV4协议族，使用TCP通信方式，自动选择协议编号
+          if(sockfd == -1)
+          {
+            perror("socket");
+            return -1;
+          }
+          perror("socket");//增加效果，确定成功建立套接字
+        
+          struct sockaddr_in addr;//定义指向存放要绑定的地址信息的结构体指针
+          
+          addr.sin_family = AF_INET;//虽然上面选用了IPV4协议，需要再次指定IPV4协议族
+          addr.sin_port = htons(12345);//指定端口号，并将主机字节序转换为网络字节序。
+          addr.sin_addr.s_addr = inet_addr("127.0.0.1");//IPv4地址结构
+          
+          int res =bind(sockfd, (struct sockaddr *)&addr, sizeof(addr));//将套接字与特定的地址和端口绑定
+          
+          if(res == -1)
+          {
+            perror("bind");
+            return -1;
+          }
+        
+          perror("bind");//增加效果，确定成功绑定
+          
+          res = listen(sockfd, 5);//设置同一时刻最大连接客户端数为5个
+          if(res == -1)
+          {
+            perror("listen");
+            return -1;
+          }
+          perror("listen");//增加效果,确定连接请求成功
+          return 0;
+        }
+        ```
+        ![Listern](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Listern.png);
+    
+    === "accept"
+
+        ```c
+
+        所属头文件:
+        #include <sys/types.h>
+        #include <sys/socket.h>
+        函数原型: 
+        int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+        accept()函数接收三个参数:
+
+        sockfd: 套接字的文件描述符，即要接受连接请求的监听套接字。
+        addr: 用于存放连接方的地址信息的结构体指针，通常是 struct sockaddr 类型的指针。
+              比如:struct sockaddr_in , struct sockaddr_in6 类型
+              在接受连接请求时，可以通过此参数获取连接方的地址信息。
+              用于接受客户端的ip地址和端口号，只提供空间(客户端 你连接我 服务端了 ，我就能获取你的ip和端口号)
+        addrlen: addr结构体的长度指针，用于指示存放地址信息的结构体的实际长度。
+        返回值:
+        调用accept()函数将会阻塞等待连接请求的到来。当有客户端请求连接时，
+        accept()函数将会创建一个新的套接字，并返回该套接字的文件描述符。
+        通过这个新的套接字，可以与客户端进行通信。
+        
+        ```
+        ```c title="举例"
+
+        #include <stdio.h>
+        #include <sys/types.h>
+        #include <sys/socket.h>
+        #include <arpa/inet.h>
+        #include <netinet/in.h>
+        
+        
+        int main()
+        {
+          int sockfd = socket(AF_INET, SOCK_STREAM, 0);//选用IPV4协议族，使用TCP通信方式，自动选择协议编号
+          if(sockfd == -1)
+          {
+            perror("socket");
+            return -1;
+          }
+          perror("socket");//增加效果，确定成功建立套接字
+        
+          struct sockaddr_in addr;//定义指向存放要绑定的地址信息的结构体指针
+          
+          addr.sin_family = AF_INET;//虽然上面选用了IPV4协议，需要再次指定IPV4协议族
+          addr.sin_port = htons(12345);//指定端口号，并将主机字节序转换为网络字节序。
+          addr.sin_addr.s_addr = inet_addr("127.0.0.1");//IPv4地址结构
+          
+          int res =bind(sockfd, (struct sockaddr *)&addr, sizeof(addr));//将套接字与特定的地址和端口绑定
+          
+          if(res == -1)
+          {
+            perror("bind");
+            return -1;
+          }
+        
+          perror("bind");//增加效果，确定成功绑定
+          
+          res = listen(sockfd, 5);//设置同一时刻最大连接客户端数为5个
+          if(res == -1)
+          {
+            perror("listen");
+            return -1;
+          }
+          perror("listen");//增加效果,确定连接请求成功
+          
+          struct sockaddr_in o_addr;//用来接收保存连接方的地址信息的结构体指针
+          socklen_t len = sizeof(o_addr);//因为取地址不能对常量取地址，所以需要使用变量len = 它 然后将这个地址传入accept第三个参数
+          int fd1 = accept(sockfd, (struct sockaddr *)&o_addr, &len);//接受传入的连接请求，创建一个新的套接字用于与客户端进行通信
+          if(fd1 == -1)
+          {
+            perror("accept");
+            return -1;
+          }
+        
+          return 0;
+        }
+        ```
+        ![accept](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/accept.png)
+        
+    === "connect"
+        
+        1. 客户端用来连接服务器的函数
+
+        ```c
+
+        所属头文件:
+        #include <sys/types.h>
+        #include <sys/socket.h>
+        函数原型:
+        int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+        connect()函数接收三个参数:
+
+        sockfd：套接字的文件描述符，即要连接的套接字。
+        addr：指向存放目标地址信息的结构体指针，通常是struct sockaddr类型的指针。根据套接字的通信域（domain）的不同，可以使用struct sockaddr_in（IPv4）或struct sockaddr_in6（IPv6）等相关结构体。
+        addrlen：addr结构体的长度，以字节为单位
+        返回值:
+        成功则返回 0，失败返回-1
+
+        ```
+        ```c title="举例"
+
+        #include <stdio.h>
+        #include <sys/types.h>
+        #include <sys/socket.h>
+        #include <arpa/inet.h>
+        #include <netinet/in.h>
+        
+        
+        int main()
+        {
+          int cli_fd = socket(AF_INET, SOCK_STREAM, 0);//选用IPV4协议族，使用TCP通信方式，自动选择协议编号
+          if(cli_fd == -1)
+          {
+            perror("socket");
+            return -1;
+          }
+          perror("socket");//增加效果，确定成功建立套接字
+          //还是使用server端的信息，与bind函数保持一致
+          struct sockaddr_in ser_addr;//定义指向存放要绑定的地址信息的结构体指针
+          
+          ser_addr.sin_family = AF_INET;//虽然上面选用了IPV4协议，需要再次指定IPV4协议族
+          ser_addr.sin_port = htons(12345);//指定端口号，并将主机字节序转换为网络字节序。
+          ser_addr.sin_addr.s_addr = inet_addr("127.0.0.1");//IPv4地址结构
+          
+          int res =connect(cli_fd, (struct sockaddr *)&ser_addr, sizeof(ser_addr));//申请连接服务端
+          
+          if(res == -1)
+          {
+            perror("connect");
+            return -1;
+          }
+        
+          perror("connect");//增加效果，确定成功显示连接成功(需要服务端必须打开的状态)
+          
+          return 0;
+        }
+
+        ```
+        ![Connect](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Connect.png)
+
+    === "send"
+        
+        1. 使用TCP套接字
+        ```c
+
+        所需头文件:
+        #include <sys/types.h>
+        #include <sys/socket.h>
+        函数原型:
+        ssize_t send(int sockfd, const void *buf, size_t len, int flags);
+        send()函数接收四个参数:
+
+        sockfd: 套接字的文件描述符，即要发送数据的套接字。(accept的返回值)
+        buf: 指向要发送数据的缓冲区的指针。
+        len: 要发送的数据的长度，以字节为单位。
+        flags: 可选参数，用于指定额外的标志，如MSG_DONTWAIT等，通常置为0,阻塞等待
+        返回值:
+        函数返回发送的字节数，如果发送失败，返回-1，并设置errno变量来指示错误类型。
+
+        ``` 
+    === "recv"
+
+        ```c
+        
+        所需头文件:
+        #include <sys/types.h>
+        #include <sys/socket.h>
+        函数原型:
+        ssize_t recv(int sockfd, void *buf, size_t len, int flags);
+        recv()函数接收四个参数:
+
+        sockfd: 套接字的文件描述符，即要接收数据的套接字。(accept的返回值)
+        buf: 指向接收数据的缓冲区的指针。
+        len: 缓冲区的大小，即要接收的数据的最大长度。
+        flags: 可选参数，用于指定额外的标志，如MSG_DONTWAIT等，通常置为0,阻塞等待。
+        返回值
+    	成功返回真正接收的数据长度；如果对方的套接字正常关闭，recv的返回值为0；失败-1；
+
+        ```
+    === "close"
+        
+        ```c
+        关闭两种套接字:
+
+        close(fd); // accept的返回值
+        close(sockfd);//服务端创建的套接字
+
+        ```
+### 举例
+
 
