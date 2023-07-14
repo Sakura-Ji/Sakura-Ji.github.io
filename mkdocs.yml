@@ -3,9 +3,7 @@ site_url: https://Sakura-Ji.github.io
 site_author: 纪博文
 site_description: 纪博文的个人网站
 nav:
-    - 简介: 
-      - index.md
-      - NoIdea: Respect/idea.md 
+    - 简介: index.md  
     - 编程语言:
         - Programing_Language/Introduction.md
         - C:
@@ -27,15 +25,17 @@ nav:
         - Linux进程: LinuxSystem/Multi-process.md
         - Linux通信: LinuxSystem/Communication.md
         - Linux线程: LinuxSystem/Posix.md
+        - Linux网路: LinuxSystem/Internet.md
     - GodTool:
         - Tool/MapDepot.md
+        - Tool/Testool.md
 theme:           
   name: material
   palette:
 
     # Palette toggle for light mode
     - scheme: default
-      primary: cyan
+      primary: custom
       accent: pink
       toggle:
         icon: material/weather-night 
@@ -124,10 +124,12 @@ markdown_extensions:
       permalink: true # 固定标题位置为当前位置
 
 extra_javascript:
-  - javascripts/mathjax.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - javascripts/lovestart.js
 
+extra_css:
+  - stylesheets/primarycolor.css
 
 
 #页眉,页脚的配置

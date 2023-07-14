@@ -4,4 +4,5 @@
 
 借用`PicGo`工具可快速实现图片上传到`Github`，这样就不用我们一张一张的上传到`GitHub`了
 
+<script src="https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/autoload.js"></script>
 
