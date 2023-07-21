@@ -62,7 +62,7 @@ debug :
 
 1. echo前面空位必须使用`Tab`否则Makefile文件会报错,不想在终端显示echo，可在前面加上`@`，`#`这是makefile的注释符
 
-![makefile](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Makefile1.png)
+![makefile](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/Makefile1.png)
 
 !!! example "示例1"
 
@@ -108,7 +108,7 @@ debug :
     
         ```
 
-![makefile-demo1](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/makefile-demo1.png)
+![makefile-demo1](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/makefile-demo1.png)
 
 !!! example "示例二"
 
@@ -162,7 +162,7 @@ debug :
 
         ```
 
-![makefile-demo2](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/makefile-demo2.png)
+![makefile-demo2](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/makefile-demo2.png)
 
 !!! example "示例三"
 
@@ -219,7 +219,7 @@ debug :
 
         ```
 
-![makefile-demo3](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/makefile-demo3.png)
+![makefile-demo3](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/makefile-demo3.png)
 
 ### Make的工作流
 
@@ -321,7 +321,7 @@ clean :
 clean的文件时，不添加`.PHONY :clean`才会报错，执行`make clean`无效。同时理解了`.PHONY :XX`就是
 用来保证目录下有文件名为`XX`的文件时，也能正常执行`make XX`
 
-![标记.PHONY](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Makefile2.png)
+![标记.PHONY](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/Makefile2.png)
 
 ### Makefile声明变量
 
@@ -348,7 +348,7 @@ rm main $(objects)
 
 > 对一个目标文件是“N.o”，倚赖文件是“N.c”的规则，完全可以省略其规则的命令行，而由make自身决定使用默认命令。此默认规则称为make的隐含规则
 
-![makefile-objects](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/makefile-objiects.png)
+![makefile-objects](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/makefile-objiects.png)
 
 ??? note "赋值符的多种使用"
 
@@ -367,7 +367,7 @@ rm main $(objects)
 * $< :所有依赖中的第一个依赖(不经常使用)。如果依赖是以模式(即`%`)定义的,即和`%`以及 `$@`配合,那么`$<`将是符合模式的一系列的文件集,
     **用相应的依赖，生成相应的目标** (很智能会自动一个一个的选取)
 
-![makefile-rule](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/makfile-rule.png)
+![makefile-rule](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/makfile-rule.png)
 
 ## Makefile的应用
 
@@ -396,7 +396,7 @@ clean:
 2. `ar -rc %@ $^` 等同于 `ar -rc libstatic.a *.o`
 3. `gcc -c $< -o $@ -I ./include` 等同于 `gcc -c 每一个.c文件 -o 每一个.o文件 -I ./include` 依次执行
 
-![makefile-static](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/makefile-static.png)
+![makefile-static](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/makefile-static.png)
 
 ### 动态库
 

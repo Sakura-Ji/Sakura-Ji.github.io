@@ -30,7 +30,7 @@
 
 命令:`ipcs`
 
-![ipcs](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/ipcs.png)
+![ipcs](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/ipcs.png)
 
 常用的`ipcs`命令选项包括：
 
@@ -97,7 +97,7 @@
 * man 7 signal
 * kill -l
 
-![kill-l](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/kill-l.png)
+![kill-l](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/kill-l.png)
 
 **常见的信号**
 
@@ -174,7 +174,7 @@
               }
             }
             ```
-            ![signal-kill](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/signal-kill.png)
+            ![signal-kill](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/signal-kill.png)
         === "Test2"
 
             ```c
@@ -203,7 +203,7 @@
                 return 0;
             }
             ```
-            ![signal-kill2](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/signal-kill2.png)
+            ![signal-kill2](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/signal-kill2.png)
         
         === "Test3"
 
@@ -237,7 +237,7 @@
             }
                         
             ```
-            ![signal-kill3](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/signal-kill3.png)
+            ![signal-kill3](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/signal-kill3.png)
 
 
     === "raise"
@@ -325,7 +325,7 @@
                 return 0;
             }
             ```
-            ![signal-1](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/signal-1.png)
+            ![signal-1](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/signal-1.png)
         
         === "Test2"
 
@@ -351,7 +351,7 @@
             }
                         
             ```
-            ![](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/signal-2.png)
+            ![](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/signal-2.png)
         
         === "Test3"
 
@@ -386,7 +386,7 @@
             }
 
             ```
-            ![signal-3](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/signal-3.png)
+            ![signal-3](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/signal-3.png)
 
 
         
@@ -491,7 +491,7 @@
             
             }
             ```
-            ![pipe1](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/pipe1.png)
+            ![pipe1](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/pipe1.png)
         === "Test2"
 
             ```c
@@ -550,7 +550,7 @@
               }
             }
             ```
-            ![pipe2](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/pipe2.png)
+            ![pipe2](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/pipe2.png)
 
 ## 有名管道 {#Named}
 
@@ -562,7 +562,7 @@
 
 > mkfifo + 文件名.fifo
 
-![mkfifo](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/mkfifo.png)
+![mkfifo](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/mkfifo.png)
 
 **注意事项:**
 
@@ -670,7 +670,7 @@
           return 0;
         }
         ```
-        ![access](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/access.png)
+        ![access](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/access.png)
 
     === "mkfifo"
 
@@ -792,7 +792,7 @@
             }
 
             ```
-        ![mkfifo2](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/mkfifo2.png)
+        ![mkfifo2](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/mkfifo2.png)
 
     === "unlink"
 
@@ -994,7 +994,7 @@
         }
 
         ```
-    ![mkfifo3](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/mkfifo3.png)
+    ![mkfifo3](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/mkfifo3.png)
 
 ## 共享内存 {#Shared}
 
@@ -1055,7 +1055,7 @@
         }
 
         ```
-        ![shared-memory-key](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/shared-memory-key.png)
+        ![shared-memory-key](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/shared-memory-key.png)
 
     === "shmget"
 
@@ -1209,7 +1209,7 @@
           return 0;
         }
         ```
-        ![Socket](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Socket.png)
+        ![Socket](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/Socket.png)
 
     === "bind"
 
@@ -1363,7 +1363,7 @@
         }
         
         ```
-        ![Bind](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Bind.png)
+        ![Bind](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/Bind.png)
 
     === "listen"
 
@@ -1427,7 +1427,7 @@
           return 0;
         }
         ```
-        ![Listern](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Listern.png);
+        ![Listern](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/Listern.png)
     
     === "accept"
 
@@ -1507,7 +1507,7 @@
           return 0;
         }
         ```
-        ![accept](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/accept.png)
+        ![accept](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/accept.png)
         
     === "connect"
         
@@ -1568,7 +1568,7 @@
         }
 
         ```
-        ![Connect](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Connect.png)
+        ![Connect](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/Connect.png)
 
     === "send"
         
