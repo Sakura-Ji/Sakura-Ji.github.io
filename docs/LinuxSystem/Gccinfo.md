@@ -30,6 +30,7 @@ GCC 编译器的编译流程是：预处理、编译、汇编和链接。
 * 链接就是将汇编出来的多个二进制目标文件链接在一起，形成最终的可执行文件，链接的时候还会涉及到静态库和动态库等问题
 
 [![B站UP主:九曲阑干截图](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/GCCinfo.png)](https://www.bilibili.com/video/BV1cD4y1D7uR/?spm_id_from=333.880.my_history.page.click&vd_source=27c45cfddc4cf8f7dcd366ab5b42214b)
+[![B站UP主:九曲阑干截图](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/GCCinfo.png)](https://www.bilibili.com/video/BV1cD4y1D7uR/?spm_id_from=333.880.my_history.page.click&vd_source=27c45cfddc4cf8f7dcd366ab5b42214b)
 
 ### 预处理
 
@@ -41,6 +42,7 @@ gcc -E main.c -o main.i #-o 指定预处理后生成的文件名 即 生成了ma
 ```
 
 ![预处理](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gcc%20-E.png)
+![预处理](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gcc%20-E.png)
 
 main.i 的内容
 

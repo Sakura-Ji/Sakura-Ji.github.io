@@ -29,6 +29,9 @@ nav:
     - GodTool:
         - Tool/MapDepot.md
         - Tool/Testool.md
+    - 思维导图:
+        - MindMaps/Mind.md
+
 theme:           
   name: material
   palette:
