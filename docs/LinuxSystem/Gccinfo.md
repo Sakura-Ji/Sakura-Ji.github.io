@@ -29,7 +29,7 @@ GCC 编译器的编译流程是：预处理、编译、汇编和链接。
 * 汇编就是将汇编语言文件编译成二进制目标文件。
 * 链接就是将汇编出来的多个二进制目标文件链接在一起，形成最终的可执行文件，链接的时候还会涉及到静态库和动态库等问题
 
-[![B站UP主:九曲阑干截图](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/GCCinfo.png)](https://www.bilibili.com/video/BV1cD4y1D7uR/?spm_id_from=333.880.my_history.page.click&vd_source=27c45cfddc4cf8f7dcd366ab5b42214b)
+[![B站UP主:九曲阑干截图](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/GCCinfo.png)](https://www.bilibili.com/video/BV1cD4y1D7uR/?spm_id_from=333.880.my_history.page.click&vd_source=27c45cfddc4cf8f7dcd366ab5b42214b)
 
 ### 预处理
 
@@ -40,11 +40,11 @@ gcc -E main.c -o main.i #-o 指定预处理后生成的文件名 即 生成了ma
 
 ```
 
-![预处理](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gcc%20-E.png)
+![预处理](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gcc%20-E.png)
 
 main.i 的内容
 
-![main.i的内容](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/main-i.png)
+![main.i的内容](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/main-i.png)
 
 ### 编译(转汇编)
 
@@ -55,7 +55,7 @@ gcc -S main.i -o xxx.s #当然也可以生成指定名字的汇编文件
 
 ```
 
-![编译](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/main-o.png)
+![编译](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/main-o.png)
 
 ### 汇编
 
@@ -70,7 +70,7 @@ as main.s -o main.o # (1)
 1. 一般使用-o命令 生成`.o`目标文件 这是因为:通常，一个高级语言的源文件都可对应一个目标文件。
 目标文件在Linux 中默认后缀为“.o”（如“main.c”的目标文件为“main.o”）。 
 
-![汇编](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/as-main.png)
+![汇编](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/as-main.png)
 
 ### 链接
 
@@ -81,7 +81,7 @@ gcc main.o -o main #推荐使用
 
 ```
 
-![链接](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/link-main.png)
+![链接](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/link-main.png)
 
 ### 从源码直接到目标文件
 
@@ -94,7 +94,7 @@ gcc -c *.c #将所有同一文件夹下的.c文件生成对应名字的`.o`目�
 
 ```
 
-![源码直接到目标文件](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gcc-c.png)
+![源码直接到目标文件](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gcc-c.png)
 
 ### 从源码直接到可执行文件
 
@@ -106,7 +106,7 @@ gcc *.c -o xxx.o -I(头文件路径) #
 
 ```
 
-![源码直接到可执行文件](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gcc-main.png)
+![源码直接到可执行文件](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gcc-main.png)
 
 ## 静态库
 
@@ -123,7 +123,7 @@ gcc *.c -o xxx.o -I(头文件路径) #
 
 4. : 特点：以空间换时间
 
-![静态库](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gcc-libstatic.png)
+![静态库](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gcc-libstatic.png)
 
 ## 动态库
 
@@ -144,9 +144,9 @@ gcc *.c -o xxx.o -I(头文件路径) #
 
 5. : 特点：以时间换空间
 
-![动态库](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gcc-dynamic.png)
+![动态库](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gcc-dynamic.png)
 
-![usr/lib](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/dynamic-lib.png)
+![usr/lib](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/dynamic-lib.png)
 
 ## gdb调试
 
@@ -184,11 +184,11 @@ int main(int argc, char *argv[])
 
 > 使用 gcc -g xxx.c #生成带有调试信息的可执行文件
 
-![gcc -g main.c](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gcc-g.png)
+![gcc -g main.c](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gcc-g.png)
 
 **第二步:** 进入调试界面
 
-![gdb开始调试](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gdb.png)
+![gdb开始调试](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gdb.png)
 
 ### 关于gdb的使用命令
 
@@ -196,35 +196,35 @@ int main(int argc, char *argv[])
 
 * `list`/`l` 打印源码到终端，一次最多10行 在`l`后可加行数 将其周围的代码显示出来
 
-![gdb-list](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gdb-list.png)
+![gdb-list](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gdb-list.png)
 
 * `run`/`r` 运行
 
-![gdb-run](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gdb-run.png)
+![gdb-run](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gdb-run.png)
 
 * `break + 行号`/`b + 行号` 设置断点
 
-![gdb-break](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gdb-break.png)
+![gdb-break](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gdb-break.png)
 
 * `cont`/`c` 继续运行
 
 * `print + 变量名`/`p + 变量名` 打印变量的值
 
-![gdb-cont-print](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gdb-cont-print.png)
+![gdb-cont-print](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gdb-cont-print.png)
 
 * `info + b`/`i + b` 打印断点
 
-![gdb-info](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gdb-info.png)
+![gdb-info](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gdb-info.png)
 
 * `enable + 断点的编号` 使能该断点
 
 * `disable + 断点的编号` 失能该断点
 
-![gdb-enable-disable](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gdb-enable-disable.png)
+![gdb-enable-disable](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gdb-enable-disable.png)
 
 * `clear + 行号` /`delete + 断点的编号` 删除断点
 
-![gcb-clear-delete](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gdb-clear-delete.png)
+![gcb-clear-delete](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gdb-clear-delete.png)
 
 ### 启动单步调试
 
@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
 
 * finish: -- 结束当前函数，返回到调用点
 
-![gdb-start](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gdb-start.png)
+![gdb-start](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gdb-start.png)
 
 ```c title="调试代码2"
 
@@ -265,7 +265,7 @@ int Func(void)
 
 ```
 
-![gdb-start-s](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gdb-start-s.png)
+![gdb-start-s](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gdb-start-s.png)
 
 ### 带有主函数传参的gdb调试
 
@@ -302,6 +302,6 @@ int Func(void)
 
 ```
 
-![gdb-main](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/gdb-main.png)
+![gdb-main](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/gdb-main.png)
 
 ~~未待完序...~~

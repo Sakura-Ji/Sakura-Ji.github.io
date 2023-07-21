@@ -55,7 +55,7 @@ graph LR
 
 [特殊进程 :fontawesome-solid-paper-plane:](#teshu){ .md-button }
 
-![shell-ps](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/shell-ps.png)
+![shell-ps](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/shell-ps.png)
 
 **ps 命令:** 类似任务管理器， ps 为我们提供了进程的一次性的查看，它所提供的查看结果并不动态连续的
 
@@ -66,9 +66,9 @@ graph LR
 
 **jobs 命令:** 观察后台进程。
 
-![ps-ef](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/ps-ef.png)
+![ps-ef](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/ps-ef.png)
 
-![shell-top](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/shell-top.png)
+![shell-top](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/shell-top.png)
 
 ### 进程的资源分配
 
@@ -297,7 +297,7 @@ graph LR
         }
         ```
 
-        ![system](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/system.png)
+        ![system](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/system.png)
         
     === "exec函数族"
 
@@ -396,7 +396,7 @@ graph LR
         
         ```
 
-        ![glob](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/glob.png)
+        ![glob](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/glob.png)
     
     === "atexit"
         
@@ -434,7 +434,7 @@ graph LR
         }
 
         ```
-        ![atexit](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/atexit.png)
+        ![atexit](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/atexit.png)
 
     
 
@@ -442,7 +442,7 @@ graph LR
 
 **方式一:** 通过运行一个可执行程序，就可以运行一个进程
 
-![Multi-1](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/Multi-1.png)
+![Multi-1](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Multi-1.png)
 
 **方式二:** 通过函数 `fork()` 或者 `vfork()`
 
@@ -473,7 +473,7 @@ graph LR
         
         ```
 
-        ![Multi-fork1](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/Multi-fork1.png)
+        ![Multi-fork1](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Multi-fork1.png)
     
     === "初识Vfork"
         
@@ -509,7 +509,7 @@ graph LR
         }
         ```
 
-        ![vfork](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/vfork.png)
+        ![vfork](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/vfork.png)
 
     === "二者的区别"
 
@@ -543,7 +543,7 @@ graph LR
         }
         ```
         
-        ![vfork2](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/vfork2.png)
+        ![vfork2](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/vfork2.png)
 
 ### 举例
 !!! example
@@ -643,7 +643,7 @@ graph LR
             
             ```
 
-        ![3-fork](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/3-fork.png)
+        ![3-fork](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/3-fork.png)
 
     === "父进程检测子进程状态" 
         
@@ -686,7 +686,7 @@ graph LR
              
             ```
 
-            ![father-son](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/father-son.png)
+            ![father-son](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/father-son.png)
         
         === "Test2"
 
@@ -721,7 +721,7 @@ graph LR
             }
 
             ```
-            ![father-son2](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/father-son2.png)
+            ![father-son2](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/father-son2.png)
 
 
     === "exec函数族的使用"
@@ -749,7 +749,7 @@ graph LR
             
             ```
             
-            ![Exec-Func](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/Exec-Func.png)
+            ![Exec-Func](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Exec-Func.png)
 
         === "与vfork连用"
 
@@ -784,7 +784,7 @@ graph LR
             }
             ```
 
-            ![exec-vfork](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/exec-vfork.png)
+            ![exec-vfork](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/exec-vfork.png)
     
     === "顺序播放MP3文件"
 
@@ -845,4 +845,4 @@ graph LR
         }
         
         ```
-        ![Tmp3-4](https://cdn.jsdelivr.net/gh/Sakura-Ji/MapDepot/Mkdocs/Tmp3-4.png)
+        ![Tmp3-4](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Tmp3-4.png)

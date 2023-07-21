@@ -51,9 +51,6 @@
 
 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=34341360&auto=1&height=66"></iframe>
 
-## 网页插入
-
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=710 height=800 src="//y.qq.com/n/ryqq/songDetail/003dtkNk26WhJD"></iframe>
 
 ## 浮空音乐播放
 
