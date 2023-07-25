@@ -2,6 +2,8 @@
 
 ## 思维导图
 
+这款思维导图在github是开源的，并且拥有网页版和VScode上也有插件非常好用！爱！
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,6 +57,5 @@
 ## 浮空音乐播放
 
 <!--音乐播放器-->
-<script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.10.0/jquery.min.js"></script>
-<script src="https://myhkw.cn/player/js/player.js" id="myhk" key="demo" m="1"></script>
-
+<script src="https://myhkw.cn/player/js/jquery.min.js" type="text/javascript"></script>
+<script src="https://myhkw.cn/api/player/1690080238104" id="myhk" key="1690080238104" m="1"></script>

@@ -15,8 +15,12 @@ nav:
             - 文件: Programing_Language/C/floder.md
             - 堆栈: Programing_Language/C/stack.md
             - 模块: Programing_Language/C/keywords.md
-    - 嵌入式编程:
-        - EmbeddedSyS/Eintroduct.md
+        - WebDesign:
+            - Programing_Language/WebDesign/WebIntro.md
+            - Html:
+              - Programing_Language/WebDesign/HtmlLearn/HtmlFir.md
+            - CSS:
+              - Programing_Language/WebDesign/CssLearn/CssFir.md
     - Linux系统:
         - LinuxSystem/Lintroduct.md
         - Gcc编译器: LinuxSystem/Gccinfo.md
@@ -26,11 +30,16 @@ nav:
         - Linux通信: LinuxSystem/Communication.md
         - Linux线程: LinuxSystem/Posix.md
         - Linux网路: LinuxSystem/Internet.md
+        - 网络聊天室:
+          - LinuxSystem/WebChatMind.md
+          - 代码解析: LinuxSystem/WebChatCode.md
+    - 嵌入式编程:
+        - EmbeddedSyS/Eintroduct.md
+    - 思维导图:
+        - MindMaps/Mind.md
     - GodTool:
         - Tool/MapDepot.md
         - Tool/Testool.md
-    - 思维导图:
-        - MindMaps/Mind.md
 
 theme:           
   name: material
@@ -54,6 +63,9 @@ theme:
 
   #Site language       
   language: zh
+  
+  favicon: images/Cat.png
+  logo: images/Cat.png
   
   #Setting up navigation
   features:
