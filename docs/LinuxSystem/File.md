@@ -323,7 +323,7 @@ EOF是文件结束标志，值为-1。 语句“c=fgetc(fp);”是从文件指�
 * data
 * cal 
 
-![time](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/time.png)
+![time](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/time.png)
 
 ### 函数
 
@@ -355,7 +355,7 @@ int main()
 
 ```
 
-![time-Func](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/time-Func.png)
+![time-Func](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/time-Func.png)
 
 #### 2.获取本地时间 `localtime`
 
@@ -399,7 +399,7 @@ int main()
 
 ```
 
-![Time-localtime](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/Time-localtime.png)
+![Time-localtime](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/Time-localtime.png)
 
 #### 3.获取格林威治时间`gmtime`
 
@@ -442,7 +442,7 @@ int main()
 
 ```
 
-![time-gtime](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/time-gmtime.png)
+![time-gtime](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/time-gmtime.png)
 
 #### 4.日历转化成本地时间 `ctime`
 
@@ -473,7 +473,7 @@ int main()
 
 ```
 
-![time-ctime](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/time-ctime.png)
+![time-ctime](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/time-ctime.png)
 
 #### 5.将struct tm格式的时间转化为字符串`asctime`
 
@@ -504,7 +504,7 @@ int main()
 
 ```
 
-![time-asctime](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/time-asctime.png)
+![time-asctime](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/time-asctime.png)
 
 #### 6.自由格式时间 `strftime`
 
@@ -598,7 +598,7 @@ int main()
 
 ```
 
-![time-strftime](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/time-strftime.png)
+![time-strftime](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/time-strftime.png)
 
 ## 目录操作
 
@@ -893,7 +893,7 @@ int main()
         }
         ```
     
-        ![readdir](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/readdir.png)
+        ![readdir](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/readdir.png)
     
     === "回眸"
 
@@ -944,7 +944,7 @@ int main()
         
         ```
         
-        ![readdir-d_type](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/readdir-d_type.png){ width="400" }
+        ![readdir-d_type](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/readdir-d_type.png){ width="400" }
 
     === "相识"
 
@@ -1011,7 +1011,7 @@ int main()
                 
         ```
         
-        ![readdir-d_type2](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/readdir-d_type2.png)
+        ![readdir-d_type2](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/readdir-d_type2.png)
 
     === "再聚"
 
@@ -1037,7 +1037,7 @@ int main()
         }
         ```
 
-        ![mkdir-rmdir](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/mkdir-rmdir.png)
+        ![mkdir-rmdir](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/mkdir-rmdir.png)
 
     === "相会"
 
@@ -1071,7 +1071,7 @@ int main()
 
         ```
 
-        ![chmod-getcmd-chdir](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/chmod-getcmd-chdir.png)
+        ![chmod-getcmd-chdir](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/chmod-getcmd-chdir.png)
     
     === "约定"
 
@@ -1136,7 +1136,7 @@ int main()
 
         ```
         
-        ![getcmd-txt](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/getcmd-txt.png)
+        ![getcmd-txt](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/getcmd-txt.png)
 
 ### 项目
 
@@ -1387,7 +1387,7 @@ int main()
         }
         ```
 
-    ![TMP3-1](https://raw.githubusercontent.com/Sakura-Ji/MapDepot/main/Mkdocs/TMP3-1.png)
+    ![TMP3-1](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/TMP3-1.png)
 
 ??? note "字符串数组知识回顾"
 
