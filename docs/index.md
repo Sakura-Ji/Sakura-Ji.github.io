@@ -2,6 +2,7 @@
 hide:
   - navigation
   - toc
+  - footer
 ---
 
 # 欢迎来到Sakura-Ji的个人网站

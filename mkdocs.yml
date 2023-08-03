@@ -35,6 +35,13 @@ nav:
           - 代码解析: LinuxSystem/WebChatCode.md
     - 嵌入式编程:
         - EmbeddedSyS/Eintroduct.md
+        - C51:
+          - EmbeddedSyS/C51/C51Introd.md
+        - STM32:
+          - EmbeddedSyS/STM32/STM32Introd.md
+          - Keil5的使用: EmbeddedSyS/STM32/KeilUse.md
+          - 新建第一个程序模板: EmbeddedSyS/STM32/FirstFile.md
+          - GPIO: EmbeddedSyS/STM32/GPIO.md
     - 思维导图:
         - MindMaps/Mind.md
     - GodTool:
@@ -63,9 +70,13 @@ theme:
 
   #Site language       
   language: zh
-  
+  #网站图标和网页logo 
   favicon: images/Cat.png
   logo: images/Cat.png
+ 
+  #文章字体
+  #font:
+    #text: Noto Sans Simplified Chinese
   
   #Setting up navigation
   features:
@@ -85,6 +96,8 @@ plugins:
   - search:
       lang: en
   - tags
+
+  - glightbox
 
 #代码块配置
 markdown_extensions:

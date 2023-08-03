@@ -124,7 +124,7 @@ graph LR
         * `_exit(0)` --结束进程
 5. 进程等待函数:
     * `wait` -- 阻塞等待任意子进程结束，为其收尸
-    * `waitpid` --  等待指定子进程结束，为其收尸
+    * `waitpid` --  更加强大，可不阻塞等待指定子进程结束，为其收尸
 6. `system`函数:接受一个命令字符串作为参数，并在操作系统中运行该命令
 7. `exec`函数族:提供了一个在进程中启动另一个程序执行,会覆盖原有进程，一般和vfork连用,包含6个函数
     * int execl(const char *path, const char *arg, ...);
@@ -242,17 +242,23 @@ graph LR
         函数原型:pid_t waitpid(pid_t pid, int *status, int options);
         形参:
         pid:指定等待哪一个子进程	
-        -1:等待任意子进程结束
+            -1:等待任意子进程结束
+            
         status:NULL
+            
         options:
-        0:同wait，阻塞等待子进程结束，返回值同wait
-        WNOHANG:若由 pid 指定的子进程不立即可用，则 waitpid 不阻塞，此时返回值为 0
+            0:同wait()，阻塞等待子进程结束，返回值同wait
+            options如果是0，即阻塞等待，成功返回子进程的pid，失败返回-1；
+            WNOHANG:若由 pid 指定的子进程不立即可用(子进程还在运行中),则 waitpid 不阻塞,此时返回值为 0
+            options如果是WNOHANG，即不阻塞等待，成功等到子进程死亡，返回子进程的pid，未等到返回0；
         返回值:
-        options如果是0，即阻塞等待，成功返回子进程的pid，失败返回-1；
-        options如果是WNOHANG，即不则测等待，
         成功返回子进程pid，没等到返回0，失败返回-1；
-        
+        举例:
         wait(NULL) 等价的 waitpid(-1,NULL,0)；
+        如果options参数选择WNOHANG,我们就可以使用while循环检测指定的PID是否死亡,
+        当其死亡,可以为其收尸,未死亡,执行下一条语句(不堵塞)
+        
+        可参考:顺序播放MP3
 
         ```
     === "system"

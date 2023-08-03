@@ -102,7 +102,7 @@
 **常见的信号**
 
 * 信号2：SIGINT： ++ctrl+c++ 结束进程 
-* 信号3：SIGQUIT：++ctrl++ + `\` 结束进程
+* 信号3：SIGQUIT：++ctrl+slash++ 结束进程
 * 信号9：SIGKILL：无条件终止进程的信号。使用SIGKILL信号将无法捕获或忽略，进程会立即被终止。(不能被改造)
 * 信号10、12:用户预留的信号
 * 信号14：SIGALRM：闹钟信号，用于定时
@@ -272,7 +272,43 @@
         当定时器时间到达时，操作系统会向该进程发送SIGALRM信号，进程可以通过注册信号处理器来处理该信号。
 
         ```
+        === "举例"
+            
+            ```c
 
+            #include <stdio.h>
+            #include <sys/types.h>
+            #include <signal.h>
+            #include <unistd.h>
+
+            void handler(int signum) {
+                printf("Received SIGALRM signal\n");
+            }
+
+            int main()
+            {
+                printf("hello Sakura-Ji\n");
+
+                unsigned int remaining;
+
+                // 注册信号处理函数
+                signal(SIGALRM, handler);
+
+                // 设置定时器为5秒
+                remaining = alarm(5);//当定时器时间到达时，操作系统会向该进程发送SIGALRM信号 
+
+                printf("Waiting for alarm...\n");
+
+                // 进程将在此处等待，直到收到SIGALRM信号 --> handler --> pause
+                pause(); 
+
+                // 定时器到期后会跳转到此处
+                printf("Alarm received\n");
+
+                return 0;
+            }
+            ```
+            ![alarm](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/alarm.png)
     === "pause"
 
         ```c
@@ -287,6 +323,32 @@
         EINTR表示该系统调用被一个信号中断。
 
         ```
+        ==="举例"
+            ```c
+
+            #include <stdio.h>
+            #include <unistd.h>
+            #include <signal.h>
+
+            void handler(int signum) {
+                printf("Received signal %d\n", signum);
+            }
+
+            int main() {
+                // 注册信号处理函数
+                signal(SIGINT, handler);
+
+                printf("Waiting for signal...\n");
+
+                // 进程将在此处挂起，直到接收到信号
+                pause();
+
+                printf("Signal received\n");
+
+                return 0;
+            }
+            ```
+            ![pause](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/pause.png)
     === "signal"
 
         ```c

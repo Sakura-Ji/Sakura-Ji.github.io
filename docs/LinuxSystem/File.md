@@ -376,7 +376,7 @@ struct tm *localtime(const time_t *timep);
      int tm_mon;    /*Month(0-11)*/ +1
      int tm_year;   /*Year-1900*/ +1900
      int tm_wday;   /* Day of the week (0-6, Sunday = 0) */
-    int tm_yday;   /* Day in the year (0-365, 1 Jan = 0) */
+     int tm_yday;   /* Day in the year (0-365, 1 Jan = 0) */
      int tm_isdst;  /*Daylight saving time */
   };
 
@@ -419,7 +419,7 @@ struct tm *gmtime(const time_t *timep);
      int tm_mon;    /*Month(0-11)*/+1
      int tm_year;   /*Year-1900*/ +1900
      int tm_wday;   /* Day of the week (0-6, Sunday = 0) */
-    int tm_yday;   /* Day in the year (0-365, 1 Jan = 0) */
+     int tm_yday;   /* Day in the year (0-365, 1 Jan = 0) */
      int tm_isdst;  /*Daylight saving time */
   };
 
@@ -517,7 +517,7 @@ int main()
   s -- 存放格式化时间存放的位置。
   max -- 这是给 str 要复制的字符的最大数目。
   format -- “原样输出+格式控制符”
-tm -- localtime/gmtime的返回值
+  tm -- localtime/gmtime的返回值
  返回值：s指向缓冲区的字节长度，不包括‘\0’
 
 time_t t = time(NULL);
