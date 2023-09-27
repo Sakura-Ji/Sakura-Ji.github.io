@@ -1,0 +1,4019 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="纪博文的个人网站">
+      
+      
+        <meta name="author" content="纪博文">
+      
+      
+        <link rel="canonical" href="https://Sakura-Ji.github.io/EmbeddedSyS/STM32/EXTI/">
+      
+      
+        <link rel="prev" href="../GPIO/">
+      
+      
+        <link rel="next" href="../TIM/">
+      
+      
+      <link rel="icon" href="../../../images/Cat.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.2">
+    
+    
+      
+        <title>STM32之EXTI外部中断 - Sakura-Ji</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.d451bc0e.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.a5377069.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/primarycolor.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+        html.glightbox-open { overflow: initial; height: 100%; }
+        .gslide-title { margin-top: 0px; user-select: text; }
+        .gslide-desc { color: #666; user-select: text; }
+        .gslide-image img { background: white; }
+        
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+            </style> <script src="../../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="pink">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="Sakura-Ji" class="md-header__button md-logo" aria-label="Sakura-Ji" data-md-component="logo">
+      
+  <img src="../../../images/Cat.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Sakura-Ji
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              STM32之EXTI外部中断
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="pink"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Sakura-Ji/Sakura-Ji.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Sakura-Ji.github.io
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  简介
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Programing_Language/Introduction/" class="md-tabs__link">
+          
+  
+    
+  
+  编程语言
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../LinuxSystem/Lintroduct/" class="md-tabs__link">
+          
+  
+    
+  
+  Linux系统
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../Eintroduct/" class="md-tabs__link">
+          
+  
+    
+  
+  嵌入式编程
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../MindMaps/Mind/" class="md-tabs__link">
+          
+  
+    
+  
+  思维导图
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Tool/MapDepot/" class="md-tabs__link">
+          
+  
+    
+  
+  GodTool
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Sakura-Ji" class="md-nav__button md-logo" aria-label="Sakura-Ji" data-md-component="logo">
+      
+  <img src="../../../images/Cat.png" alt="logo">
+
+    </a>
+    Sakura-Ji
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Sakura-Ji/Sakura-Ji.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Sakura-Ji.github.io
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    简介
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    编程语言
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            编程语言
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    C
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            C
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/C_language/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    模板
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/main/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    main
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/pointer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    指针
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/array/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    数组
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/link/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    链表
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/floder/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    文件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/stack/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    堆栈
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/keywords/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    模块
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    WebDesign
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            WebDesign
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/WebDesign/WebIntro/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    关于前端
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_2" id="__nav_2_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Html
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Html
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/WebDesign/HtmlLearn/HtmlFir/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    这里记录Html
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_3" id="__nav_2_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CSS
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            CSS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/WebDesign/CssLearn/CssFir/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    这里记录学习Css
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Linux系统
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Linux系统
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Lintroduct/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linuxconfig
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Gccinfo/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gcc编译器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Makefile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MakeFile
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/File/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux文件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Multi-process/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux进程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Communication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux通信
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Posix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux线程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Internet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux网路
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    网络聊天室
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            网络聊天室
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/WebChatMind/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    思维导图
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/WebChatCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    代码解析
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    嵌入式编程
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            嵌入式编程
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Eintroduct/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Embedded System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    C51
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            C51
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../C51/C51Introd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    介绍C51
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    STM32
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            STM32
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../STM32Introd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32的介绍
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../KeilUse/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Keil5的使用
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FirstFile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    新建第一个程序模板
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GPIO/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之GPIO外设
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    STM32之EXTI外部中断
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    STM32之EXTI外部中断
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    前言
+  </a>
+  
+    <nav class="md-nav" aria-label="前言">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    什么是中断
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    外部中断的理论思维步骤
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    外部中断中有什么
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    中断设置完了，如何使用中断
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#NVIC" class="md-nav__link">
+    NVIC (嵌套向量中断控制器)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#EXTI" class="md-nav__link">
+    EXTI (外部中断/事件控制器)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#AFIO" class="md-nav__link">
+    AFIO (复用功能I/O和调试配置)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    外部中断的实战应用
+  </a>
+  
+    <nav class="md-nav" aria-label="外部中断的实战应用">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    基于红外对射模块的计数器
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    基于旋转编码器模块的计数器
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    相关库函数
+  </a>
+  
+    <nav class="md-nav" aria-label="相关库函数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nvic_prioritygroupconfig" class="md-nav__link">
+    函数NVIC_PriorityGroupConfig
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nvic_init" class="md-nav__link">
+    函数NVIC_Init
+  </a>
+  
+    <nav class="md-nav" aria-label="函数NVIC_Init">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nvic_irqchannel" class="md-nav__link">
+    参数 NVIC_IRQChannel
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nvic_irqchannelpreemptionpriority" class="md-nav__link">
+    参数 NVIC_IRQChannelPreemptionPriority
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nvic_irqchannelsubpriority" class="md-nav__link">
+    参数 NVIC_IRQChannelSubPriority
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nvic_irqchannelcmd" class="md-nav__link">
+    参数 NVIC_IRQChannelCmd
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exti_init" class="md-nav__link">
+    函数 EXTI_Init
+  </a>
+  
+    <nav class="md-nav" aria-label="函数 EXTI_Init">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exti_line" class="md-nav__link">
+    参数 EXTI_Line
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exti_mode" class="md-nav__link">
+    参数 EXTI_Mode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exti_trigger" class="md-nav__link">
+    参数 EXTI_Trigger
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exti_linecmd" class="md-nav__link">
+    参数 EXTI_LineCmd
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exti_getitstatus" class="md-nav__link">
+    函数 EXTI_GetITStatus
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exti_clearitpendingbit" class="md-nav__link">
+    函数 EXTI_ClearITPendingBit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gpio_extilineconfig" class="md-nav__link">
+    函数 GPIO_EXTILineConfig
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TIM/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之TIM定时器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../USART/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之USART串口通信
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OLED/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之OLED
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LCD/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之LCD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../StepMotor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之步进电机
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    思维导图
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            思维导图
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../MindMaps/Mind/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sakura_JI的知识库
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    GodTool
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            GodTool
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Tool/MapDepot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    依赖于Github图床的个人搭建
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Tool/Testool/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    特性工具的测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    前言
+  </a>
+  
+    <nav class="md-nav" aria-label="前言">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    什么是中断
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    外部中断的理论思维步骤
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    外部中断中有什么
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    中断设置完了，如何使用中断
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#NVIC" class="md-nav__link">
+    NVIC (嵌套向量中断控制器)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#EXTI" class="md-nav__link">
+    EXTI (外部中断/事件控制器)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#AFIO" class="md-nav__link">
+    AFIO (复用功能I/O和调试配置)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    外部中断的实战应用
+  </a>
+  
+    <nav class="md-nav" aria-label="外部中断的实战应用">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    基于红外对射模块的计数器
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    基于旋转编码器模块的计数器
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    相关库函数
+  </a>
+  
+    <nav class="md-nav" aria-label="相关库函数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nvic_prioritygroupconfig" class="md-nav__link">
+    函数NVIC_PriorityGroupConfig
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nvic_init" class="md-nav__link">
+    函数NVIC_Init
+  </a>
+  
+    <nav class="md-nav" aria-label="函数NVIC_Init">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nvic_irqchannel" class="md-nav__link">
+    参数 NVIC_IRQChannel
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nvic_irqchannelpreemptionpriority" class="md-nav__link">
+    参数 NVIC_IRQChannelPreemptionPriority
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nvic_irqchannelsubpriority" class="md-nav__link">
+    参数 NVIC_IRQChannelSubPriority
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nvic_irqchannelcmd" class="md-nav__link">
+    参数 NVIC_IRQChannelCmd
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exti_init" class="md-nav__link">
+    函数 EXTI_Init
+  </a>
+  
+    <nav class="md-nav" aria-label="函数 EXTI_Init">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exti_line" class="md-nav__link">
+    参数 EXTI_Line
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exti_mode" class="md-nav__link">
+    参数 EXTI_Mode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exti_trigger" class="md-nav__link">
+    参数 EXTI_Trigger
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exti_linecmd" class="md-nav__link">
+    参数 EXTI_LineCmd
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exti_getitstatus" class="md-nav__link">
+    函数 EXTI_GetITStatus
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exti_clearitpendingbit" class="md-nav__link">
+    函数 EXTI_ClearITPendingBit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gpio_extilineconfig" class="md-nav__link">
+    函数 GPIO_EXTILineConfig
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="_1">外部中断<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">前言<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h3 id="_3">什么是中断<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>在主程序运行过程中，出现了特定的中断触发条件（<strong>中断源</strong>），使得CPU暂停当前正在运行的程序，转而去处理中断程序，处理完成后又返回原来被暂停的位置继续运行。<strong>在STM32中有68个可屏蔽中断通道：包含EXTI、TIM、ADC、USART、SPI、I2C、RTC等多个外设</strong></p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce94c458853aef34f3df/Interrupt_Flow.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="Interrupt_Flow" src="https://pic.imgdb.cn/item/6513ce94c458853aef34f3df/Interrupt_Flow.png" /></a></p>
+<h3 id="_4">外部中断的理论思维步骤<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p><strong>1.STM32CPU使用 <a href="#NVIC">NVIC(嵌套向量中断控制器)</a> 统一管理中断</strong></p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ceb6c458853aef34fe61/NVIC.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="NVIC" src="https://pic.imgdb.cn/item/6513ceb6c458853aef34fe61/NVIC.png" /></a></p>
+<p><strong>每个中断通道都拥有16个可编程的优先等级(每个中断源可以被分配的优先级级别个数)，可对优先级进行分组，进一步设置抢占优先级和响应优先级</strong></p>
+<ul>
+<li>
+<p>NVIC的中断优先级由 <strong>优先级寄存器的4位</strong>（0~15）<strong>决定</strong>，这4位可以进行切分，分为<strong>高 x 位的抢占优先级</strong>和<strong>低 4-x 位的响应优先级</strong></p>
+</li>
+<li>
+<p>抢占优先级高的可以中断嵌套，响应优先级高的可以优先排队，抢占优先级和响应优先级均相同的按中断号排队</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>组</th>
+<th>AIRCR[10 : 8]</th>
+<th>IP bit[7 : 4] 分配情况</th>
+<th>分配结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>111</td>
+<td>0：4</td>
+<td>0位抢占优先级(取值为0) ，    4位响应优先级(取值为0~15)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>110</td>
+<td>1：3</td>
+<td>1位抢占优先级(取值为0~1) ，3位响应优先级(取值为0~7)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>101</td>
+<td>2：2</td>
+<td>2位抢占优先级(取值为0~3) ，2位响应优先级(取值为0~3)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>100</td>
+<td>3：1</td>
+<td>3位抢占优先级(取值为0~7) ，1位响应优先级(取值为0~1)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>011</td>
+<td>4：0</td>
+<td>4位抢占优先级(取值为0~15) ，0位响应优先级(取值为0)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>抢占优先级与响应优先级</strong>的基本概念：</p>
+<ol>
+<li>高优先级的抢占优先级是可以打断正在进行的低抢占优先级中断的</li>
+<li>抢占优先级相同的中断，高响应优先级不可以打断低响应优先级的中断</li>
+<li>抢占优先级相同的中断，当两个中断同时发生的情况下，哪个响应优先级高，哪个先执行</li>
+<li>如果两个中断的抢占优先级和响应优先级都是一样的话，同时发生，则根据他们在中断表中的排位顺
+   序决定先处理那一个；先后的话，则根据先来后到</li>
+<li>优先级数字越小，优先级越高，越先被执行</li>
+</ol>
+<p><strong>NVIC的初始化中分组以及设置优先级的概念（举例）：</strong></p>
+<p><strong><mark>1.设置 分组2，设置0-3为抢占优先级，0-3为响应优先级。</mark></strong></p>
+<p><mark><strong>2.分组后，有抢占优先级通道4个，分别为0，1，2，3.</strong></mark></p>
+<p><mark><strong>3.每个抢占优先级通道有4个响应优先级的通道，分别为0，1，2，3。</strong></mark></p>
+<hr />
+<p><strong>2. STM32 的每个GPIO端口都可以作为 <a href="#EXTI">外部中断(EXTI)</a>  的中断输入口</strong></p>
+<blockquote>
+<p>所有端口都有外部中断能力。为了使用外部中断线，端口必须配置成输入模式 --&gt; 《STM32中文参考手册》<strong>8.1.3节</strong></p>
+</blockquote>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ceb5c458853aef34fdf1/EXTI_BlockMap.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="EXTI_BlockMap" src="https://pic.imgdb.cn/item/6513ceb5c458853aef34fdf1/EXTI_BlockMap.png" /></a></p>
+<hr />
+<p><strong>3. 每个外部中断/事件线(EXTI1~EXTI15)上对应了 P(A0~G0) ···· P(A15~G15)中的 7个IO 口(A~G),<mark>EXTI中断线每次只能连接到 1 个 IO 口上</mark></strong></p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ceb7c458853aef34feb5/EXTI.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="EXTI" src="https://pic.imgdb.cn/item/6513ceb7c458853aef34feb5/EXTI.png" /></a></p>
+<hr />
+<p><strong>4. 需要通过配置 <a href="#AFIO">AFIO_EXTICRx</a> 寄存器的EXTIx[3:0]来决定 <mark>外部中断/事件线(EXTI1~EXTI15)</mark>  配置到哪个 GPIO引脚 上(x=1~4)</strong></p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ceb6c458853aef34fe29/AFIO_EXTICR2.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="AFIO_EXTICR2" src="https://pic.imgdb.cn/item/6513ceb6c458853aef34fe29/AFIO_EXTICR2.png" /></a></p>
+<hr />
+<p><strong>5. 通过AFIO_EXTICRx配置GPIO线上的外部中断/事件，必须先==使能AFIO时钟==，AFIO时钟在APB2线上</strong></p>
+<hr />
+<p><em>通过对中断理论步骤的 </em><em>倒叙</em><em> ，我们就可以实践出 </em><em>外部中断EXTI</em><em> 的过程</em></p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513cea4c458853aef34fb01/Interrupt.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="Interrupt" src="https://pic.imgdb.cn/item/6513cea4c458853aef34fb01/Interrupt.png" /></a></p>
+<h3 id="_5">外部中断中有什么<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li>NVIC(嵌套向量中断控制器): CPU的小助手，帮助控制着芯片的中断相关功能</li>
+<li>中断优先级：当有多个中断源同时申请中断时，CPU会根据中断源的轻重缓急进行裁决，优先响应更加紧急的中断源</li>
+<li>中断嵌套：当一个中断程序正在运行时，又有新的更高优先级的中断源申请中断，CPU再次暂停当前中断程序，转而去处理新的中断程序，处理完成后依次进行返回</li>
+<li>EXTI(外部中断/事件控制器)：对请求中断的输入线进行配置</li>
+<li>AFIO(复用功能I/O和调试配置)：对GPIO设置成输入中断功能</li>
+<li>GPIO(通用输入输出IO口)：与外部硬件设备连接</li>
+</ul>
+<h3 id="_6">中断设置完了，如何使用中断<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>在STM32中，中断函数的名字都是固定的，每个中断通道都对应一个中断函数，可以在启动文件<code>startup_stm32f10x_md.s</code>中的中断向量表中查找其名字</p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="cm">/*</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="cm">  中断函数不需要在.h文件中声明 因为系统会自动执行的</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="cm">  中断函数中一般先定义一个中断判断标志位，以确保是我们想要的中断源触发的这个函数</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="cm">  在中断程序结束后一定要清理中断函数标志位 否则如果中断标志位置依旧是1 系统就会一直调用这个中断函数</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="cm">*/</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="kt">void</span><span class="w"> </span><span class="nf">EXTI15_10_IRQHandler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="c1">//中断函数都是无参无返回值的</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="p">{</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">EXTI_GetITStatus</span><span class="p">(</span><span class="n">EXTI_Line14</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">SET</span><span class="p">)</span><span class="c1">//判断中断标志位</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">    </span><span class="n">EXTI_ClearITPendingBit</span><span class="p">(</span><span class="n">EXTI_Line14</span><span class="p">);</span><span class="c1">//清理中断函数标志位</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="NVIC">NVIC (嵌套向量中断控制器)<a class="headerlink" href="#NVIC" title="Permanent link">&para;</a></h2>
+<p>嵌套向量中断控制器，控制着整个芯片中断相关的功能，是Cortex-M3内核里面的一个外设</p>
+<h2 id="EXTI">EXTI (外部中断/事件控制器)<a class="headerlink" href="#EXTI" title="Permanent link">&para;</a></h2>
+<p>STM32F10x外部中断/事件控制器（EXTI）包含 20 个用于产生事件/中断请求的边沿检测器。EXTI的每根输入线都可单独进行配置，以选择类型（中断或事件）和相应的触发事件（上升沿触发、下降沿触发或边沿触发），还可独立地被屏蔽</p>
+<h2 id="AFIO">AFIO (复用功能I/O和调试配置)<a class="headerlink" href="#AFIO" title="Permanent link">&para;</a></h2>
+<p><strong>在STM32中，AFIO主要完成两个任务：</strong></p>
+<ul>
+<li>复用功能引脚重映射</li>
+<li>中断引脚选择</li>
+</ul>
+<h2 id="_7">外部中断的实战应用<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<h3 id="_8">基于红外对射模块的计数器<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p><mark><strong>红外对射模块：</strong></mark></p>
+<p>接好VCC和GND，模块电源指示灯会亮，<strong>模块槽中无遮挡时，接收管导通，模块D0输出低电平</strong>，开关指示灯亮，<strong>遮挡时，DO输出高电平，开关指示灯灭</strong>。模块D0可与继电器相连，组成限位开关等功能，也可以与有源蜂鸣器模块相连，组成报警器。D0输出接口可以与单片机10口直接相连，一般接外部中断，检测传感器是否有遮档，如用电机码盘则可检测电机的转速。</p>
+<p><code>IRED.h</code></p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
+<span class="normal"><a href="#__codelineno-1-2">2</a></span>
+<span class="normal"><a href="#__codelineno-1-3">3</a></span>
+<span class="normal"><a href="#__codelineno-1-4">4</a></span>
+<span class="normal"><a href="#__codelineno-1-5">5</a></span>
+<span class="normal"><a href="#__codelineno-1-6">6</a></span>
+<span class="normal"><a href="#__codelineno-1-7">7</a></span>
+<span class="normal"><a href="#__codelineno-1-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="cp">#ifndef  __IRED_H__</span><span class="c1">//如果没有定义了则参加以下编译</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="cp">#define  __IRED_H__</span><span class="c1">//一旦定义就有了定义 所以 其目的就是防止模块重复编译</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stm32f10x.h&quot;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="kt">void</span><span class="w"> </span><span class="nf">IRED_Init</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">CountSensor_Get</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="cp">#endif  </span><span class="c1">//结束编译</span>
+</span></code></pre></div></td></tr></table></div>
+<p><code>IRED.c</code></p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-2-10">10</a></span>
+<span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span>
+<span class="normal"><a href="#__codelineno-2-13">13</a></span>
+<span class="normal"><a href="#__codelineno-2-14">14</a></span>
+<span class="normal"><a href="#__codelineno-2-15">15</a></span>
+<span class="normal"><a href="#__codelineno-2-16">16</a></span>
+<span class="normal"><a href="#__codelineno-2-17">17</a></span>
+<span class="normal"><a href="#__codelineno-2-18">18</a></span>
+<span class="normal"><a href="#__codelineno-2-19">19</a></span>
+<span class="normal"><a href="#__codelineno-2-20">20</a></span>
+<span class="normal"><a href="#__codelineno-2-21">21</a></span>
+<span class="normal"><a href="#__codelineno-2-22">22</a></span>
+<span class="normal"><a href="#__codelineno-2-23">23</a></span>
+<span class="normal"><a href="#__codelineno-2-24">24</a></span>
+<span class="normal"><a href="#__codelineno-2-25">25</a></span>
+<span class="normal"><a href="#__codelineno-2-26">26</a></span>
+<span class="normal"><a href="#__codelineno-2-27">27</a></span>
+<span class="normal"><a href="#__codelineno-2-28">28</a></span>
+<span class="normal"><a href="#__codelineno-2-29">29</a></span>
+<span class="normal"><a href="#__codelineno-2-30">30</a></span>
+<span class="normal"><a href="#__codelineno-2-31">31</a></span>
+<span class="normal"><a href="#__codelineno-2-32">32</a></span>
+<span class="normal"><a href="#__codelineno-2-33">33</a></span>
+<span class="normal"><a href="#__codelineno-2-34">34</a></span>
+<span class="normal"><a href="#__codelineno-2-35">35</a></span>
+<span class="normal"><a href="#__codelineno-2-36">36</a></span>
+<span class="normal"><a href="#__codelineno-2-37">37</a></span>
+<span class="normal"><a href="#__codelineno-2-38">38</a></span>
+<span class="normal"><a href="#__codelineno-2-39">39</a></span>
+<span class="normal"><a href="#__codelineno-2-40">40</a></span>
+<span class="normal"><a href="#__codelineno-2-41">41</a></span>
+<span class="normal"><a href="#__codelineno-2-42">42</a></span>
+<span class="normal"><a href="#__codelineno-2-43">43</a></span>
+<span class="normal"><a href="#__codelineno-2-44">44</a></span>
+<span class="normal"><a href="#__codelineno-2-45">45</a></span>
+<span class="normal"><a href="#__codelineno-2-46">46</a></span>
+<span class="normal"><a href="#__codelineno-2-47">47</a></span>
+<span class="normal"><a href="#__codelineno-2-48">48</a></span>
+<span class="normal"><a href="#__codelineno-2-49">49</a></span>
+<span class="normal"><a href="#__codelineno-2-50">50</a></span>
+<span class="normal"><a href="#__codelineno-2-51">51</a></span>
+<span class="normal"><a href="#__codelineno-2-52">52</a></span>
+<span class="normal"><a href="#__codelineno-2-53">53</a></span>
+<span class="normal"><a href="#__codelineno-2-54">54</a></span>
+<span class="normal"><a href="#__codelineno-2-55">55</a></span>
+<span class="normal"><a href="#__codelineno-2-56">56</a></span>
+<span class="normal"><a href="#__codelineno-2-57">57</a></span>
+<span class="normal"><a href="#__codelineno-2-58">58</a></span>
+<span class="normal"><a href="#__codelineno-2-59">59</a></span>
+<span class="normal"><a href="#__codelineno-2-60">60</a></span>
+<span class="normal"><a href="#__codelineno-2-61">61</a></span>
+<span class="normal"><a href="#__codelineno-2-62">62</a></span>
+<span class="normal"><a href="#__codelineno-2-63">63</a></span>
+<span class="normal"><a href="#__codelineno-2-64">64</a></span>
+<span class="normal"><a href="#__codelineno-2-65">65</a></span>
+<span class="normal"><a href="#__codelineno-2-66">66</a></span>
+<span class="normal"><a href="#__codelineno-2-67">67</a></span>
+<span class="normal"><a href="#__codelineno-2-68">68</a></span>
+<span class="normal"><a href="#__codelineno-2-69">69</a></span>
+<span class="normal"><a href="#__codelineno-2-70">70</a></span>
+<span class="normal"><a href="#__codelineno-2-71">71</a></span>
+<span class="normal"><a href="#__codelineno-2-72">72</a></span>
+<span class="normal"><a href="#__codelineno-2-73">73</a></span>
+<span class="normal"><a href="#__codelineno-2-74">74</a></span>
+<span class="normal"><a href="#__codelineno-2-75">75</a></span>
+<span class="normal"><a href="#__codelineno-2-76">76</a></span>
+<span class="normal"><a href="#__codelineno-2-77">77</a></span>
+<span class="normal"><a href="#__codelineno-2-78">78</a></span>
+<span class="normal"><a href="#__codelineno-2-79">79</a></span>
+<span class="normal"><a href="#__codelineno-2-80">80</a></span>
+<span class="normal"><a href="#__codelineno-2-81">81</a></span>
+<span class="normal"><a href="#__codelineno-2-82">82</a></span>
+<span class="normal"><a href="#__codelineno-2-83">83</a></span>
+<span class="normal"><a href="#__codelineno-2-84">84</a></span>
+<span class="normal"><a href="#__codelineno-2-85">85</a></span>
+<span class="normal"><a href="#__codelineno-2-86">86</a></span>
+<span class="normal"><a href="#__codelineno-2-87">87</a></span>
+<span class="normal"><a href="#__codelineno-2-88">88</a></span>
+<span class="normal"><a href="#__codelineno-2-89">89</a></span>
+<span class="normal"><a href="#__codelineno-2-90">90</a></span>
+<span class="normal"><a href="#__codelineno-2-91">91</a></span>
+<span class="normal"><a href="#__codelineno-2-92">92</a></span>
+<span class="normal"><a href="#__codelineno-2-93">93</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;IRED.h&quot;</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="kt">uint16_t</span><span class="w"> </span><span class="n">CountSensor_Count</span><span class="p">;</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="kt">void</span><span class="w"> </span><span class="nf">IRED_Init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="p">{</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="w">  </span><span class="c1">//1.开启相关时钟</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="w">  </span><span class="n">RCC_APB2PeriphClockCmd</span><span class="p">(</span><span class="n">RCC_APB2Periph_GPIOB</span><span class="p">,</span><span class="n">ENABLE</span><span class="p">);</span><span class="c1">//红外对射传感器所在的GPIOB时钟打开</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="w">  </span><span class="n">RCC_APB2PeriphClockCmd</span><span class="p">(</span><span class="n">RCC_APB2Periph_AFIO</span><span class="p">,</span><span class="n">ENABLE</span><span class="p">);</span><span class="c1">//打开端口复用AFIO时钟 --&gt; 是为了中断引脚选择</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10"></a>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="w">  </span><span class="c1">//2.初始化IO口</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="w">  </span><span class="n">GPIO_InitTypeDef</span><span class="w"> </span><span class="n">GPIO_InitStructure</span><span class="p">;</span><span class="c1">//定义结构体</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13"></a>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14"></a><span class="w">  </span><span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Pin_14</span><span class="p">;</span><span class="c1">//设置PA1,PA2引脚</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15"></a>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16"></a><span class="w">  </span><span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Mode_IPU</span><span class="w"> </span><span class="p">;</span><span class="c1">//设置为上拉输入（其他模式输入都可）</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17"></a>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18"></a><span class="w">  </span><span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Speed_50MHz</span><span class="w"> </span><span class="p">;</span><span class="c1">//设置输出速度为50MHZ（可以不设置）</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19"></a><span class="w">  </span><span class="c1">//初始化函数↓</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20"></a><span class="w">  </span><span class="n">GPIO_Init</span><span class="p">(</span><span class="n">GPIOB</span><span class="p">,</span><span class="o">&amp;</span><span class="n">GPIO_InitStructure</span><span class="p">);</span><span class="c1">//初始化</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21"></a>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22"></a><span class="w">  </span><span class="c1">//3.初始化AFIO--&gt;确定中断引脚</span>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23"></a><span class="w">  </span><span class="n">GPIO_EXTILineConfig</span><span class="p">(</span><span class="n">GPIO_PortSourceGPIOB</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PinSource14</span><span class="p">);</span><span class="c1">//使用AFIO 配置中断引脚的选择 GPIOB--&gt;Pin14</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24"></a>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25"></a><span class="w">  </span><span class="c1">//4.配置EXTI外部中断寄存器</span>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26"></a>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27"></a><span class="w">  </span><span class="n">EXTI_InitTypeDef</span><span class="w"> </span><span class="n">EXTI_InitStructure</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28"></a>
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29"></a><span class="w">  </span><span class="n">EXTI_InitStructure</span><span class="p">.</span><span class="n">EXTI_Line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EXTI_Line14</span><span class="p">;</span><span class="w"> </span><span class="c1">// GPIOB Pin14 所以选择第14条EXTI中断线 --&gt; 连接外部中断线上</span>
+</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30"></a><span class="w">  </span><span class="n">EXTI_InitStructure</span><span class="p">.</span><span class="n">EXTI_Mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EXTI_Mode_Interrupt</span><span class="p">;</span><span class="c1">//模式选择 外部中断</span>
+</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31"></a><span class="w">  </span><span class="cm">/*</span>
+</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32"></a><span class="cm">  在本例程中 不遮挡 --&gt; 遮挡 上升沿 ；</span>
+</span><span id="__span-2-33"><a id="__codelineno-2-33" name="__codelineno-2-33"></a><span class="cm">           遮挡 --&gt; 不遮挡 下降沿</span>
+</span><span id="__span-2-34"><a id="__codelineno-2-34" name="__codelineno-2-34"></a><span class="cm">  */</span>
+</span><span id="__span-2-35"><a id="__codelineno-2-35" name="__codelineno-2-35"></a><span class="w">  </span><span class="n">EXTI_InitStructure</span><span class="p">.</span><span class="n">EXTI_Trigger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EXTI_Trigger_Falling</span><span class="p">;</span><span class="w"> </span><span class="c1">//选择下降沿触发 --&gt; 当这个GPIOB Pin14口满足这个条件时 就会触发中断 --&gt; 进入中断函数</span>
+</span><span id="__span-2-36"><a id="__codelineno-2-36" name="__codelineno-2-36"></a><span class="w"> </span><span class="c1">// 如果选择 上升和下降都触发 则遮挡和移开时都加一</span>
+</span><span id="__span-2-37"><a id="__codelineno-2-37" name="__codelineno-2-37"></a>
+</span><span id="__span-2-38"><a id="__codelineno-2-38" name="__codelineno-2-38"></a><span class="w">  </span><span class="n">EXTI_InitStructure</span><span class="p">.</span><span class="n">EXTI_LineCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">;</span><span class="w"> </span><span class="c1">//定义选中线的状态--&gt;开启</span>
+</span><span id="__span-2-39"><a id="__codelineno-2-39" name="__codelineno-2-39"></a>
+</span><span id="__span-2-40"><a id="__codelineno-2-40" name="__codelineno-2-40"></a><span class="w">  </span><span class="n">EXTI_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">EXTI_InitStructure</span><span class="p">);</span><span class="w"> </span><span class="c1">//初始化EXTI</span>
+</span><span id="__span-2-41"><a id="__codelineno-2-41" name="__codelineno-2-41"></a>
+</span><span id="__span-2-42"><a id="__codelineno-2-42" name="__codelineno-2-42"></a><span class="w">  </span><span class="c1">//5. 配置NVIC</span>
+</span><span id="__span-2-43"><a id="__codelineno-2-43" name="__codelineno-2-43"></a>
+</span><span id="__span-2-44"><a id="__codelineno-2-44" name="__codelineno-2-44"></a><span class="w">  </span><span class="n">NVIC_PriorityGroupConfig</span><span class="p">(</span><span class="n">NVIC_PriorityGroup_2</span><span class="p">);</span><span class="c1">//进行分组 --&gt;整个芯片(一个项目中)只能进行一次中断分组 可以放到</span>
+</span><span id="__span-2-45"><a id="__codelineno-2-45" name="__codelineno-2-45"></a>
+</span><span id="__span-2-46"><a id="__codelineno-2-46" name="__codelineno-2-46"></a><span class="w">  </span><span class="n">NVIC_InitTypeDef</span><span class="w"> </span><span class="n">NVIC_InitStructure</span><span class="p">;</span><span class="w"> </span><span class="c1">//定义结构体</span>
+</span><span id="__span-2-47"><a id="__codelineno-2-47" name="__codelineno-2-47"></a>
+</span><span id="__span-2-48"><a id="__codelineno-2-48" name="__codelineno-2-48"></a><span class="w">  </span><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EXTI15_10_IRQn</span><span class="p">;</span><span class="w"> </span><span class="c1">//根据上面的我们所选取的GPIO--&gt;Pin14在中断通道的EXTI14 所以这里选择 EXTI15_10_IRQn</span>
+</span><span id="__span-2-49"><a id="__codelineno-2-49" name="__codelineno-2-49"></a>
+</span><span id="__span-2-50"><a id="__codelineno-2-50" name="__codelineno-2-50"></a><span class="w">  </span><span class="cm">/*</span>
+</span><span id="__span-2-51"><a id="__codelineno-2-51" name="__codelineno-2-51"></a><span class="cm">  从上面的分组中可知 我们选则的是 抢占2位 和 响应2位</span>
+</span><span id="__span-2-52"><a id="__codelineno-2-52" name="__codelineno-2-52"></a><span class="cm">  抢占可以从 0~3 进行选择 响应也可以从 0~3 进行选择</span>
+</span><span id="__span-2-53"><a id="__codelineno-2-53" name="__codelineno-2-53"></a><span class="cm">  我们在这个项目中只使用了一个中断 所以可以随意设置这个模块中的中断的优先级 例如 抢占 位于第一位 / 响应 唯一第一位 </span>
+</span><span id="__span-2-54"><a id="__codelineno-2-54" name="__codelineno-2-54"></a><span class="cm">  1. 高优先级的抢占优先级是可以打断正在进行的低抢占优先级中断的</span>
+</span><span id="__span-2-55"><a id="__codelineno-2-55" name="__codelineno-2-55"></a><span class="cm">  2. 抢占优先级相同的中断，高响应优先级不可以打断低响应优先级的中断</span>
+</span><span id="__span-2-56"><a id="__codelineno-2-56" name="__codelineno-2-56"></a><span class="cm">  3. 抢占优先级相同的中断，当两个中断同时发生的情况下，哪个响应优先级高，哪个先执行</span>
+</span><span id="__span-2-57"><a id="__codelineno-2-57" name="__codelineno-2-57"></a><span class="cm">  4. 如果两个中断的抢占优先级和响应优先级都是一样的话，同时发生，则根据他们在中断表中的排位顺序决定先处理那一个；先后的话，则根据先来后到</span>
+</span><span id="__span-2-58"><a id="__codelineno-2-58" name="__codelineno-2-58"></a><span class="cm">  5. 优先级数字越小，优先级越高，越先被执行</span>
+</span><span id="__span-2-59"><a id="__codelineno-2-59" name="__codelineno-2-59"></a><span class="cm">   ==》抢占 0 响应 0</span>
+</span><span id="__span-2-60"><a id="__codelineno-2-60" name="__codelineno-2-60"></a><span class="cm">   ==》抢占 0 响应 1</span>
+</span><span id="__span-2-61"><a id="__codelineno-2-61" name="__codelineno-2-61"></a><span class="cm">   ==》抢占 0 响应 2</span>
+</span><span id="__span-2-62"><a id="__codelineno-2-62" name="__codelineno-2-62"></a><span class="cm">   ==》抢占 0 响应 3</span>
+</span><span id="__span-2-63"><a id="__codelineno-2-63" name="__codelineno-2-63"></a><span class="cm">  */</span>
+</span><span id="__span-2-64"><a id="__codelineno-2-64" name="__codelineno-2-64"></a><span class="w">  </span><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelPreemptionPriority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="c1">//这里选择的是抢占 1</span>
+</span><span id="__span-2-65"><a id="__codelineno-2-65" name="__codelineno-2-65"></a>
+</span><span id="__span-2-66"><a id="__codelineno-2-66" name="__codelineno-2-66"></a><span class="w">  </span><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelSubPriority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">//这里选择的是响应1</span>
+</span><span id="__span-2-67"><a id="__codelineno-2-67" name="__codelineno-2-67"></a>
+</span><span id="__span-2-68"><a id="__codelineno-2-68" name="__codelineno-2-68"></a><span class="w">  </span><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">;</span><span class="w"> </span><span class="c1">//使能指定的中断通道</span>
+</span><span id="__span-2-69"><a id="__codelineno-2-69" name="__codelineno-2-69"></a><span class="w">  </span><span class="c1">//初始化函数↓</span>
+</span><span id="__span-2-70"><a id="__codelineno-2-70" name="__codelineno-2-70"></a><span class="w">  </span><span class="n">NVIC_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">NVIC_InitStructure</span><span class="p">);</span>
+</span><span id="__span-2-71"><a id="__codelineno-2-71" name="__codelineno-2-71"></a><span class="p">}</span>
+</span><span id="__span-2-72"><a id="__codelineno-2-72" name="__codelineno-2-72"></a>
+</span><span id="__span-2-73"><a id="__codelineno-2-73" name="__codelineno-2-73"></a><span class="cm">/*</span>
+</span><span id="__span-2-74"><a id="__codelineno-2-74" name="__codelineno-2-74"></a><span class="cm">  中断函数不需要在.h文件中声明 因为系统会自动执行的</span>
+</span><span id="__span-2-75"><a id="__codelineno-2-75" name="__codelineno-2-75"></a><span class="cm">  中断函数中一般先定义一个中断判断标志位，以确保是我们想要的中断源触发的这个函数</span>
+</span><span id="__span-2-76"><a id="__codelineno-2-76" name="__codelineno-2-76"></a>
+</span><span id="__span-2-77"><a id="__codelineno-2-77" name="__codelineno-2-77"></a><span class="cm">  在中断程序结束后一定要清理中断函数标志位 因为只有中断标志位置1 他就会一直调用中断函数</span>
+</span><span id="__span-2-78"><a id="__codelineno-2-78" name="__codelineno-2-78"></a>
+</span><span id="__span-2-79"><a id="__codelineno-2-79" name="__codelineno-2-79"></a><span class="cm">*/</span>
+</span><span id="__span-2-80"><a id="__codelineno-2-80" name="__codelineno-2-80"></a><span class="kt">void</span><span class="w"> </span><span class="nf">EXTI15_10_IRQHandler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="c1">//中断函数都是无参无返回值的</span>
+</span><span id="__span-2-81"><a id="__codelineno-2-81" name="__codelineno-2-81"></a><span class="p">{</span>
+</span><span id="__span-2-82"><a id="__codelineno-2-82" name="__codelineno-2-82"></a><span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">EXTI_GetITStatus</span><span class="p">(</span><span class="n">EXTI_Line14</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">SET</span><span class="p">)</span>
+</span><span id="__span-2-83"><a id="__codelineno-2-83" name="__codelineno-2-83"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-2-84"><a id="__codelineno-2-84" name="__codelineno-2-84"></a><span class="w">    </span><span class="n">CountSensor_Count</span><span class="o">++</span><span class="p">;</span><span class="c1">//对射触发一次，就进入一次中断 次数加一</span>
+</span><span id="__span-2-85"><a id="__codelineno-2-85" name="__codelineno-2-85"></a><span class="w">    </span><span class="n">EXTI_ClearITPendingBit</span><span class="p">(</span><span class="n">EXTI_Line14</span><span class="p">);</span>
+</span><span id="__span-2-86"><a id="__codelineno-2-86" name="__codelineno-2-86"></a>
+</span><span id="__span-2-87"><a id="__codelineno-2-87" name="__codelineno-2-87"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-2-88"><a id="__codelineno-2-88" name="__codelineno-2-88"></a><span class="p">}</span>
+</span><span id="__span-2-89"><a id="__codelineno-2-89" name="__codelineno-2-89"></a>
+</span><span id="__span-2-90"><a id="__codelineno-2-90" name="__codelineno-2-90"></a><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">CountSensor_Get</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-2-91"><a id="__codelineno-2-91" name="__codelineno-2-91"></a><span class="p">{</span>
+</span><span id="__span-2-92"><a id="__codelineno-2-92" name="__codelineno-2-92"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">CountSensor_Count</span><span class="p">;</span>
+</span><span id="__span-2-93"><a id="__codelineno-2-93" name="__codelineno-2-93"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<p><code>main.c</code></p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-3-10">10</a></span>
+<span class="normal"><a href="#__codelineno-3-11">11</a></span>
+<span class="normal"><a href="#__codelineno-3-12">12</a></span>
+<span class="normal"><a href="#__codelineno-3-13">13</a></span>
+<span class="normal"><a href="#__codelineno-3-14">14</a></span>
+<span class="normal"><a href="#__codelineno-3-15">15</a></span>
+<span class="normal"><a href="#__codelineno-3-16">16</a></span>
+<span class="normal"><a href="#__codelineno-3-17">17</a></span>
+<span class="normal"><a href="#__codelineno-3-18">18</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stm32f10x.h&quot;</span><span class="c1">                  // Device header</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;Delay.h&quot;</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;OLED.h&quot;</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;IRED.h&quot;</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="p">{</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="w">  </span><span class="n">OLED_Init</span><span class="p">();</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="w">  </span><span class="n">IRED_Init</span><span class="p">();</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="w">  </span><span class="n">OLED_ShowString</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s">&quot;Count:&quot;</span><span class="p">);</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="w">  </span><span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="w">    </span><span class="n">OLED_ShowNum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="n">CountSensor_Get</span><span class="p">(),</span><span class="mi">4</span><span class="p">);</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="_9">基于旋转编码器模块的计数器<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p><strong>旋转编码器：</strong>用来测量位置、速度或旋转方向的装置，当其旋转轴旋转时，其输出端可以输出与旋转速度和方向对应的方波信号，读取方波信号的频率和相位信息即可得知旋转轴的速度和方向</p>
+<p>类型：机械触点式/霍尔传感器式/光栅式</p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce91c458853aef34f287/Rotary_encoder.jpg" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="https://pic.imgdb.cn/item/6513ce91c458853aef34f287/Rotary_encoder.jpg" alt="Rotary_encoder" style="zoom: 33%;" /></a></p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce91c458853aef34f20e/Rotary_encoder2.jpg" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="https://pic.imgdb.cn/item/6513ce91c458853aef34f20e/Rotary_encoder2.jpg" alt="Rotary_encoder2" style="zoom:40%;" /></a></p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce90c458853aef34f1d5/Rotary_encoder3.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img src="https://pic.imgdb.cn/item/6513ce90c458853aef34f1d5/Rotary_encoder3.png" alt="Rotary_encoder3" style="zoom:50%;" /></a></p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce90c458853aef34f140/Rotary_encoder4.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="Rotary_encoder4" src="https://pic.imgdb.cn/item/6513ce90c458853aef34f140/Rotary_encoder4.png" /></a></p>
+<h2 id="_10">相关库函数<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
+<p><strong>Table 1. NVIC</strong> 库函数 </p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NVIC_DeInit</td>
+<td>将外设  NVIC 寄存器重设为缺省值</td>
+</tr>
+<tr>
+<td><strong>NVIC_PriorityGroupConfig</strong></td>
+<td>设置优先级分组：先占优先级和从优先级</td>
+</tr>
+<tr>
+<td><strong>NVIC_Init</strong></td>
+<td>根据  NVIC_InitStruct 中指定的参数初始化外设 NVIC 寄存器</td>
+</tr>
+<tr>
+<td>NVIC_SystemLPConfig</td>
+<td>选择系统进入低功耗模式的条件</td>
+</tr>
+<tr>
+<td>NVIC_SetVectorTable</td>
+<td>设置向量表的位置和偏移</td>
+</tr>
+</tbody>
+</table>
+<h3 id="nvic_prioritygroupconfig">函数NVIC_PriorityGroupConfig<a class="headerlink" href="#nvic_prioritygroupconfig" title="Permanent link">&para;</a></h3>
+<p><strong>Table 2.</strong> 函数 <strong>NVIC_PriorityGroupConfig</strong> </p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>NVIC_PriorityGroupConfig</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数原形</td>
+<td>void NVIC_PriorityGroupConfig(u32  NVIC_PriorityGroup)</td>
+</tr>
+<tr>
+<td>功能描述</td>
+<td>设置优先级分组：抢占优先级和响应优先级</td>
+</tr>
+<tr>
+<td>输入参数</td>
+<td>NVIC_PriorityGroup：优先级分组位长度   参阅  Section：NVIC_PriorityGroup 查阅更多该参数允许取值范围</td>
+</tr>
+<tr>
+<td>输出参数</td>
+<td>无</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>无</td>
+</tr>
+<tr>
+<td>先决条件</td>
+<td><strong>优先级分组只能设置一次</strong></td>
+</tr>
+<tr>
+<td>被调用函数</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<p><strong>NVIC_PriorityGroup</strong> 该参数设置优先级分组位长度</p>
+<p><strong>Table 3. NVIC_PriorityGroup</strong> 值 </p>
+<table>
+<thead>
+<tr>
+<th><strong>NVIC_PriorityGroup</strong></th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NVIC_PriorityGroup_0</td>
+<td>抢占优先级 0 位，响应优先级  4 位</td>
+</tr>
+<tr>
+<td>NVIC_PriorityGroup_1</td>
+<td>抢占优先级 1 位，响应优先级  3 位</td>
+</tr>
+<tr>
+<td>NVIC_PriorityGroup_2</td>
+<td>抢占优先级 2 位，响应优先级  2 位</td>
+</tr>
+<tr>
+<td>NVIC_PriorityGroup_3</td>
+<td>抢占优先级 3 位，响应优先级  1 位</td>
+</tr>
+<tr>
+<td>NVIC_PriorityGroup_4</td>
+<td>抢占优先级 4 位，响应优先级  0 位</td>
+</tr>
+</tbody>
+</table>
+<p>函数原型：</p>
+<div class="language-c highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">函数原型</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-4-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-4-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-4-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-4-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-4-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-4-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-4-10">10</a></span>
+<span class="normal"><a href="#__codelineno-4-11">11</a></span>
+<span class="normal"><a href="#__codelineno-4-12">12</a></span>
+<span class="normal"><a href="#__codelineno-4-13">13</a></span>
+<span class="normal"><a href="#__codelineno-4-14">14</a></span>
+<span class="normal"><a href="#__codelineno-4-15">15</a></span>
+<span class="normal"><a href="#__codelineno-4-16">16</a></span>
+<span class="normal"><a href="#__codelineno-4-17">17</a></span>
+<span class="normal"><a href="#__codelineno-4-18">18</a></span>
+<span class="normal"><a href="#__codelineno-4-19">19</a></span>
+<span class="normal"><a href="#__codelineno-4-20">20</a></span>
+<span class="normal"><a href="#__codelineno-4-21">21</a></span>
+<span class="normal"><a href="#__codelineno-4-22">22</a></span>
+<span class="normal"><a href="#__codelineno-4-23">23</a></span>
+<span class="normal"><a href="#__codelineno-4-24">24</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="cm">/**</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="cm">  * @brief  Configures the priority grouping: pre-emption priority and subpriority.</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="cm">  * @param  NVIC_PriorityGroup: specifies the priority grouping bits length. </span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="cm">  *   This parameter can be one of the following values:</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="cm">  *     @arg NVIC_PriorityGroup_0: 0 bits for pre-emption priority</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="cm">  *                                4 bits for subpriority</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="cm">  *     @arg NVIC_PriorityGroup_1: 1 bits for pre-emption priority</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="cm">  *                                3 bits for subpriority</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="cm">  *     @arg NVIC_PriorityGroup_2: 2 bits for pre-emption priority</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="cm">  *                                2 bits for subpriority</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11"></a><span class="cm">  *     @arg NVIC_PriorityGroup_3: 3 bits for pre-emption priority</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12"></a><span class="cm">  *                                1 bits for subpriority</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13"></a><span class="cm">  *     @arg NVIC_PriorityGroup_4: 4 bits for pre-emption priority</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14"></a><span class="cm">  *                                0 bits for subpriority</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15"></a><span class="cm">  * @retval None</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16"></a><span class="cm">  */</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17"></a><span class="kt">void</span><span class="w"> </span><span class="nf">NVIC_PriorityGroupConfig</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">NVIC_PriorityGroup</span><span class="p">)</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18"></a><span class="p">{</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19"></a><span class="w">  </span><span class="cm">/* Check the parameters */</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20"></a><span class="w">  </span><span class="n">assert_param</span><span class="p">(</span><span class="n">IS_NVIC_PRIORITY_GROUP</span><span class="p">(</span><span class="n">NVIC_PriorityGroup</span><span class="p">));</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21"></a>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22"></a><span class="w">  </span><span class="cm">/* Set the PRIGROUP[10:8] bits according to NVIC_PriorityGroup value */</span>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23"></a><span class="w">  </span><span class="n">SCB</span><span class="o">-&gt;</span><span class="n">AIRCR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AIRCR_VECTKEY_MASK</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">NVIC_PriorityGroup</span><span class="p">;</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<p>例： </p>
+<div class="language-c highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">例</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
+<span class="normal"><a href="#__codelineno-5-2">2</a></span>
+<span class="normal"><a href="#__codelineno-5-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="cm">/* Configure the Priority Grouping with 1 bit */</span><span class="w"> </span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="n">NVIC_PriorityGroupConfig</span><span class="p">(</span><span class="n">NVIC_PriorityGroup_1</span><span class="p">);</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="nvic_init">函数NVIC_Init<a class="headerlink" href="#nvic_init" title="Permanent link">&para;</a></h3>
+<p><strong>Table 4.</strong> 函数 <strong>NVIC_Init</strong> </p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>NVIC_Init</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数原形</td>
+<td>void NVIC_Init(NVIC_InitTypeDef*  NVIC_InitStruct)</td>
+</tr>
+<tr>
+<td>功能描述</td>
+<td>根据  NVIC_InitStruct 中指定的参数初始化外设 NVIC 寄存器</td>
+</tr>
+<tr>
+<td>输入参数</td>
+<td>NVIC_InitStruct：指向结构 NVIC_InitTypeDef  的指针，包含了外设 GPIO 的配置信息参阅  Section：NVIC_InitTypeDef 查阅更多该参数允许取值范围</td>
+</tr>
+<tr>
+<td>输出参数</td>
+<td>无</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>无</td>
+</tr>
+<tr>
+<td>先决条件</td>
+<td>无</td>
+</tr>
+<tr>
+<td>被调用函数</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<p><strong>NVIC_InitTypeDef structure</strong> </p>
+<div class="language-C highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-6-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-6-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-6-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-6-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-6-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-6-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-6-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="n">NVIC_InitTypeDef</span><span class="w"> </span><span class="n">定义于文件</span><span class="err">“</span><span class="n">stm32f10x_nvic</span><span class="p">.</span><span class="n">h</span><span class="err">”：</span><span class="w"> </span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="p">{</span><span class="w"> </span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="n">u8</span><span class="w"> </span><span class="n">NVIC_IRQChannel</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="n">u8</span><span class="w"> </span><span class="n">NVIC_IRQChannelPreemptionPriority</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="n">u8</span><span class="w"> </span><span class="n">NVIC_IRQChannelSubPriority</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="n">FunctionalState</span><span class="w"> </span><span class="n">NVIC_IRQChannelCmd</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="p">}</span><span class="w"> </span><span class="n">NVIC_InitTypeDef</span><span class="p">;</span><span class="w"> </span>
+</span></code></pre></div></td></tr></table></div>
+<h4 id="nvic_irqchannel">参数 NVIC_IRQChannel<a class="headerlink" href="#nvic_irqchannel" title="Permanent link">&para;</a></h4>
+<p><strong>该参数用以使能或者失能指定的 IRQ 通道。</strong> </p>
+<p><strong>Table 5. NVIC_IRQChannel</strong> 值 </p>
+<table>
+<thead>
+<tr>
+<th><strong>NVIC_IRQChannel</strong></th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WWDG_IRQn</td>
+<td>窗口看门狗中断</td>
+</tr>
+<tr>
+<td>PVD_IRQn</td>
+<td>PVD 通过 EXTI 探测中断</td>
+</tr>
+<tr>
+<td>TAMPER_IRQn</td>
+<td>篡改中断</td>
+</tr>
+<tr>
+<td>RTC_IRQn</td>
+<td>RTC 全局中断</td>
+</tr>
+<tr>
+<td>FlashItf_IRQn</td>
+<td>FLASH 全局中断</td>
+</tr>
+<tr>
+<td>RCC_IRQn</td>
+<td>RCC 全局中断</td>
+</tr>
+<tr>
+<td>EXTI0_IRQn</td>
+<td>外部中断线  0 中断</td>
+</tr>
+<tr>
+<td>EXTI1_IRQnl</td>
+<td>外部中断线  1 中断</td>
+</tr>
+<tr>
+<td>EXTI2_IRQn</td>
+<td>外部中断线  2 中断</td>
+</tr>
+<tr>
+<td>EXTI3_IRQn</td>
+<td>外部中断线  3 中断</td>
+</tr>
+<tr>
+<td>EXTI4_IRQn</td>
+<td>外部中断线  4 中断</td>
+</tr>
+<tr>
+<td>DMAChannel1_IRQn</td>
+<td>DMA 通道 1 中断</td>
+</tr>
+<tr>
+<td>DMAChannel2_IRQn</td>
+<td>DMA 通道 2 中断</td>
+</tr>
+<tr>
+<td>DMAChannel3_IRQn</td>
+<td>DMA 通道 3 中断</td>
+</tr>
+<tr>
+<td>DMAChannel4_IRQn</td>
+<td>DMA 通道 4 中断</td>
+</tr>
+<tr>
+<td>DMAChannel5_IRQn</td>
+<td>DMA 通道 5 中断</td>
+</tr>
+<tr>
+<td>DMAChannel6_IRQn</td>
+<td>DMA 通道 6 中断</td>
+</tr>
+<tr>
+<td>DMAChannel7_IRQn</td>
+<td>DMA 通道 7 中断</td>
+</tr>
+<tr>
+<td>ADC_IRQn</td>
+<td>ADC 全局中断</td>
+</tr>
+<tr>
+<td>USB_HP_CANTX_IRQn</td>
+<td>USB 高优先级或者 CAN 发送中断</td>
+</tr>
+<tr>
+<td>USB_LP_CAN_RX0_IRQn</td>
+<td>USB 低优先级或者 CAN 接收 0 中断</td>
+</tr>
+<tr>
+<td>CAN_RX1_IRQn</td>
+<td>CAN 接收 1 中断</td>
+</tr>
+<tr>
+<td>CAN_SCE_IRQn</td>
+<td>CAN SCE 中断</td>
+</tr>
+<tr>
+<td>EXTI9_5_IRQn</td>
+<td>外部中断线  9-5 中断</td>
+</tr>
+<tr>
+<td>TIM1_BRK_IRQn</td>
+<td>TIM1 暂停中断</td>
+</tr>
+<tr>
+<td>TIM1_UP_IRQn</td>
+<td>TIM1 刷新中断</td>
+</tr>
+<tr>
+<td>TIM1_TRG_COM_IRQn</td>
+<td>TIM1 触发和通讯中断</td>
+</tr>
+<tr>
+<td>TIM1_CC_IRQn</td>
+<td>TIM1 捕获比较中断</td>
+</tr>
+<tr>
+<td>TIM2_IRQn</td>
+<td>TIM2 全局中断</td>
+</tr>
+<tr>
+<td>TIM3_IRQn</td>
+<td>TIM3 全局中断</td>
+</tr>
+<tr>
+<td>TIM4_IRQn</td>
+<td>TIM4 全局中断</td>
+</tr>
+<tr>
+<td>I2C1_EV_IRQn</td>
+<td>I2C1 事件中断</td>
+</tr>
+<tr>
+<td>I2C1_ER_IRQn</td>
+<td>I2C1 错误中断</td>
+</tr>
+<tr>
+<td>I2C2_EV_IRQn</td>
+<td>I2C2 事件中断</td>
+</tr>
+<tr>
+<td>I2C2_ER_IRQn</td>
+<td>I2C2 错误中断</td>
+</tr>
+<tr>
+<td>SPI1_IRQn</td>
+<td>SPI1 全局中断</td>
+</tr>
+<tr>
+<td>SPI2_IRQn</td>
+<td>SPI2 全局中断</td>
+</tr>
+<tr>
+<td>USART1_IRQn</td>
+<td>USART1 全局中断</td>
+</tr>
+<tr>
+<td>USART2_IRQn</td>
+<td>USART2 全局中断</td>
+</tr>
+<tr>
+<td>USART3_IRQn</td>
+<td>USART3 全局中断</td>
+</tr>
+<tr>
+<td>EXTI15_10_IRQn</td>
+<td>外部中断线  15-10 中断</td>
+</tr>
+<tr>
+<td>RTCAlarm_IRQn</td>
+<td>RTC 闹钟通过 EXTI 线中断</td>
+</tr>
+<tr>
+<td>USBWakeUp_IRQn</td>
+<td>USB 通过 EXTI 线从悬挂唤醒中断</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="nvic_irqchannelpreemptionpriority">参数 NVIC_IRQChannelPreemptionPriority<a class="headerlink" href="#nvic_irqchannelpreemptionpriority" title="Permanent link">&para;</a></h4>
+<p><strong>该参数设置了成员 NVIC_IRQChannel 中的抢占优先级</strong></p>
+<hr />
+<h4 id="nvic_irqchannelsubpriority">参数 NVIC_IRQChannelSubPriority<a class="headerlink" href="#nvic_irqchannelsubpriority" title="Permanent link">&para;</a></h4>
+<p><strong>该参数设置了成员 NVIC_IRQChannel 中的响应优先级</strong></p>
+<p>下表给出了由函数 NVIC_PriorityGroupConfig 设置的抢占优先级和响应优先级可取的值</p>
+<p><strong>Table 6.</strong> 抢占优先级和响应优先级值</p>
+<table>
+<thead>
+<tr>
+<th><strong>NVIC_PriorityGroup</strong></th>
+<th><strong>NVIC_IRQChannel</strong> 的抢占优先级</th>
+<th><strong>NVIC_IRQChannel</strong> 的响应优先级</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NVIC_PriorityGroup_0</td>
+<td>0</td>
+<td>0-15</td>
+<td>抢占优先级 0 位，响应优先级  4 位</td>
+</tr>
+<tr>
+<td>NVIC_PriorityGroup_1</td>
+<td>0-1</td>
+<td>0-7</td>
+<td>抢占优先级 1 位，响应优先级  3 位</td>
+</tr>
+<tr>
+<td>NVIC_PriorityGroup_2</td>
+<td>0-3</td>
+<td>0-3</td>
+<td>抢占优先级 2 位，响应优先级  2 位</td>
+</tr>
+<tr>
+<td>NVIC_PriorityGroup_3</td>
+<td>0-7</td>
+<td>0-1</td>
+<td>抢占优先级 3 位，响应优先级  1 位</td>
+</tr>
+<tr>
+<td>NVIC_PriorityGroup_4</td>
+<td>0-15</td>
+<td>0</td>
+<td>抢占优先级 4 位，响应优先级  0 位</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>选中NVIC_PriorityGroup_0，则参数NVIC_IRQChannelPreemptionPriority对中断通道的设置不产生影响。 </li>
+<li>选中 NVIC_PriorityGroup_4，则参数 NVIC_IRQChannelSubPriority 对中断通道的设置不产生影响。</li>
+</ol>
+<hr />
+<h4 id="nvic_irqchannelcmd">参数 NVIC_IRQChannelCmd<a class="headerlink" href="#nvic_irqchannelcmd" title="Permanent link">&para;</a></h4>
+<p><strong>该参数指定了在成员 NVIC_IRQChannel 中定义的 IRQ 通道被使能还是失能。</strong></p>
+<p>这个参数取值为 ENABLE 或者 DISABLE。 </p>
+<p>例：</p>
+<div class="language-C highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-7-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-7-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-7-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-7-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-7-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-7-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-7-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-7-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-7-10">10</a></span>
+<span class="normal"><a href="#__codelineno-7-11">11</a></span>
+<span class="normal"><a href="#__codelineno-7-12">12</a></span>
+<span class="normal"><a href="#__codelineno-7-13">13</a></span>
+<span class="normal"><a href="#__codelineno-7-14">14</a></span>
+<span class="normal"><a href="#__codelineno-7-15">15</a></span>
+<span class="normal"><a href="#__codelineno-7-16">16</a></span>
+<span class="normal"><a href="#__codelineno-7-17">17</a></span>
+<span class="normal"><a href="#__codelineno-7-18">18</a></span>
+<span class="normal"><a href="#__codelineno-7-19">19</a></span>
+<span class="normal"><a href="#__codelineno-7-20">20</a></span>
+<span class="normal"><a href="#__codelineno-7-21">21</a></span>
+<span class="normal"><a href="#__codelineno-7-22">22</a></span>
+<span class="normal"><a href="#__codelineno-7-23">23</a></span>
+<span class="normal"><a href="#__codelineno-7-24">24</a></span>
+<span class="normal"><a href="#__codelineno-7-25">25</a></span>
+<span class="normal"><a href="#__codelineno-7-26">26</a></span>
+<span class="normal"><a href="#__codelineno-7-27">27</a></span>
+<span class="normal"><a href="#__codelineno-7-28">28</a></span>
+<span class="normal"><a href="#__codelineno-7-29">29</a></span>
+<span class="normal"><a href="#__codelineno-7-30">30</a></span>
+<span class="normal"><a href="#__codelineno-7-31">31</a></span>
+<span class="normal"><a href="#__codelineno-7-32">32</a></span>
+<span class="normal"><a href="#__codelineno-7-33">33</a></span>
+<span class="normal"><a href="#__codelineno-7-34">34</a></span>
+<span class="normal"><a href="#__codelineno-7-35">35</a></span>
+<span class="normal"><a href="#__codelineno-7-36">36</a></span>
+<span class="normal"><a href="#__codelineno-7-37">37</a></span>
+<span class="normal"><a href="#__codelineno-7-38">38</a></span>
+<span class="normal"><a href="#__codelineno-7-39">39</a></span>
+<span class="normal"><a href="#__codelineno-7-40">40</a></span>
+<span class="normal"><a href="#__codelineno-7-41">41</a></span>
+<span class="normal"><a href="#__codelineno-7-42">42</a></span>
+<span class="normal"><a href="#__codelineno-7-43">43</a></span>
+<span class="normal"><a href="#__codelineno-7-44">44</a></span>
+<span class="normal"><a href="#__codelineno-7-45">45</a></span>
+<span class="normal"><a href="#__codelineno-7-46">46</a></span>
+<span class="normal"><a href="#__codelineno-7-47">47</a></span>
+<span class="normal"><a href="#__codelineno-7-48">48</a></span>
+<span class="normal"><a href="#__codelineno-7-49">49</a></span>
+<span class="normal"><a href="#__codelineno-7-50">50</a></span>
+<span class="normal"><a href="#__codelineno-7-51">51</a></span>
+<span class="normal"><a href="#__codelineno-7-52">52</a></span>
+<span class="normal"><a href="#__codelineno-7-53">53</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="n">NVIC_InitTypeDef</span><span class="w"> </span><span class="n">NVIC_InitStructure</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="cm">/* Configure the Priority Grouping with 1 bit */</span><span class="w"> </span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="n">NVIC_PriorityGroupConfig</span><span class="p">(</span><span class="n">NVIC_PriorityGroup_1</span><span class="p">);</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6"></a>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7"></a><span class="cm">/* Enable TIM3 global interrupt with Preemption Priority 0 and Sub </span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8"></a>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9"></a><span class="cm">Priority as 2 */</span><span class="w"> </span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10"></a>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11"></a><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TIM3_IRQn</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12"></a>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13"></a><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelPreemptionPriority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14"></a>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15"></a><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelSubPriority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16"></a>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17"></a><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18"></a>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19"></a><span class="n">NVIC_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">NVIC_InitStructure</span><span class="p">);</span>
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20"></a>
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21"></a><span class="cm">/* Enable USART1 global interrupt with Preemption Priority 1 and Sub </span>
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22"></a>
+</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23"></a><span class="cm">Priority as 5 */</span><span class="w"> </span>
+</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24"></a>
+</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25"></a><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART1_IRQn</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26"></a>
+</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27"></a><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelPreemptionPriority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28"></a>
+</span><span id="__span-7-29"><a id="__codelineno-7-29" name="__codelineno-7-29"></a><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelSubPriority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-7-30"><a id="__codelineno-7-30" name="__codelineno-7-30"></a>
+</span><span id="__span-7-31"><a id="__codelineno-7-31" name="__codelineno-7-31"></a><span class="n">NVIC_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">NVIC_InitStructure</span><span class="p">);</span>
+</span><span id="__span-7-32"><a id="__codelineno-7-32" name="__codelineno-7-32"></a>
+</span><span id="__span-7-33"><a id="__codelineno-7-33" name="__codelineno-7-33"></a><span class="cm">/* Enable RTC global interrupt with Preemption Priority 1 and Sub </span>
+</span><span id="__span-7-34"><a id="__codelineno-7-34" name="__codelineno-7-34"></a>
+</span><span id="__span-7-35"><a id="__codelineno-7-35" name="__codelineno-7-35"></a><span class="cm">Priority as 7 */</span><span class="w"> </span>
+</span><span id="__span-7-36"><a id="__codelineno-7-36" name="__codelineno-7-36"></a>
+</span><span id="__span-7-37"><a id="__codelineno-7-37" name="__codelineno-7-37"></a><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RTC_IRQn</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-7-38"><a id="__codelineno-7-38" name="__codelineno-7-38"></a>
+</span><span id="__span-7-39"><a id="__codelineno-7-39" name="__codelineno-7-39"></a><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelSubPriority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-7-40"><a id="__codelineno-7-40" name="__codelineno-7-40"></a>
+</span><span id="__span-7-41"><a id="__codelineno-7-41" name="__codelineno-7-41"></a><span class="n">NVIC_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">NVIC_InitStructure</span><span class="p">);</span>
+</span><span id="__span-7-42"><a id="__codelineno-7-42" name="__codelineno-7-42"></a>
+</span><span id="__span-7-43"><a id="__codelineno-7-43" name="__codelineno-7-43"></a><span class="cm">/* Enable EXTI4 interrupt with Preemption Priority 1 and Sub </span>
+</span><span id="__span-7-44"><a id="__codelineno-7-44" name="__codelineno-7-44"></a>
+</span><span id="__span-7-45"><a id="__codelineno-7-45" name="__codelineno-7-45"></a><span class="cm">Priority as 7 */</span><span class="w"> </span>
+</span><span id="__span-7-46"><a id="__codelineno-7-46" name="__codelineno-7-46"></a>
+</span><span id="__span-7-47"><a id="__codelineno-7-47" name="__codelineno-7-47"></a><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EXTI4_IRQn</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-7-48"><a id="__codelineno-7-48" name="__codelineno-7-48"></a>
+</span><span id="__span-7-49"><a id="__codelineno-7-49" name="__codelineno-7-49"></a><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelSubPriority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-7-50"><a id="__codelineno-7-50" name="__codelineno-7-50"></a>
+</span><span id="__span-7-51"><a id="__codelineno-7-51" name="__codelineno-7-51"></a><span class="n">NVIC_InitStructure</span><span class="p">(</span><span class="o">&amp;</span><span class="n">NVIC_InitStructure</span><span class="p">);</span>
+</span><span id="__span-7-52"><a id="__codelineno-7-52" name="__codelineno-7-52"></a>
+</span><span id="__span-7-53"><a id="__codelineno-7-53" name="__codelineno-7-53"></a><span class="cm">/* TIM3 interrupt priority is higher than USART1, RTC and EXTI4 interrupts priorities. USART1 interrupt priority is higher than RTC and EXTI4 interrupts priorities. RTC interrupt priority is higher than EXTI4 interrupt prioriy. */</span><span class="w"> </span>
+</span></code></pre></div></td></tr></table></div>
+<p><strong>Table 7. EXTI</strong> 库函数 </p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EXTI_DeInit</td>
+<td>将外设  EXTI 寄存器重设为缺省值</td>
+</tr>
+<tr>
+<td><strong>EXTI_Init</strong></td>
+<td>根据  EXTI_InitStruct 中指定的参数初始化外设 EXTI 寄存器</td>
+</tr>
+<tr>
+<td>EXTI_StructInit</td>
+<td>把 EXTI_InitStruct 中的每一个参数按缺省值填入</td>
+</tr>
+<tr>
+<td>EXTI_GenerateSWInterrupt</td>
+<td>产生一个软件中断</td>
+</tr>
+<tr>
+<td><strong>EXTI_GetFlagStatus</strong></td>
+<td>检查指定的  EXTI 线路标志位设置与否</td>
+</tr>
+<tr>
+<td><strong>EXTI_ClearFlag</strong></td>
+<td>清除  EXTI 线路挂起标志位</td>
+</tr>
+<tr>
+<td><strong>EXTI_GetITStatus</strong></td>
+<td>检查指定的  EXTI 线路触发请求发生与否</td>
+</tr>
+<tr>
+<td><strong>EXTI_ClearITPendingBit</strong></td>
+<td>清除  EXTI 线路挂起位</td>
+</tr>
+</tbody>
+</table>
+<h3 id="exti_init">函数 EXTI_Init<a class="headerlink" href="#exti_init" title="Permanent link">&para;</a></h3>
+<p><strong>Table 8.</strong> 函数 <strong>EXTI_Init</strong> </p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>EXTI_Init</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数原形</td>
+<td>void EXTI_Init(EXTI_InitTypeDef*  EXTI_InitStruct)</td>
+</tr>
+<tr>
+<td>功能描述</td>
+<td>根据  EXTI_InitStruct 中指定的参数初始化外设 EXTI 寄存器</td>
+</tr>
+<tr>
+<td>输入参数</td>
+<td>EXTI_InitStruct：指向结构 EXTI_InitTypeDef  的指针，包含了外设 EXTI 的配置信息参阅  Section：EXTI_InitTypeDef 查阅更多该参数允许取值范围</td>
+</tr>
+<tr>
+<td>输出参数</td>
+<td>无</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>无</td>
+</tr>
+<tr>
+<td>先决条件</td>
+<td>无</td>
+</tr>
+<tr>
+<td>被调用函数</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EXTI_InitTypeDef structure</strong> </p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-8-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-8-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-8-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-8-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-8-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-8-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-8-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-8-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-8-10">10</a></span>
+<span class="normal"><a href="#__codelineno-8-11">11</a></span>
+<span class="normal"><a href="#__codelineno-8-12">12</a></span>
+<span class="normal"><a href="#__codelineno-8-13">13</a></span>
+<span class="normal"><a href="#__codelineno-8-14">14</a></span>
+<span class="normal"><a href="#__codelineno-8-15">15</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="n">EXTI_InitTypeDef</span><span class="w"> </span><span class="n">定义于文件</span><span class="err">“</span><span class="n">stm32f10x_exti</span><span class="p">.</span><span class="n">h</span><span class="err">”：</span><span class="w"> </span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4"></a>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="p">{</span><span class="w"> </span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6"></a>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7"></a><span class="n">u32</span><span class="w"> </span><span class="n">EXTI_Line</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8"></a>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9"></a><span class="n">EXTIMode_TypeDef</span><span class="w"> </span><span class="n">EXTI_Mode</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10"></a>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11"></a><span class="n">EXTIrigger_TypeDef</span><span class="w"> </span><span class="n">EXTI_Trigger</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12"></a>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13"></a><span class="n">FunctionalState</span><span class="w"> </span><span class="n">EXTI_LineCmd</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14"></a>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15"></a><span class="p">}</span><span class="w"> </span><span class="n">EXTI_InitTypeDef</span><span class="p">;</span>
+</span></code></pre></div></td></tr></table></div>
+<h4 id="exti_line">参数 EXTI_Line<a class="headerlink" href="#exti_line" title="Permanent link">&para;</a></h4>
+<p>EXTI_Line 选择了待使能或者失能的外部线路。</p>
+<p><strong>Table 9. EXTI_Line</strong> 值 </p>
+<table>
+<thead>
+<tr>
+<th><strong>EXTI_Line</strong></th>
+<th></th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EXTI_Line0</td>
+<td>外部中断线 0</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line1</td>
+<td>外部中断线 1</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line2</td>
+<td>外部中断线 2</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line3</td>
+<td>外部中断线 3</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line4</td>
+<td>外部中断线 4</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line5</td>
+<td>外部中断线 5</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line6</td>
+<td>外部中断线 6</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line7</td>
+<td>外部中断线 7</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line8</td>
+<td>外部中断线 8</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line9</td>
+<td>外部中断线 9</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line10</td>
+<td>外部中断线 10</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line11</td>
+<td>外部中断线 11</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line12</td>
+<td>外部中断线 12</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line13</td>
+<td>外部中断线 13</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line14</td>
+<td>外部中断线 14</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line15</td>
+<td>外部中断线 15</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line16</td>
+<td>外部中断线 16</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line17</td>
+<td>外部中断线 17</td>
+<td></td>
+</tr>
+<tr>
+<td>EXTI_Line18</td>
+<td>外部中断线 18</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="exti_mode">参数 EXTI_Mode<a class="headerlink" href="#exti_mode" title="Permanent link">&para;</a></h4>
+<p>EXTI_Mode 设置了被使能线路的模式。 </p>
+<p><strong>Table 10. EXTI_Mode</strong> 值 </p>
+<table>
+<thead>
+<tr>
+<th><strong>EXTI_Mode</strong></th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EXTI_Mode_Event</td>
+<td>设置  EXTI 线路为事件请求</td>
+</tr>
+<tr>
+<td>EXTI_Mode_Interrupt</td>
+<td>设置  EXTI 线路为中断请求</td>
+</tr>
+</tbody>
+</table>
+<h4 id="exti_trigger">参数 EXTI_Trigger<a class="headerlink" href="#exti_trigger" title="Permanent link">&para;</a></h4>
+<p>EXTI_Trigger 设置了被使能线路的触发边沿。</p>
+<p><strong>Table 11. EXTI_Trigger</strong> 值 </p>
+<table>
+<thead>
+<tr>
+<th><strong>EXTI_Trigger</strong></th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EXTI_Trigger_Falling</td>
+<td>设置输入线路下降沿为中断请求</td>
+</tr>
+<tr>
+<td>EXTI_Trigger_Rising</td>
+<td>设置输入线路上升沿为中断请求</td>
+</tr>
+<tr>
+<td>EXTI_Trigger_Rising_Falling</td>
+<td>设置输入线路上升沿和下降沿为中断请求</td>
+</tr>
+</tbody>
+</table>
+<h4 id="exti_linecmd">参数 EXTI_LineCmd<a class="headerlink" href="#exti_linecmd" title="Permanent link">&para;</a></h4>
+<p>EXTI_LineCmd 用来定义选中线路的新状态。它可以被设为 ENABLE 或者 DISABLE。</p>
+<p>例：</p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-9-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-9-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-9-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-9-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-9-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-9-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-9-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-9-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="cm">/* Enables external lines 12 and 14 interrupt generation on falling edge */</span><span class="w"> </span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="n">EXTI_InitTypeDef</span><span class="w"> </span><span class="n">EXTI_InitStructure</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="n">EXTI_InitStructure</span><span class="p">.</span><span class="n">EXTI_Line</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EXTI_Line12</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">EXTI_Line14</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a><span class="n">EXTI_InitStructure</span><span class="p">.</span><span class="n">EXTI_Mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EXTI_Mode_Interrupt</span><span class="p">;</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="n">EXTI_InitStructure</span><span class="p">.</span><span class="n">EXTI_Trigger</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EXTI_Trigger_Falling</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8"></a><span class="n">EXTI_InitStructure</span><span class="p">.</span><span class="n">EXTI_LineCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9"></a>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10"></a><span class="n">EXTI_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">EXTI_InitStructure</span><span class="p">);</span><span class="w"> </span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="exti_getitstatus">函数 EXTI_GetITStatus<a class="headerlink" href="#exti_getitstatus" title="Permanent link">&para;</a></h3>
+<p><strong>Table 12.</strong> 函数 <strong>EXTI_GetITStatus</strong> </p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>EXTI_GetITStatus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数原形</td>
+<td>ITStatus EXTI_GetITStatus(u32  EXTI_Line)</td>
+</tr>
+<tr>
+<td>功能描述</td>
+<td>检查指定的  EXTI 线路触发请求发生与否</td>
+</tr>
+<tr>
+<td>输入参数</td>
+<td>EXTI_Line：待检查 EXTI 线路的挂起位参阅 Section：EXTI_Line 查阅更多该参数允许取值范围（表）</td>
+</tr>
+<tr>
+<td>输出参数</td>
+<td>无</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td><strong>EXTI_Line 的新状态（SET  或者 RESET）</strong></td>
+</tr>
+<tr>
+<td>先决条件</td>
+<td>无</td>
+</tr>
+<tr>
+<td>被调用函数</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<p>函数原型：</p>
+<div class="language-c highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">函数原型</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-10-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-10-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-10-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-10-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-10-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-10-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-10-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-10-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-10-10">10</a></span>
+<span class="normal"><a href="#__codelineno-10-11">11</a></span>
+<span class="normal"><a href="#__codelineno-10-12">12</a></span>
+<span class="normal"><a href="#__codelineno-10-13">13</a></span>
+<span class="normal"><a href="#__codelineno-10-14">14</a></span>
+<span class="normal"><a href="#__codelineno-10-15">15</a></span>
+<span class="normal"><a href="#__codelineno-10-16">16</a></span>
+<span class="normal"><a href="#__codelineno-10-17">17</a></span>
+<span class="normal"><a href="#__codelineno-10-18">18</a></span>
+<span class="normal"><a href="#__codelineno-10-19">19</a></span>
+<span class="normal"><a href="#__codelineno-10-20">20</a></span>
+<span class="normal"><a href="#__codelineno-10-21">21</a></span>
+<span class="normal"><a href="#__codelineno-10-22">22</a></span>
+<span class="normal"><a href="#__codelineno-10-23">23</a></span>
+<span class="normal"><a href="#__codelineno-10-24">24</a></span>
+<span class="normal"><a href="#__codelineno-10-25">25</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="cm">/**</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="cm">  * @brief  Checks whether the specified EXTI line is asserted or not.</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="cm">  * @param  EXTI_Line: specifies the EXTI line to check.</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="cm">  *   This parameter can be:</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5"></a><span class="cm">  *     @arg EXTI_Linex: External interrupt line x where x(0..19)</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="cm">  * @retval The new state of EXTI_Line (SET or RESET).</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7"></a><span class="cm">  */</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8"></a><span class="n">ITStatus</span><span class="w"> </span><span class="nf">EXTI_GetITStatus</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">EXTI_Line</span><span class="p">)</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9"></a><span class="p">{</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10"></a><span class="w">  </span><span class="n">ITStatus</span><span class="w"> </span><span class="n">bitstatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RESET</span><span class="p">;</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11"></a><span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">enablestatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12"></a><span class="w">  </span><span class="cm">/* Check the parameters */</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13"></a><span class="w">  </span><span class="n">assert_param</span><span class="p">(</span><span class="n">IS_GET_EXTI_LINE</span><span class="p">(</span><span class="n">EXTI_Line</span><span class="p">));</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14"></a>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15"></a><span class="w">  </span><span class="n">enablestatus</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="n">EXTI</span><span class="o">-&gt;</span><span class="n">IMR</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">EXTI_Line</span><span class="p">;</span>
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(((</span><span class="n">EXTI</span><span class="o">-&gt;</span><span class="n">PR</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">EXTI_Line</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">RESET</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">enablestatus</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">RESET</span><span class="p">))</span>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18"></a><span class="w">    </span><span class="n">bitstatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SET</span><span class="p">;</span>
+</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20"></a><span class="w">  </span><span class="k">else</span>
+</span><span id="__span-10-21"><a id="__codelineno-10-21" name="__codelineno-10-21"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-10-22"><a id="__codelineno-10-22" name="__codelineno-10-22"></a><span class="w">    </span><span class="n">bitstatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RESET</span><span class="p">;</span>
+</span><span id="__span-10-23"><a id="__codelineno-10-23" name="__codelineno-10-23"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-10-24"><a id="__codelineno-10-24" name="__codelineno-10-24"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">bitstatus</span><span class="p">;</span>
+</span><span id="__span-10-25"><a id="__codelineno-10-25" name="__codelineno-10-25"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<p>例： </p>
+<div class="language-c highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">例</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span>
+<span class="normal"><a href="#__codelineno-11-2">2</a></span>
+<span class="normal"><a href="#__codelineno-11-3">3</a></span>
+<span class="normal"><a href="#__codelineno-11-4">4</a></span>
+<span class="normal"><a href="#__codelineno-11-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="cm">/* Get the status of EXTI line 8 */</span><span class="w"> </span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2"></a>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="n">ITStatus</span><span class="w"> </span><span class="n">EXTIStatus</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4"></a>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="n">EXTIStatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">EXTI_GetITStatus</span><span class="p">(</span><span class="n">EXTI_Line8</span><span class="p">);</span><span class="w"> </span>
+</span></code></pre></div></td></tr></table></div>
+<hr />
+<h3 id="exti_clearitpendingbit">函数 EXTI_ClearITPendingBit<a class="headerlink" href="#exti_clearitpendingbit" title="Permanent link">&para;</a></h3>
+<p><strong>Table 13.</strong> 函数 <strong>EXTI_ClearITPendingBit</strong> </p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>EXTI_ClearITPendingBit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数原形</td>
+<td>void EXTI_ClearITPendingBit(u32  EXTI_Line)</td>
+</tr>
+<tr>
+<td>功能描述</td>
+<td>清除  EXTI 线路挂起位</td>
+</tr>
+<tr>
+<td>输入参数</td>
+<td>EXTI_Line：待清除 EXTI 线路的挂起位参阅 Section：EXTI_Line 查阅更多该参数允许取值范围</td>
+</tr>
+<tr>
+<td>输出参数</td>
+<td>无</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>无</td>
+</tr>
+<tr>
+<td>先决条件</td>
+<td>无</td>
+</tr>
+<tr>
+<td>被调用函数</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<p>例： </p>
+<div class="language-c highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">例</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
+<span class="normal"><a href="#__codelineno-12-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="cm">/* Clears the EXTI line 2 interrupt pending bit */</span><span class="w"> </span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="n">EXTI_ClearITPendingBit</span><span class="p">(</span><span class="n">EXTI_Line2</span><span class="p">);</span><span class="w"> </span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="gpio_extilineconfig">函数 GPIO_EXTILineConfig<a class="headerlink" href="#gpio_extilineconfig" title="Permanent link">&para;</a></h3>
+<p><strong>Table 14.     GPIO_EXTILineConfig</strong></p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>GPIO_EXTILineConfig</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数原形</td>
+<td>void GPIO_EXTILineConfig(u8  GPIO_PortSource, u8 GPIO_PinSource)</td>
+</tr>
+<tr>
+<td>功能描述</td>
+<td>选择 GPIO 管脚用作外部中断线路</td>
+</tr>
+<tr>
+<td>输入参数  1</td>
+<td>GPIO_PortSource: 选择用作外部中断线源的 GPIO 端口参阅 Section：GPIO_PortSource  查阅更多该参数允许取值范围</td>
+</tr>
+<tr>
+<td>输入参数  2</td>
+<td>GPIO_PinSource：待设置的外部中断线路该参数可以取 GPIO_PinSourcex(x  可以是 0-15)</td>
+</tr>
+<tr>
+<td>输出参数</td>
+<td>无</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>无</td>
+</tr>
+<tr>
+<td>先决条件</td>
+<td>无</td>
+</tr>
+<tr>
+<td>被调用函数</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<p><strong>函数原型:</strong></p>
+<div class="language-c highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">函数原型</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-13-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-13-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-13-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-13-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-13-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-13-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-13-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-13-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-13-10">10</a></span>
+<span class="normal"><a href="#__codelineno-13-11">11</a></span>
+<span class="normal"><a href="#__codelineno-13-12">12</a></span>
+<span class="normal"><a href="#__codelineno-13-13">13</a></span>
+<span class="normal"><a href="#__codelineno-13-14">14</a></span>
+<span class="normal"><a href="#__codelineno-13-15">15</a></span>
+<span class="normal"><a href="#__codelineno-13-16">16</a></span>
+<span class="normal"><a href="#__codelineno-13-17">17</a></span>
+<span class="normal"><a href="#__codelineno-13-18">18</a></span>
+<span class="normal"><a href="#__codelineno-13-19">19</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="cm">/**</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="cm">  * @brief  Selects the GPIO pin used as EXTI Line.</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="cm">  * @param  GPIO_PortSource: selects the GPIO port to be used as source for EXTI lines.</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="cm">  *   This parameter can be GPIO_PortSourceGPIOx where x can be (A..G).</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="cm">  * @param  GPIO_PinSource: specifies the EXTI line to be configured.</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6"></a><span class="cm">  *   This parameter can be GPIO_PinSourcex where x can be (0..15).</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7"></a><span class="cm">  * @retval None</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8"></a><span class="cm">  */</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9"></a><span class="kt">void</span><span class="w"> </span><span class="nf">GPIO_EXTILineConfig</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">GPIO_PortSource</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">GPIO_PinSource</span><span class="p">)</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10"></a><span class="p">{</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11"></a><span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x00</span><span class="p">;</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12"></a><span class="w">  </span><span class="cm">/* Check the parameters */</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13"></a><span class="w">  </span><span class="n">assert_param</span><span class="p">(</span><span class="n">IS_GPIO_EXTI_PORT_SOURCE</span><span class="p">(</span><span class="n">GPIO_PortSource</span><span class="p">));</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14"></a><span class="w">  </span><span class="n">assert_param</span><span class="p">(</span><span class="n">IS_GPIO_PIN_SOURCE</span><span class="p">(</span><span class="n">GPIO_PinSource</span><span class="p">));</span>
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15"></a>
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16"></a><span class="w">  </span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="kt">uint32_t</span><span class="p">)</span><span class="mh">0x0F</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="mh">0x04</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">GPIO_PinSource</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="mh">0x03</span><span class="p">));</span>
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17"></a><span class="w">  </span><span class="n">AFIO</span><span class="o">-&gt;</span><span class="n">EXTICR</span><span class="p">[</span><span class="n">GPIO_PinSource</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mh">0x02</span><span class="p">]</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="o">~</span><span class="n">tmp</span><span class="p">;</span>
+</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18"></a><span class="w">  </span><span class="n">AFIO</span><span class="o">-&gt;</span><span class="n">EXTICR</span><span class="p">[</span><span class="n">GPIO_PinSource</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mh">0x02</span><span class="p">]</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="p">(((</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">GPIO_PortSource</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="mh">0x04</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">GPIO_PinSource</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="mh">0x03</span><span class="p">)));</span>
+</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<p><strong>例：</strong></p>
+<div class="language-c highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">例子</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1">1</a></span>
+<span class="normal"><a href="#__codelineno-14-2">2</a></span>
+<span class="normal"><a href="#__codelineno-14-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="cm">/* Selects PB.08 as EXTI Line 8 */</span><span class="w"> </span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2"></a>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3"></a><span class="n">GPIO_EXTILineConfig</span><span class="p">(</span><span class="n">GPIO_PortSourceGPIOB</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PinSource8</span><span class="p">);</span><span class="c1">//选择GPIOB8号引脚作为外部中断线路</span>
+</span></code></pre></div></td></tr></table></div>
+<hr />
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      最后更新:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 27, 2023</span>
+      
+        <br>
+        创建日期:
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 27, 2023</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+
+  <h2 id="__comments">评论</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js"
+        data-repo="Sakura-Ji/Comment"
+        data-repo-id="R_kgDOJx0I-g"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOJx0I-s4CZqEw"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+  </script>
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "transparent_dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            回到页面顶部
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../GPIO/" class="md-footer__link md-footer__link--prev" aria-label="上一页: STM32之GPIO外设">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                STM32之GPIO外设
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../TIM/" class="md-footer__link md-footer__link--next" aria-label="下一页: STM32之TIM定时器">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                STM32之TIM定时器
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Sakura-Ji CC-BY-4.0
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/Sakura-Ji" target="_blank" rel="noopener" title="Github | Sakura-Ji" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.expand", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "search.share", "navigation.footer", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.726fbb30.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../../javascripts/lovestart.js"></script>
+      
+        <script src="../../../javascripts/Music.js"></script>
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>

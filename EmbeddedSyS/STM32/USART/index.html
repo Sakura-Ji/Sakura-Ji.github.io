@@ -1,0 +1,4226 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="纪博文的个人网站">
+      
+      
+        <meta name="author" content="纪博文">
+      
+      
+        <link rel="canonical" href="https://Sakura-Ji.github.io/EmbeddedSyS/STM32/USART/">
+      
+      
+        <link rel="prev" href="../TIM/">
+      
+      
+        <link rel="next" href="../OLED/">
+      
+      
+      <link rel="icon" href="../../../images/Cat.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.2">
+    
+    
+      
+        <title>STM32之USART串口通信 - Sakura-Ji</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.d451bc0e.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.a5377069.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/primarycolor.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+        html.glightbox-open { overflow: initial; height: 100%; }
+        .gslide-title { margin-top: 0px; user-select: text; }
+        .gslide-desc { color: #666; user-select: text; }
+        .gslide-image img { background: white; }
+        
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+            </style> <script src="../../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="pink">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#usart" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="Sakura-Ji" class="md-header__button md-logo" aria-label="Sakura-Ji" data-md-component="logo">
+      
+  <img src="../../../images/Cat.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Sakura-Ji
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              STM32之USART串口通信
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="pink"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Sakura-Ji/Sakura-Ji.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Sakura-Ji.github.io
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  简介
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Programing_Language/Introduction/" class="md-tabs__link">
+          
+  
+    
+  
+  编程语言
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../LinuxSystem/Lintroduct/" class="md-tabs__link">
+          
+  
+    
+  
+  Linux系统
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../Eintroduct/" class="md-tabs__link">
+          
+  
+    
+  
+  嵌入式编程
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../MindMaps/Mind/" class="md-tabs__link">
+          
+  
+    
+  
+  思维导图
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Tool/MapDepot/" class="md-tabs__link">
+          
+  
+    
+  
+  GodTool
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Sakura-Ji" class="md-nav__button md-logo" aria-label="Sakura-Ji" data-md-component="logo">
+      
+  <img src="../../../images/Cat.png" alt="logo">
+
+    </a>
+    Sakura-Ji
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Sakura-Ji/Sakura-Ji.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Sakura-Ji.github.io
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    简介
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    编程语言
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            编程语言
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    C
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            C
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/C_language/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    模板
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/main/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    main
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/pointer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    指针
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/array/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    数组
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/link/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    链表
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/floder/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    文件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/stack/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    堆栈
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/keywords/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    模块
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    WebDesign
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            WebDesign
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/WebDesign/WebIntro/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    关于前端
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_2" id="__nav_2_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Html
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Html
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/WebDesign/HtmlLearn/HtmlFir/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    这里记录Html
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_3" id="__nav_2_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CSS
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            CSS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/WebDesign/CssLearn/CssFir/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    这里记录学习Css
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Linux系统
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Linux系统
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Lintroduct/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linuxconfig
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Gccinfo/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gcc编译器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Makefile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MakeFile
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/File/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux文件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Multi-process/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux进程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Communication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux通信
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Posix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux线程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Internet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux网路
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    网络聊天室
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            网络聊天室
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/WebChatMind/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    思维导图
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/WebChatCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    代码解析
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    嵌入式编程
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            嵌入式编程
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Eintroduct/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Embedded System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    C51
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            C51
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../C51/C51Introd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    介绍C51
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    STM32
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            STM32
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../STM32Introd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32的介绍
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../KeilUse/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Keil5的使用
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FirstFile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    新建第一个程序模板
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GPIO/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之GPIO外设
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EXTI/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之EXTI外部中断
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TIM/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之TIM定时器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    STM32之USART串口通信
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    STM32之USART串口通信
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    通信是什么
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usart_1" class="md-nav__link">
+    USART介绍
+  </a>
+  
+    <nav class="md-nav" aria-label="USART介绍">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    同步通信
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    异步通信
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    电平标准
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    串口的专业名词
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stm32usart" class="md-nav__link">
+    STM32中的USART外设
+  </a>
+  
+    <nav class="md-nav" aria-label="STM32中的USART外设">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    数据是如何稳定接收的
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    波特率发生器
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usart_2" class="md-nav__link">
+    USART实战演习
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usart_3" class="md-nav__link">
+    USART 库函数
+  </a>
+  
+    <nav class="md-nav" aria-label="USART 库函数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usart_init" class="md-nav__link">
+    函数 USART_Init
+  </a>
+  
+    <nav class="md-nav" aria-label="函数 USART_Init">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usart_inittypedef-structure" class="md-nav__link">
+    结构体 USART_InitTypeDef structure
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_baudrate" class="md-nav__link">
+    参数 USART_BaudRate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_wordlength" class="md-nav__link">
+    参数 USART_WordLength
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_stopbits" class="md-nav__link">
+    参数 USART_StopBits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_parity" class="md-nav__link">
+    参数 USART_Parity
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_hardwareflowcontrol" class="md-nav__link">
+    参数 USART_HardwareFlowControl
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_mode" class="md-nav__link">
+    参数 USART_Mode
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_cmd" class="md-nav__link">
+    函数 USART_Cmd
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_itconfig" class="md-nav__link">
+    函数 USART_ITConfig
+  </a>
+  
+    <nav class="md-nav" aria-label="函数 USART_ITConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usart_it" class="md-nav__link">
+    参数 USART_IT
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_senddata" class="md-nav__link">
+    函数 USART_SendData
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_receivedata" class="md-nav__link">
+    函数 USART_ReceiveData
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_getflagstatus" class="md-nav__link">
+    函数 USART_GetFlagStatus
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_clearflag" class="md-nav__link">
+    函数 USART_ClearFlag
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_getitstatus" class="md-nav__link">
+    函数 USART_GetITStatus
+  </a>
+  
+    <nav class="md-nav" aria-label="函数 USART_GetITStatus">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usart_it_1" class="md-nav__link">
+    参数 USART_IT
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_clearitpendingbit" class="md-nav__link">
+    函数 USART_ClearITPendingBit
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OLED/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之OLED
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LCD/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之LCD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../StepMotor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之步进电机
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    思维导图
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            思维导图
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../MindMaps/Mind/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sakura_JI的知识库
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    GodTool
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            GodTool
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Tool/MapDepot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    依赖于Github图床的个人搭建
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Tool/Testool/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    特性工具的测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    通信是什么
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usart_1" class="md-nav__link">
+    USART介绍
+  </a>
+  
+    <nav class="md-nav" aria-label="USART介绍">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    同步通信
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    异步通信
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    电平标准
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    串口的专业名词
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stm32usart" class="md-nav__link">
+    STM32中的USART外设
+  </a>
+  
+    <nav class="md-nav" aria-label="STM32中的USART外设">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    数据是如何稳定接收的
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    波特率发生器
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usart_2" class="md-nav__link">
+    USART实战演习
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usart_3" class="md-nav__link">
+    USART 库函数
+  </a>
+  
+    <nav class="md-nav" aria-label="USART 库函数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usart_init" class="md-nav__link">
+    函数 USART_Init
+  </a>
+  
+    <nav class="md-nav" aria-label="函数 USART_Init">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usart_inittypedef-structure" class="md-nav__link">
+    结构体 USART_InitTypeDef structure
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_baudrate" class="md-nav__link">
+    参数 USART_BaudRate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_wordlength" class="md-nav__link">
+    参数 USART_WordLength
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_stopbits" class="md-nav__link">
+    参数 USART_StopBits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_parity" class="md-nav__link">
+    参数 USART_Parity
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_hardwareflowcontrol" class="md-nav__link">
+    参数 USART_HardwareFlowControl
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_mode" class="md-nav__link">
+    参数 USART_Mode
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_cmd" class="md-nav__link">
+    函数 USART_Cmd
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_itconfig" class="md-nav__link">
+    函数 USART_ITConfig
+  </a>
+  
+    <nav class="md-nav" aria-label="函数 USART_ITConfig">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usart_it" class="md-nav__link">
+    参数 USART_IT
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_senddata" class="md-nav__link">
+    函数 USART_SendData
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_receivedata" class="md-nav__link">
+    函数 USART_ReceiveData
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_getflagstatus" class="md-nav__link">
+    函数 USART_GetFlagStatus
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_clearflag" class="md-nav__link">
+    函数 USART_ClearFlag
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_getitstatus" class="md-nav__link">
+    函数 USART_GetITStatus
+  </a>
+  
+    <nav class="md-nav" aria-label="函数 USART_GetITStatus">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#usart_it_1" class="md-nav__link">
+    参数 USART_IT
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usart_clearitpendingbit" class="md-nav__link">
+    函数 USART_ClearITPendingBit
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="usart">USART<a class="headerlink" href="#usart" title="Permanent link">&para;</a></h1>
+<h2 id="_1">通信是什么<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>通信的目的：将一个设备的数据传送到另一个设备，扩展硬件系统</p>
+</li>
+<li>
+<p>通信协议：是两个（或多个）设备之间进行通信，必须要遵循的一种协议。通讯协议分为物理层和协议层。</p>
+</li>
+<li>
+<p>物理层：规定通讯系统中具有机械、电子功能部分的特性，确保原始数据在物理媒体的传输；</p>
+</li>
+<li>
+<p>协议层：规定通讯逻辑，统一收发双方的数据打包、解包标准。</p>
+</li>
+<li>
+<p>通信的方式:</p>
+</li>
+</ul>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513cea1c458853aef34fab2/commun.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="commun" src="https://pic.imgdb.cn/item/6513cea1c458853aef34fab2/commun.png" /></a></p>
+<h2 id="usart_1">USART介绍<a class="headerlink" href="#usart_1" title="Permanent link">&para;</a></h2>
+<p><strong>USART(通用同步异步收发器):</strong>提供了一种灵活的方法与使用工业标准NRZ异步串行数据格式的外部设备之间进行全双工数据交换。</p>
+<blockquote>
+<p>USART利用分数波特率发生器提供宽范围的波特率选择。 它支持同步单向通信和半双工单线通信，也支持LIN(局部互连网)，智能卡协议和IrDA(红外数据 组织)SIR ENDEC规范，以及调制解调器(CTS/RTS)操作。它还允许多处理器通信。 使用多缓冲器配置的DMA方式，可以实现高速数据通信。</p>
+</blockquote>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513cea0c458853aef34fa42/USART_HardWare.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="USART_HardWare" src="https://pic.imgdb.cn/item/6513cea0c458853aef34fa42/USART_HardWare.png" /></a></p>
+<h3 id="_2">同步通信<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>同步通信双方都要有时钟引脚，双方的时钟CLK引脚是连接在一起的，通信时由主机传送时钟信号，提供同步脉冲，双方根据这个时钟信号，来确定发送或接受每个位，确保数据传输的时候完全同步。</p>
+<ul>
+<li>时钟同步</li>
+<li>信息格式为信息帧(一次通信中传输的数据，可 不止8位)</li>
+</ul>
+<p>具体信息将在SPI一节讲解</p>
+<h3 id="_3">异步通信<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>我们使用USART实现异步通信，那么如何保证异步通信的可靠性</p>
+<ul>
+<li>固定的数据帧</li>
+<li>传输速度双方必须相同,波特率</li>
+</ul>
+<p>对于发送设备和接收设备来说，两者的串行通信配置（波特率、单位字的位数、奇偶校验、起始位数与结束位、流量控制）应该设置为完全相同。通过在数据流中插入特定的比特序列，可以指示通信的开始与结束。当发送一个字节数据的时候，需要在比特流的开头加上起始位，并在比特流的末尾加上结束位。数据字节的最低位紧接在起始位之后。</p>
+<h3 id="_4">电平标准<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>电平标准是数据1和数据0的表达方式，是传输线缆中人为规定的电压与数据的对应关系，串口常用的电平标准有如下三种：</p>
+<ul>
+<li>
+<p><strong>TTL电平</strong>：+3.3V或+5V表示1，0V表示0</p>
+</li>
+<li>
+<p>RS232电平：-3V ~ -15V表示1，+3 ~ +15V表示0</p>
+</li>
+<li>
+<p>RS485电平：两线压差+2 ~ +6V表示1，-2 ~ -6V表示0（差分信号）</p>
+</li>
+</ul>
+<h3 id="_5">串口的专业名词<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>波特率</strong>：串口通信的速率,单位时间传输了多少个码元，0或1</li>
+<li>码元:数据传输过程中等时出现的符号</li>
+<li>单片机中，采用二进制码元，码元就是0或9600bps: 每秒传输9600个二进制位数 或 传输一个0或1需要1/9600s</li>
+<li><strong>比特率</strong>: 每秒传输了多少个二进制位数 0或1</li>
+<li>
+<p><strong>总结</strong>:在单片机里，波特率和比特率代表的意义相同，但是其它领域，不一定相同。因为不果所有领域里面的码元都是二进制的0或1。</p>
+</li>
+<li>
+<p><strong>起始位（1位）</strong>：标志一个数据帧的开始，<strong>固定为低电平</strong>，也就是 空闲状态下 为高电平 </p>
+</li>
+<li>
+<p><strong>数据位（8位）</strong>：数据帧的有效载荷，1为高电平，0为低电平，<strong>低位先行</strong></p>
+</li>
+<li>
+<p><strong>奇偶校验位（1位）</strong>：用于数据验证，根据数据位计算得来 -- 可选 无校验位，奇校验，偶校验</p>
+</li>
+<li>
+<p><strong>停止位（1位）</strong>：用于数据帧间隔，<strong>固定为高电平</strong></p>
+</li>
+</ul>
+<h2 id="stm32usart">STM32中的USART外设<a class="headerlink" href="#stm32usart" title="Permanent link">&para;</a></h2>
+<p><strong>USART的框图</strong></p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce7bc458853aef34e3f6/USART_Struct.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="USART_Struct" src="https://pic.imgdb.cn/item/6513ce7bc458853aef34e3f6/USART_Struct.png" /></a></p>
+<ul>
+<li>标志位TXE(TX Empty)，当其置1时，其实数据还未发送过去，但是此时我们可以写入下一个数据 原因是 : 只是从发送数据寄存器TDR转移到了 发送移位寄存中 其就会置1 在代码中 就是</li>
+</ul>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span>
+<span class="normal"><a href="#__codelineno-0-17">17</a></span>
+<span class="normal"><a href="#__codelineno-0-18">18</a></span>
+<span class="normal"><a href="#__codelineno-0-19">19</a></span>
+<span class="normal"><a href="#__codelineno-0-20">20</a></span>
+<span class="normal"><a href="#__codelineno-0-21">21</a></span>
+<span class="normal"><a href="#__codelineno-0-22">22</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="kt">void</span><span class="w">  </span><span class="nf">Usart_Tx</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="c1">//单字节 8位 发送</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w">  </span><span class="k">while</span><span class="p">(</span><span class="n">USART_GetFlagStatus</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="n">USART_FLAG_TC</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">);</span><span class="c1">//等待数据转移到发送移位寄存器中 直到TC == 1时 表示数据已经发送给移位寄存器了 可以写入新的数据了</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w">  </span><span class="n">USART_SendData</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="n">data</span><span class="p">);</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="p">}</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="cm">/**</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="cm">  * @brief  Transmits single data through the USARTx peripheral.</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="cm">  * @param  USARTx: Select the USART or the UART peripheral. </span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="cm">  *   This parameter can be one of the following values:</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="cm">  *   USART1, USART2, USART3, UART4 or UART5.</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="cm">  * @param  Data: the data to transmit.</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="cm">  * @retval None</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="cm">  */</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="kt">void</span><span class="w"> </span><span class="nf">USART_SendData</span><span class="p">(</span><span class="n">USART_TypeDef</span><span class="o">*</span><span class="w"> </span><span class="n">USARTx</span><span class="p">,</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">Data</span><span class="p">)</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="p">{</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="w">  </span><span class="cm">/* Check the parameters */</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="w">  </span><span class="n">assert_param</span><span class="p">(</span><span class="n">IS_USART_ALL_PERIPH</span><span class="p">(</span><span class="n">USARTx</span><span class="p">));</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="w">  </span><span class="n">assert_param</span><span class="p">(</span><span class="n">IS_USART_DATA</span><span class="p">(</span><span class="n">Data</span><span class="p">));</span><span class="w"> </span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="w">  </span><span class="cm">/* Transmit Data */</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="w">  </span><span class="n">USARTx</span><span class="o">-&gt;</span><span class="n">DR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Data</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)</span><span class="mh">0x01FF</span><span class="p">);</span><span class="w"> </span><span class="c1">//这里就是TDR</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<ul>
+<li>TDR 和 RDR占用一个地址，但实际硬件中是两个寄存器 可对比51单片机中的 SUBF来理解</li>
+<li>
+<p>SBUF: 串口数据缓存寄存器，物理上是两个独立的寄存器相同的地址。写操作时，写入的是发送寄存器，读操作时，读出的是接收寄存器 也就是 串口通信的发送和接收电路在物理上有 2 个名字相同的 SBUF 寄存器，它们的地址也都是 0x99，但是一个用来做发送缓冲，一个用来做接收缓冲。意思就是说，有 2 个房间，两个房间的门牌号是一样的，其中一个只出人不进人，另外一个只进人不出人，这样的话，我们就可以实现 UART 的全双工通信，相互之间不会产生干扰。但是在逻辑上呢，我们每次只操作 SBUF，单片机会自动根据对它执行的是“读”还是“写”操作来选择是接收 SBUF 还是发送 SBUF</p>
+</li>
+<li>
+<p>发送移位寄存器是<strong>向右移位数据</strong>的 正好对应串口的低位先行</p>
+</li>
+<li>接收移位寄存器是先将接收的数据放在最高位，然后一位一位的向右移动，移位8次就可以得到1个字节</li>
+<li>标志位RXNE(RX  Not Empty)，接收数据寄存器非空，当检测其置1时，我们就可以从 接收移位寄存器 把数据移到 接收数据寄存器RDR中 在程序上的体现就是</li>
+</ul>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span>
+<span class="normal"><a href="#__codelineno-1-11">11</a></span>
+<span class="normal"><a href="#__codelineno-1-12">12</a></span>
+<span class="normal"><a href="#__codelineno-1-13">13</a></span>
+<span class="normal"><a href="#__codelineno-1-14">14</a></span>
+<span class="normal"><a href="#__codelineno-1-15">15</a></span>
+<span class="normal"><a href="#__codelineno-1-16">16</a></span>
+<span class="normal"><a href="#__codelineno-1-17">17</a></span>
+<span class="normal"><a href="#__codelineno-1-18">18</a></span>
+<span class="normal"><a href="#__codelineno-1-19">19</a></span>
+<span class="normal"><a href="#__codelineno-1-20">20</a></span>
+<span class="normal"><a href="#__codelineno-1-21">21</a></span>
+<span class="normal"><a href="#__codelineno-1-22">22</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kt">uint8_t</span><span class="w"> </span><span class="nf">Usart_Rx</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="c1">//接收 单字节 8位</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="w">  </span><span class="k">while</span><span class="p">(</span><span class="w"> </span><span class="n">USART_GetFlagStatus</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="w"> </span><span class="n">USART_FLAG_RXNE</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">){}</span><span class="c1">//等待接收数据完成标志 直到RXNE == 1表示数据接收完成</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">  </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART_ReceiveData</span><span class="p">(</span><span class="n">USART1</span><span class="p">);</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="p">}</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="cm">/**</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="cm">  * @brief  Returns the most recent received data by the USARTx peripheral.</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="cm">  * @param  USARTx: Select the USART or the UART peripheral. </span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="cm">  *   This parameter can be one of the following values:</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="cm">  *   USART1, USART2, USART3, UART4 or UART5.</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="cm">  * @retval The received data.</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="cm">  */</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">USART_ReceiveData</span><span class="p">(</span><span class="n">USART_TypeDef</span><span class="o">*</span><span class="w"> </span><span class="n">USARTx</span><span class="p">)</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="p">{</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="w">  </span><span class="cm">/* Check the parameters */</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="w">  </span><span class="n">assert_param</span><span class="p">(</span><span class="n">IS_USART_ALL_PERIPH</span><span class="p">(</span><span class="n">USARTx</span><span class="p">));</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19"></a>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20"></a><span class="w">  </span><span class="cm">/* Receive Data */</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)(</span><span class="n">USARTx</span><span class="o">-&gt;</span><span class="n">DR</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)</span><span class="mh">0x01FF</span><span class="p">);</span><span class="c1">//这里其实是 RDR</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<ul>
+<li><strong>数据帧</strong>可以通过编程USART_CR1寄存器中的M位，选择成8或9位</li>
+<li><strong>可配置的停止位</strong> 随每个字符发送的停止位的位数可以通过控制寄存器2的位13、12进行编程。 </li>
+<li>1个停止位：停止位位数的默认值。 </li>
+<li>2个停止位：可用于常规USART模式、单线模式以及调制解调器模式。</li>
+<li>0.5个停止位：在智能卡模式下接收数据时使用。 </li>
+<li>1.5个停止位：在智能卡模式下发送和接收数据时使用。</li>
+</ul>
+<h3 id="_6">数据是如何稳定接收的<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p><strong>起始位侦测</strong> </p>
+<p>在USART中，如果辨认出一个特殊的采样序列，那么就认为侦测到一个起始位。 该序列为：1 1 1 0 X 0 X 0 X 0 0 0 0</p>
+<p>下图就是 起始位侦测 和 采样位置对齐策略</p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce75c458853aef34e35a/USART_Start.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="USART_Start" src="https://pic.imgdb.cn/item/6513ce75c458853aef34e35a/USART_Start.png" /></a></p>
+<p>关于接收器的设计最主要的一点是如何提高采样的准确率，最好是保证采样点处于被采样数据的时间中间点。所以，在接收采样时要用比数据波特率高n倍(n≥1)速率的时钟对数据进行采样</p>
+<blockquote>
+<ul>
+<li>
+<p>如果该序列不完整，那么接收端将退出起始位侦测并回到空闲状态(不设置标志位)等待下降沿。 </p>
+</li>
+<li>
+<p>如果3个采样点都为’0’(在第3、5、7位的第一次采样，和在第8、9、10的第二次采样都为’0’)， 则确认收到起始位，这时设置RXNE标志位，如果RXNEIE=1，则产生中断。 </p>
+</li>
+<li>
+<p>如果两次3个采样点上仅有2个是’0’(第3、5、7位的采样点和第8、9、10位的采样点)，那么起始 位仍然是有效的，但是会设置NE噪声标志位。如果不能满足这个条件，则中止起始位的侦测过 程，接收器会回到空闲状态(不设置标志位)。</p>
+</li>
+<li>
+<p>如果有一次3个采样点上仅有2个是’0’(第3、5、7位的采样点或第8、9、10位的采样点)，那么起 始位仍然是有效的，但是会设置NE噪声标志位。</p>
+</li>
+</ul>
+</blockquote>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce75c458853aef34e2ef/USART_DataSamp.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="USART_DataSamp" src="https://pic.imgdb.cn/item/6513ce75c458853aef34e2ef/USART_DataSamp.png" /></a></p>
+<h3 id="_7">波特率发生器<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p><strong>发送器</strong> 和 <strong>接收器</strong> 的波特率由波特率寄存器BRR里的分频系数DIV确定 -- 除以16是因为上方的采样数据时钟频率，所以在除以分频系数DIV后再除以16</p>
+<p>计算公式： <span class="arithmatex">\(<span class="arithmatex">\(Tx / Rx波特率 = \cfrac { f_{PCLK2/1}}{16 * DIV}\)</span>\)</span></p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce74c458853aef34e289/USART_BRR.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="USART_BRR" src="https://pic.imgdb.cn/item/6513ce74c458853aef34e289/USART_BRR.png" /></a></p>
+<h2 id="usart_2">USART实战演习<a class="headerlink" href="#usart_2" title="Permanent link">&para;</a></h2>
+<p>简单的串口发送和接收(串口助手向单片机发送 然后单片机通过printf再次打印到串口助手上)</p>
+<p><code>USART.H</code></p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-2-10">10</a></span>
+<span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span>
+<span class="normal"><a href="#__codelineno-2-13">13</a></span>
+<span class="normal"><a href="#__codelineno-2-14">14</a></span>
+<span class="normal"><a href="#__codelineno-2-15">15</a></span>
+<span class="normal"><a href="#__codelineno-2-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="cp">#ifndef  __USART_H__</span><span class="c1">//如果没有定义了则参加以下编译</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="cp">#define  __USART_H__</span><span class="c1">//一旦定义就有了定义 所以 其目的就是防止模块重复编译</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stm32f10x.h&quot;</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stdio.h&quot;</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdarg.h&gt;</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Usart_Init</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Usart1_SendByte</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Byte</span><span class="p">);</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Usart1_SendArray</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">Array</span><span class="p">,</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">Lenth</span><span class="p">);</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Usart1_SendString</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">string</span><span class="p">);</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">Math_Pow</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">Y</span><span class="p">);</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Usart1_SendNumber</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">Num</span><span class="p">,</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Length</span><span class="p">);</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Serial_Printf</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15"></a>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16"></a><span class="cp">#endif  </span><span class="c1">//结束编译</span>
+</span></code></pre></div></td></tr></table></div>
+<p><code>USART.C</code></p>
+<div class="language-C highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">  1</a></span>
+<span class="normal"><a href="#__codelineno-3-2">  2</a></span>
+<span class="normal"><a href="#__codelineno-3-3">  3</a></span>
+<span class="normal"><a href="#__codelineno-3-4">  4</a></span>
+<span class="normal"><a href="#__codelineno-3-5">  5</a></span>
+<span class="normal"><a href="#__codelineno-3-6">  6</a></span>
+<span class="normal"><a href="#__codelineno-3-7">  7</a></span>
+<span class="normal"><a href="#__codelineno-3-8">  8</a></span>
+<span class="normal"><a href="#__codelineno-3-9">  9</a></span>
+<span class="normal"><a href="#__codelineno-3-10"> 10</a></span>
+<span class="normal"><a href="#__codelineno-3-11"> 11</a></span>
+<span class="normal"><a href="#__codelineno-3-12"> 12</a></span>
+<span class="normal"><a href="#__codelineno-3-13"> 13</a></span>
+<span class="normal"><a href="#__codelineno-3-14"> 14</a></span>
+<span class="normal"><a href="#__codelineno-3-15"> 15</a></span>
+<span class="normal"><a href="#__codelineno-3-16"> 16</a></span>
+<span class="normal"><a href="#__codelineno-3-17"> 17</a></span>
+<span class="normal"><a href="#__codelineno-3-18"> 18</a></span>
+<span class="normal"><a href="#__codelineno-3-19"> 19</a></span>
+<span class="normal"><a href="#__codelineno-3-20"> 20</a></span>
+<span class="normal"><a href="#__codelineno-3-21"> 21</a></span>
+<span class="normal"><a href="#__codelineno-3-22"> 22</a></span>
+<span class="normal"><a href="#__codelineno-3-23"> 23</a></span>
+<span class="normal"><a href="#__codelineno-3-24"> 24</a></span>
+<span class="normal"><a href="#__codelineno-3-25"> 25</a></span>
+<span class="normal"><a href="#__codelineno-3-26"> 26</a></span>
+<span class="normal"><a href="#__codelineno-3-27"> 27</a></span>
+<span class="normal"><a href="#__codelineno-3-28"> 28</a></span>
+<span class="normal"><a href="#__codelineno-3-29"> 29</a></span>
+<span class="normal"><a href="#__codelineno-3-30"> 30</a></span>
+<span class="normal"><a href="#__codelineno-3-31"> 31</a></span>
+<span class="normal"><a href="#__codelineno-3-32"> 32</a></span>
+<span class="normal"><a href="#__codelineno-3-33"> 33</a></span>
+<span class="normal"><a href="#__codelineno-3-34"> 34</a></span>
+<span class="normal"><a href="#__codelineno-3-35"> 35</a></span>
+<span class="normal"><a href="#__codelineno-3-36"> 36</a></span>
+<span class="normal"><a href="#__codelineno-3-37"> 37</a></span>
+<span class="normal"><a href="#__codelineno-3-38"> 38</a></span>
+<span class="normal"><a href="#__codelineno-3-39"> 39</a></span>
+<span class="normal"><a href="#__codelineno-3-40"> 40</a></span>
+<span class="normal"><a href="#__codelineno-3-41"> 41</a></span>
+<span class="normal"><a href="#__codelineno-3-42"> 42</a></span>
+<span class="normal"><a href="#__codelineno-3-43"> 43</a></span>
+<span class="normal"><a href="#__codelineno-3-44"> 44</a></span>
+<span class="normal"><a href="#__codelineno-3-45"> 45</a></span>
+<span class="normal"><a href="#__codelineno-3-46"> 46</a></span>
+<span class="normal"><a href="#__codelineno-3-47"> 47</a></span>
+<span class="normal"><a href="#__codelineno-3-48"> 48</a></span>
+<span class="normal"><a href="#__codelineno-3-49"> 49</a></span>
+<span class="normal"><a href="#__codelineno-3-50"> 50</a></span>
+<span class="normal"><a href="#__codelineno-3-51"> 51</a></span>
+<span class="normal"><a href="#__codelineno-3-52"> 52</a></span>
+<span class="normal"><a href="#__codelineno-3-53"> 53</a></span>
+<span class="normal"><a href="#__codelineno-3-54"> 54</a></span>
+<span class="normal"><a href="#__codelineno-3-55"> 55</a></span>
+<span class="normal"><a href="#__codelineno-3-56"> 56</a></span>
+<span class="normal"><a href="#__codelineno-3-57"> 57</a></span>
+<span class="normal"><a href="#__codelineno-3-58"> 58</a></span>
+<span class="normal"><a href="#__codelineno-3-59"> 59</a></span>
+<span class="normal"><a href="#__codelineno-3-60"> 60</a></span>
+<span class="normal"><a href="#__codelineno-3-61"> 61</a></span>
+<span class="normal"><a href="#__codelineno-3-62"> 62</a></span>
+<span class="normal"><a href="#__codelineno-3-63"> 63</a></span>
+<span class="normal"><a href="#__codelineno-3-64"> 64</a></span>
+<span class="normal"><a href="#__codelineno-3-65"> 65</a></span>
+<span class="normal"><a href="#__codelineno-3-66"> 66</a></span>
+<span class="normal"><a href="#__codelineno-3-67"> 67</a></span>
+<span class="normal"><a href="#__codelineno-3-68"> 68</a></span>
+<span class="normal"><a href="#__codelineno-3-69"> 69</a></span>
+<span class="normal"><a href="#__codelineno-3-70"> 70</a></span>
+<span class="normal"><a href="#__codelineno-3-71"> 71</a></span>
+<span class="normal"><a href="#__codelineno-3-72"> 72</a></span>
+<span class="normal"><a href="#__codelineno-3-73"> 73</a></span>
+<span class="normal"><a href="#__codelineno-3-74"> 74</a></span>
+<span class="normal"><a href="#__codelineno-3-75"> 75</a></span>
+<span class="normal"><a href="#__codelineno-3-76"> 76</a></span>
+<span class="normal"><a href="#__codelineno-3-77"> 77</a></span>
+<span class="normal"><a href="#__codelineno-3-78"> 78</a></span>
+<span class="normal"><a href="#__codelineno-3-79"> 79</a></span>
+<span class="normal"><a href="#__codelineno-3-80"> 80</a></span>
+<span class="normal"><a href="#__codelineno-3-81"> 81</a></span>
+<span class="normal"><a href="#__codelineno-3-82"> 82</a></span>
+<span class="normal"><a href="#__codelineno-3-83"> 83</a></span>
+<span class="normal"><a href="#__codelineno-3-84"> 84</a></span>
+<span class="normal"><a href="#__codelineno-3-85"> 85</a></span>
+<span class="normal"><a href="#__codelineno-3-86"> 86</a></span>
+<span class="normal"><a href="#__codelineno-3-87"> 87</a></span>
+<span class="normal"><a href="#__codelineno-3-88"> 88</a></span>
+<span class="normal"><a href="#__codelineno-3-89"> 89</a></span>
+<span class="normal"><a href="#__codelineno-3-90"> 90</a></span>
+<span class="normal"><a href="#__codelineno-3-91"> 91</a></span>
+<span class="normal"><a href="#__codelineno-3-92"> 92</a></span>
+<span class="normal"><a href="#__codelineno-3-93"> 93</a></span>
+<span class="normal"><a href="#__codelineno-3-94"> 94</a></span>
+<span class="normal"><a href="#__codelineno-3-95"> 95</a></span>
+<span class="normal"><a href="#__codelineno-3-96"> 96</a></span>
+<span class="normal"><a href="#__codelineno-3-97"> 97</a></span>
+<span class="normal"><a href="#__codelineno-3-98"> 98</a></span>
+<span class="normal"><a href="#__codelineno-3-99"> 99</a></span>
+<span class="normal"><a href="#__codelineno-3-100">100</a></span>
+<span class="normal"><a href="#__codelineno-3-101">101</a></span>
+<span class="normal"><a href="#__codelineno-3-102">102</a></span>
+<span class="normal"><a href="#__codelineno-3-103">103</a></span>
+<span class="normal"><a href="#__codelineno-3-104">104</a></span>
+<span class="normal"><a href="#__codelineno-3-105">105</a></span>
+<span class="normal"><a href="#__codelineno-3-106">106</a></span>
+<span class="normal"><a href="#__codelineno-3-107">107</a></span>
+<span class="normal"><a href="#__codelineno-3-108">108</a></span>
+<span class="normal"><a href="#__codelineno-3-109">109</a></span>
+<span class="normal"><a href="#__codelineno-3-110">110</a></span>
+<span class="normal"><a href="#__codelineno-3-111">111</a></span>
+<span class="normal"><a href="#__codelineno-3-112">112</a></span>
+<span class="normal"><a href="#__codelineno-3-113">113</a></span>
+<span class="normal"><a href="#__codelineno-3-114">114</a></span>
+<span class="normal"><a href="#__codelineno-3-115">115</a></span>
+<span class="normal"><a href="#__codelineno-3-116">116</a></span>
+<span class="normal"><a href="#__codelineno-3-117">117</a></span>
+<span class="normal"><a href="#__codelineno-3-118">118</a></span>
+<span class="normal"><a href="#__codelineno-3-119">119</a></span>
+<span class="normal"><a href="#__codelineno-3-120">120</a></span>
+<span class="normal"><a href="#__codelineno-3-121">121</a></span>
+<span class="normal"><a href="#__codelineno-3-122">122</a></span>
+<span class="normal"><a href="#__codelineno-3-123">123</a></span>
+<span class="normal"><a href="#__codelineno-3-124">124</a></span>
+<span class="normal"><a href="#__codelineno-3-125">125</a></span>
+<span class="normal"><a href="#__codelineno-3-126">126</a></span>
+<span class="normal"><a href="#__codelineno-3-127">127</a></span>
+<span class="normal"><a href="#__codelineno-3-128">128</a></span>
+<span class="normal"><a href="#__codelineno-3-129">129</a></span>
+<span class="normal"><a href="#__codelineno-3-130">130</a></span>
+<span class="normal"><a href="#__codelineno-3-131">131</a></span>
+<span class="normal"><a href="#__codelineno-3-132">132</a></span>
+<span class="normal"><a href="#__codelineno-3-133">133</a></span>
+<span class="normal"><a href="#__codelineno-3-134">134</a></span>
+<span class="normal"><a href="#__codelineno-3-135">135</a></span>
+<span class="normal"><a href="#__codelineno-3-136">136</a></span>
+<span class="normal"><a href="#__codelineno-3-137">137</a></span>
+<span class="normal"><a href="#__codelineno-3-138">138</a></span>
+<span class="normal"><a href="#__codelineno-3-139">139</a></span>
+<span class="normal"><a href="#__codelineno-3-140">140</a></span>
+<span class="normal"><a href="#__codelineno-3-141">141</a></span>
+<span class="normal"><a href="#__codelineno-3-142">142</a></span>
+<span class="normal"><a href="#__codelineno-3-143">143</a></span>
+<span class="normal"><a href="#__codelineno-3-144">144</a></span>
+<span class="normal"><a href="#__codelineno-3-145">145</a></span>
+<span class="normal"><a href="#__codelineno-3-146">146</a></span>
+<span class="normal"><a href="#__codelineno-3-147">147</a></span>
+<span class="normal"><a href="#__codelineno-3-148">148</a></span>
+<span class="normal"><a href="#__codelineno-3-149">149</a></span>
+<span class="normal"><a href="#__codelineno-3-150">150</a></span>
+<span class="normal"><a href="#__codelineno-3-151">151</a></span>
+<span class="normal"><a href="#__codelineno-3-152">152</a></span>
+<span class="normal"><a href="#__codelineno-3-153">153</a></span>
+<span class="normal"><a href="#__codelineno-3-154">154</a></span>
+<span class="normal"><a href="#__codelineno-3-155">155</a></span>
+<span class="normal"><a href="#__codelineno-3-156">156</a></span>
+<span class="normal"><a href="#__codelineno-3-157">157</a></span>
+<span class="normal"><a href="#__codelineno-3-158">158</a></span>
+<span class="normal"><a href="#__codelineno-3-159">159</a></span>
+<span class="normal"><a href="#__codelineno-3-160">160</a></span>
+<span class="normal"><a href="#__codelineno-3-161">161</a></span>
+<span class="normal"><a href="#__codelineno-3-162">162</a></span>
+<span class="normal"><a href="#__codelineno-3-163">163</a></span>
+<span class="normal"><a href="#__codelineno-3-164">164</a></span>
+<span class="normal"><a href="#__codelineno-3-165">165</a></span>
+<span class="normal"><a href="#__codelineno-3-166">166</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;usart.h&quot;</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="cm">/*</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="cm"> *PA9  --  TX</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="cm"> *PA10 --  RX</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="cm">*/</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Usart_Init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="p">{</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="w">  </span><span class="c1">//使能时钟</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="w">  </span><span class="n">RCC_APB2PeriphClockCmd</span><span class="p">(</span><span class="n">RCC_APB2Periph_GPIOA</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">RCC_APB2Periph_USART1</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span><span class="c1">//使能时钟A和USART1</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="w">  </span><span class="c1">//为初始化函数做准备</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="w">  </span><span class="n">GPIO_InitTypeDef</span><span class="w"> </span><span class="n">GPIO_InitStructure</span><span class="p">;</span><span class="c1">//定义结构体</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="w">  </span><span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Pin_9</span><span class="p">;</span><span class="c1">//设置PA9引脚</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="w">  </span><span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Mode_AF_PP</span><span class="w"> </span><span class="p">;</span><span class="c1">//设置输出模式为复用推挽输出</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="w">  </span><span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Speed_50MHz</span><span class="w"> </span><span class="p">;</span><span class="c1">//设置输出速度为50MHZ</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="w">  </span><span class="c1">//初始化函数PIN9↓</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18"></a><span class="w">  </span><span class="n">GPIO_Init</span><span class="p">(</span><span class="n">GPIOA</span><span class="p">,</span><span class="o">&amp;</span><span class="n">GPIO_InitStructure</span><span class="p">);</span><span class="c1">//初始化</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19"></a>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20"></a><span class="w">  </span><span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Pin_10</span><span class="p">;</span><span class="c1">//设置PA10引脚</span>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21"></a><span class="w">  </span><span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Mode_IPU</span><span class="w"> </span><span class="p">;</span><span class="c1">//设置输出模式为上拉输入</span>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22"></a><span class="w">  </span><span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Speed_50MHz</span><span class="w"> </span><span class="p">;</span><span class="c1">//设置输出速度为50MHZ</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23"></a><span class="w">  </span><span class="c1">//初始化函数PIN10↓</span>
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24"></a><span class="w">  </span><span class="n">GPIO_Init</span><span class="p">(</span><span class="n">GPIOA</span><span class="p">,</span><span class="o">&amp;</span><span class="n">GPIO_InitStructure</span><span class="p">);</span><span class="c1">//初始化</span>
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25"></a>
+</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26"></a><span class="w">  </span><span class="n">USART_InitTypeDef</span><span class="w"> </span><span class="n">USART_InitStructure</span><span class="p">;</span><span class="w"> </span><span class="c1">//定义串口结构体</span>
+</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27"></a><span class="w">  </span><span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_BaudRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9600</span><span class="p">;</span><span class="w"> </span><span class="c1">//波特率</span>
+</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28"></a><span class="w">  </span><span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_WordLength</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART_WordLength_8b</span><span class="p">;</span><span class="c1">//数字帧长度</span>
+</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29"></a><span class="w">  </span><span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_StopBits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART_StopBits_1</span><span class="p">;</span><span class="w"> </span><span class="c1">//停止位</span>
+</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30"></a><span class="w">  </span><span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_Parity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART_Parity_No</span><span class="p">;</span><span class="w"> </span><span class="c1">//不使用校验位 </span>
+</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31"></a><span class="w">  </span><span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_HardwareFlowControl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART_HardwareFlowControl_None</span><span class="p">;</span><span class="c1">//不使用硬件流控制</span>
+</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32"></a><span class="w">  </span><span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_Mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART_Mode_Tx</span><span class="o">|</span><span class="n">USART_Mode_Rx</span><span class="p">;</span><span class="w"> </span><span class="c1">//模式为发送+接收</span>
+</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33"></a><span class="w">  </span><span class="c1">//初始化串口1</span>
+</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34"></a><span class="w">  </span><span class="n">USART_Init</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">USART_InitStructure</span><span class="p">);</span><span class="w"> </span>
+</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35"></a>
+</span><span id="__span-3-36"><a id="__codelineno-3-36" name="__codelineno-3-36"></a><span class="w">  </span><span class="n">USART_ITConfig</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="w"> </span><span class="n">USART_IT_RXNE</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
+</span><span id="__span-3-37"><a id="__codelineno-3-37" name="__codelineno-3-37"></a><span class="w">  </span><span class="n">NVIC_InitTypeDef</span><span class="w"> </span><span class="n">NVIC_InitStructure</span><span class="p">;</span><span class="w"> </span><span class="c1">//定义结构体</span>
+</span><span id="__span-3-38"><a id="__codelineno-3-38" name="__codelineno-3-38"></a><span class="w">  </span><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART1_IRQn</span><span class="p">;</span><span class="w"> </span><span class="c1">//根据上面的我们所选取的USART1</span>
+</span><span id="__span-3-39"><a id="__codelineno-3-39" name="__codelineno-3-39"></a><span class="w">  </span><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelPreemptionPriority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="c1">//这里选择的是抢占 1</span>
+</span><span id="__span-3-40"><a id="__codelineno-3-40" name="__codelineno-3-40"></a><span class="w">  </span><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelSubPriority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">//这里选择的是响应1</span>
+</span><span id="__span-3-41"><a id="__codelineno-3-41" name="__codelineno-3-41"></a><span class="w">  </span><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">;</span><span class="w"> </span><span class="c1">//使能指定的中断通道</span>
+</span><span id="__span-3-42"><a id="__codelineno-3-42" name="__codelineno-3-42"></a><span class="w">  </span><span class="c1">//初始化函数↓</span>
+</span><span id="__span-3-43"><a id="__codelineno-3-43" name="__codelineno-3-43"></a><span class="w">  </span><span class="n">NVIC_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">NVIC_InitStructure</span><span class="p">);</span>
+</span><span id="__span-3-44"><a id="__codelineno-3-44" name="__codelineno-3-44"></a><span class="w">  </span><span class="c1">//使能串口1</span>
+</span><span id="__span-3-45"><a id="__codelineno-3-45" name="__codelineno-3-45"></a><span class="w">  </span><span class="n">USART_Cmd</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
+</span><span id="__span-3-46"><a id="__codelineno-3-46" name="__codelineno-3-46"></a><span class="p">}</span>
+</span><span id="__span-3-47"><a id="__codelineno-3-47" name="__codelineno-3-47"></a><span class="cm">/**</span>
+</span><span id="__span-3-48"><a id="__codelineno-3-48" name="__codelineno-3-48"></a><span class="cm">  * @brief  串口1发送字节 -- 发送的最基本的函数 --&gt;其它发送函数都是基于它</span>
+</span><span id="__span-3-49"><a id="__codelineno-3-49" name="__codelineno-3-49"></a><span class="cm">  * @param  </span>
+</span><span id="__span-3-50"><a id="__codelineno-3-50" name="__codelineno-3-50"></a><span class="cm">  * @retval </span>
+</span><span id="__span-3-51"><a id="__codelineno-3-51" name="__codelineno-3-51"></a><span class="cm">  */</span>
+</span><span id="__span-3-52"><a id="__codelineno-3-52" name="__codelineno-3-52"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Usart1_SendByte</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Byte</span><span class="p">)</span>
+</span><span id="__span-3-53"><a id="__codelineno-3-53" name="__codelineno-3-53"></a><span class="p">{</span>
+</span><span id="__span-3-54"><a id="__codelineno-3-54" name="__codelineno-3-54"></a><span class="w">  </span><span class="n">USART_SendData</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="n">Byte</span><span class="p">);</span>
+</span><span id="__span-3-55"><a id="__codelineno-3-55" name="__codelineno-3-55"></a><span class="w">  </span><span class="cm">/*</span>
+</span><span id="__span-3-56"><a id="__codelineno-3-56" name="__codelineno-3-56"></a><span class="cm">  *当TDR寄存器中的数据被硬件转移到移位寄存器的时候该位被硬件置位 也就是TXE = 1</span>
+</span><span id="__span-3-57"><a id="__codelineno-3-57" name="__codelineno-3-57"></a><span class="cm">  * 当又对USART_DR-TDR进行写操作时，该位将自动清零</span>
+</span><span id="__span-3-58"><a id="__codelineno-3-58" name="__codelineno-3-58"></a><span class="cm">  */</span>
+</span><span id="__span-3-59"><a id="__codelineno-3-59" name="__codelineno-3-59"></a><span class="w">  </span><span class="k">while</span><span class="p">(</span><span class="n">USART_GetFlagStatus</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="n">USART_FLAG_TXE</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">RESET</span><span class="w"> </span><span class="p">);</span>
+</span><span id="__span-3-60"><a id="__codelineno-3-60" name="__codelineno-3-60"></a><span class="p">}</span>
+</span><span id="__span-3-61"><a id="__codelineno-3-61" name="__codelineno-3-61"></a><span class="cm">/**</span>
+</span><span id="__span-3-62"><a id="__codelineno-3-62" name="__codelineno-3-62"></a><span class="cm">  * @brief  串口接收函数 -- 对于串口来说 有查询和中断两种方法进行接收数据判断  </span>
+</span><span id="__span-3-63"><a id="__codelineno-3-63" name="__codelineno-3-63"></a><span class="cm">            查询的方式是:在主函数中不断查询标志位的方式 -- 👇</span>
+</span><span id="__span-3-64"><a id="__codelineno-3-64" name="__codelineno-3-64"></a><span class="cm">            中断的方式: 和其它中断一样 当这个标志位发生了 再进入中断</span>
+</span><span id="__span-3-65"><a id="__codelineno-3-65" name="__codelineno-3-65"></a><span class="cm">  * @param  </span>
+</span><span id="__span-3-66"><a id="__codelineno-3-66" name="__codelineno-3-66"></a><span class="cm">  * @retval </span>
+</span><span id="__span-3-67"><a id="__codelineno-3-67" name="__codelineno-3-67"></a><span class="cm">  */</span>
+</span><span id="__span-3-68"><a id="__codelineno-3-68" name="__codelineno-3-68"></a><span class="kt">uint8_t</span><span class="w"> </span><span class="nf">Usart1_RecvByte</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-3-69"><a id="__codelineno-3-69" name="__codelineno-3-69"></a><span class="p">{</span>
+</span><span id="__span-3-70"><a id="__codelineno-3-70" name="__codelineno-3-70"></a><span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-3-71"><a id="__codelineno-3-71" name="__codelineno-3-71"></a><span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">USART_GetFlagStatus</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="w"> </span><span class="n">USART_FLAG_RXNE</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">SET</span><span class="p">)</span><span class="c1">//接收数据完成标志 RXNE == 1表示数据接收完成</span>
+</span><span id="__span-3-72"><a id="__codelineno-3-72" name="__codelineno-3-72"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-3-73"><a id="__codelineno-3-73" name="__codelineno-3-73"></a><span class="w">    </span><span class="n">Data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART_ReceiveData</span><span class="p">(</span><span class="n">USART1</span><span class="p">);</span>
+</span><span id="__span-3-74"><a id="__codelineno-3-74" name="__codelineno-3-74"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-75"><a id="__codelineno-3-75" name="__codelineno-3-75"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">Data</span><span class="p">;</span>
+</span><span id="__span-3-76"><a id="__codelineno-3-76" name="__codelineno-3-76"></a><span class="p">}</span>
+</span><span id="__span-3-77"><a id="__codelineno-3-77" name="__codelineno-3-77"></a><span class="cm">/**</span>
+</span><span id="__span-3-78"><a id="__codelineno-3-78" name="__codelineno-3-78"></a><span class="cm">  * @brief  串口中断函数</span>
+</span><span id="__span-3-79"><a id="__codelineno-3-79" name="__codelineno-3-79"></a><span class="cm">            当RDR移位寄存器中的数据被转移到USART_DR寄存器中，该位被硬件置位</span>
+</span><span id="__span-3-80"><a id="__codelineno-3-80" name="__codelineno-3-80"></a><span class="cm">            对USART_DR的读操作可以将该位清零 -- 也就是说当有单片机接收并读取了数据 这个就会自动清零 如果没读取需要手动清除</span>
+</span><span id="__span-3-81"><a id="__codelineno-3-81" name="__codelineno-3-81"></a><span class="cm">            中断函数里面可以放你想要实现的功能函数</span>
+</span><span id="__span-3-82"><a id="__codelineno-3-82" name="__codelineno-3-82"></a><span class="cm">  * @param  </span>
+</span><span id="__span-3-83"><a id="__codelineno-3-83" name="__codelineno-3-83"></a><span class="cm">  * @retval </span>
+</span><span id="__span-3-84"><a id="__codelineno-3-84" name="__codelineno-3-84"></a><span class="cm">  */</span>
+</span><span id="__span-3-85"><a id="__codelineno-3-85" name="__codelineno-3-85"></a><span class="kt">void</span><span class="w"> </span><span class="nf">USART1_IRQHandler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-3-86"><a id="__codelineno-3-86" name="__codelineno-3-86"></a><span class="p">{</span>
+</span><span id="__span-3-87"><a id="__codelineno-3-87" name="__codelineno-3-87"></a><span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">RxData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-3-88"><a id="__codelineno-3-88" name="__codelineno-3-88"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">USART_GetITStatus</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="w"> </span><span class="n">USART_IT_RXNE</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">SET</span><span class="p">)</span>
+</span><span id="__span-3-89"><a id="__codelineno-3-89" name="__codelineno-3-89"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-3-90"><a id="__codelineno-3-90" name="__codelineno-3-90"></a><span class="w">    </span><span class="n">RxData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART_ReceiveData</span><span class="p">(</span><span class="n">USART1</span><span class="p">);</span>
+</span><span id="__span-3-91"><a id="__codelineno-3-91" name="__codelineno-3-91"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%X</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">RxData</span><span class="p">);</span>
+</span><span id="__span-3-92"><a id="__codelineno-3-92" name="__codelineno-3-92"></a><span class="w">    </span><span class="n">USART_ClearITPendingBit</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="w"> </span><span class="n">USART_IT_RXNE</span><span class="p">);</span>
+</span><span id="__span-3-93"><a id="__codelineno-3-93" name="__codelineno-3-93"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-94"><a id="__codelineno-3-94" name="__codelineno-3-94"></a><span class="p">}</span>
+</span><span id="__span-3-95"><a id="__codelineno-3-95" name="__codelineno-3-95"></a>
+</span><span id="__span-3-96"><a id="__codelineno-3-96" name="__codelineno-3-96"></a><span class="cm">/**</span>
+</span><span id="__span-3-97"><a id="__codelineno-3-97" name="__codelineno-3-97"></a><span class="cm">  * @brief  发送数组</span>
+</span><span id="__span-3-98"><a id="__codelineno-3-98" name="__codelineno-3-98"></a><span class="cm">  * @param  </span>
+</span><span id="__span-3-99"><a id="__codelineno-3-99" name="__codelineno-3-99"></a><span class="cm">  * @retval </span>
+</span><span id="__span-3-100"><a id="__codelineno-3-100" name="__codelineno-3-100"></a><span class="cm">  */</span>
+</span><span id="__span-3-101"><a id="__codelineno-3-101" name="__codelineno-3-101"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Usart1_SendArray</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">Array</span><span class="p">,</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">Length</span><span class="p">)</span>
+</span><span id="__span-3-102"><a id="__codelineno-3-102" name="__codelineno-3-102"></a><span class="p">{</span>
+</span><span id="__span-3-103"><a id="__codelineno-3-103" name="__codelineno-3-103"></a><span class="w">  </span><span class="k">for</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">Length</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-3-104"><a id="__codelineno-3-104" name="__codelineno-3-104"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-3-105"><a id="__codelineno-3-105" name="__codelineno-3-105"></a><span class="w">    </span><span class="n">Usart1_SendByte</span><span class="p">(</span><span class="n">Array</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span><span id="__span-3-106"><a id="__codelineno-3-106" name="__codelineno-3-106"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-107"><a id="__codelineno-3-107" name="__codelineno-3-107"></a><span class="p">}</span>
+</span><span id="__span-3-108"><a id="__codelineno-3-108" name="__codelineno-3-108"></a><span class="cm">/**</span>
+</span><span id="__span-3-109"><a id="__codelineno-3-109" name="__codelineno-3-109"></a><span class="cm">  * @brief  发送字符串</span>
+</span><span id="__span-3-110"><a id="__codelineno-3-110" name="__codelineno-3-110"></a><span class="cm">  * @param  string 字符串</span>
+</span><span id="__span-3-111"><a id="__codelineno-3-111" name="__codelineno-3-111"></a><span class="cm">  * @retval </span>
+</span><span id="__span-3-112"><a id="__codelineno-3-112" name="__codelineno-3-112"></a><span class="cm">  */</span>
+</span><span id="__span-3-113"><a id="__codelineno-3-113" name="__codelineno-3-113"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Usart1_SendString</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">string</span><span class="p">)</span>
+</span><span id="__span-3-114"><a id="__codelineno-3-114" name="__codelineno-3-114"></a><span class="p">{</span>
+</span><span id="__span-3-115"><a id="__codelineno-3-115" name="__codelineno-3-115"></a><span class="w">  </span><span class="k">for</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-3-116"><a id="__codelineno-3-116" name="__codelineno-3-116"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-3-117"><a id="__codelineno-3-117" name="__codelineno-3-117"></a><span class="w">    </span><span class="n">Usart1_SendByte</span><span class="p">(</span><span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span><span id="__span-3-118"><a id="__codelineno-3-118" name="__codelineno-3-118"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-119"><a id="__codelineno-3-119" name="__codelineno-3-119"></a><span class="p">}</span>
+</span><span id="__span-3-120"><a id="__codelineno-3-120" name="__codelineno-3-120"></a><span class="cm">/**</span>
+</span><span id="__span-3-121"><a id="__codelineno-3-121" name="__codelineno-3-121"></a><span class="cm">  * @brief  发送十进制数字</span>
+</span><span id="__span-3-122"><a id="__codelineno-3-122" name="__codelineno-3-122"></a><span class="cm">  * @param  </span>
+</span><span id="__span-3-123"><a id="__codelineno-3-123" name="__codelineno-3-123"></a><span class="cm">  * @retval </span>
+</span><span id="__span-3-124"><a id="__codelineno-3-124" name="__codelineno-3-124"></a><span class="cm">  */</span>
+</span><span id="__span-3-125"><a id="__codelineno-3-125" name="__codelineno-3-125"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Usart1_SendNumber</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">Num</span><span class="p">,</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Length</span><span class="p">)</span><span class="c1">//以文本模式查看发送的数字--发送的啥 就在串口助手上显示啥</span>
+</span><span id="__span-3-126"><a id="__codelineno-3-126" name="__codelineno-3-126"></a><span class="p">{</span>
+</span><span id="__span-3-127"><a id="__codelineno-3-127" name="__codelineno-3-127"></a><span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+</span><span id="__span-3-128"><a id="__codelineno-3-128" name="__codelineno-3-128"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">Length</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-3-129"><a id="__codelineno-3-129" name="__codelineno-3-129"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-3-130"><a id="__codelineno-3-130" name="__codelineno-3-130"></a><span class="w">    </span><span class="n">Usart1_SendByte</span><span class="p">(</span><span class="n">Num</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Math_Pow</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">Length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="sc">&#39;0&#39;</span><span class="p">);</span><span class="c1">//10进制 转换成 十六进制 1. 取出这一位的数--NUM/10的Length方%10 2.加上ASCLL的值</span>
+</span><span id="__span-3-131"><a id="__codelineno-3-131" name="__codelineno-3-131"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-132"><a id="__codelineno-3-132" name="__codelineno-3-132"></a><span class="p">}</span>
+</span><span id="__span-3-133"><a id="__codelineno-3-133" name="__codelineno-3-133"></a><span class="cm">/**</span>
+</span><span id="__span-3-134"><a id="__codelineno-3-134" name="__codelineno-3-134"></a><span class="cm">  * @brief  数学公式X的Y次方</span>
+</span><span id="__span-3-135"><a id="__codelineno-3-135" name="__codelineno-3-135"></a><span class="cm">  * @param  </span>
+</span><span id="__span-3-136"><a id="__codelineno-3-136" name="__codelineno-3-136"></a><span class="cm">  * @retval X的Y次方</span>
+</span><span id="__span-3-137"><a id="__codelineno-3-137" name="__codelineno-3-137"></a><span class="cm">  */</span>
+</span><span id="__span-3-138"><a id="__codelineno-3-138" name="__codelineno-3-138"></a><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">Math_Pow</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">Y</span><span class="p">)</span><span class="c1">//返回的是X的Y次方</span>
+</span><span id="__span-3-139"><a id="__codelineno-3-139" name="__codelineno-3-139"></a><span class="p">{</span>
+</span><span id="__span-3-140"><a id="__codelineno-3-140" name="__codelineno-3-140"></a><span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">Result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-3-141"><a id="__codelineno-3-141" name="__codelineno-3-141"></a><span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">Y</span><span class="w"> </span><span class="o">--</span><span class="p">)</span>
+</span><span id="__span-3-142"><a id="__codelineno-3-142" name="__codelineno-3-142"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-3-143"><a id="__codelineno-3-143" name="__codelineno-3-143"></a><span class="w">    </span><span class="n">Result</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">X</span><span class="p">;</span>
+</span><span id="__span-3-144"><a id="__codelineno-3-144" name="__codelineno-3-144"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-145"><a id="__codelineno-3-145" name="__codelineno-3-145"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">Result</span><span class="p">;</span>
+</span><span id="__span-3-146"><a id="__codelineno-3-146" name="__codelineno-3-146"></a><span class="p">}</span>
+</span><span id="__span-3-147"><a id="__codelineno-3-147" name="__codelineno-3-147"></a><span class="cm">/**</span>
+</span><span id="__span-3-148"><a id="__codelineno-3-148" name="__codelineno-3-148"></a><span class="cm">  * @brief  函数重定义--封装printf函数</span>
+</span><span id="__span-3-149"><a id="__codelineno-3-149" name="__codelineno-3-149"></a><span class="cm">  * @param  </span>
+</span><span id="__span-3-150"><a id="__codelineno-3-150" name="__codelineno-3-150"></a><span class="cm">  * @retval </span>
+</span><span id="__span-3-151"><a id="__codelineno-3-151" name="__codelineno-3-151"></a><span class="cm">  */</span>
+</span><span id="__span-3-152"><a id="__codelineno-3-152" name="__codelineno-3-152"></a><span class="kt">int</span><span class="w"> </span><span class="nf">fputc</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">ch</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">f</span><span class="p">)</span>
+</span><span id="__span-3-153"><a id="__codelineno-3-153" name="__codelineno-3-153"></a><span class="p">{</span>
+</span><span id="__span-3-154"><a id="__codelineno-3-154" name="__codelineno-3-154"></a><span class="w">  </span><span class="n">Usart1_SendByte</span><span class="p">(</span><span class="n">ch</span><span class="p">);</span>
+</span><span id="__span-3-155"><a id="__codelineno-3-155" name="__codelineno-3-155"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">ch</span><span class="p">;</span>
+</span><span id="__span-3-156"><a id="__codelineno-3-156" name="__codelineno-3-156"></a><span class="p">}</span>
+</span><span id="__span-3-157"><a id="__codelineno-3-157" name="__codelineno-3-157"></a>
+</span><span id="__span-3-158"><a id="__codelineno-3-158" name="__codelineno-3-158"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Serial_Printf</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span><span class="c1">//可变参数 -- 封装</span>
+</span><span id="__span-3-159"><a id="__codelineno-3-159" name="__codelineno-3-159"></a><span class="p">{</span>
+</span><span id="__span-3-160"><a id="__codelineno-3-160" name="__codelineno-3-160"></a><span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="n">String</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+</span><span id="__span-3-161"><a id="__codelineno-3-161" name="__codelineno-3-161"></a><span class="w">  </span><span class="kt">va_list</span><span class="w"> </span><span class="n">arg</span><span class="p">;</span><span class="c1">//创建名为 arg的列表</span>
+</span><span id="__span-3-162"><a id="__codelineno-3-162" name="__codelineno-3-162"></a><span class="w">  </span><span class="n">va_start</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span><span class="w"> </span><span class="n">format</span><span class="p">);</span><span class="c1">//从format开始</span>
+</span><span id="__span-3-163"><a id="__codelineno-3-163" name="__codelineno-3-163"></a><span class="w">  </span><span class="n">vsprintf</span><span class="p">(</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">format</span><span class="p">,</span><span class="w"> </span><span class="n">arg</span><span class="p">);</span><span class="c1">//sprintf 在这里 要写成 vsprintf</span>
+</span><span id="__span-3-164"><a id="__codelineno-3-164" name="__codelineno-3-164"></a><span class="w">  </span><span class="n">va_end</span><span class="p">(</span><span class="n">arg</span><span class="p">);</span><span class="c1">//释放名为arg的列表</span>
+</span><span id="__span-3-165"><a id="__codelineno-3-165" name="__codelineno-3-165"></a><span class="w">  </span><span class="n">Usart1_SendString</span><span class="p">(</span><span class="n">String</span><span class="p">);</span>
+</span><span id="__span-3-166"><a id="__codelineno-3-166" name="__codelineno-3-166"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<p><code>main.c</code></p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-4-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-4-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-4-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-4-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-4-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-4-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-4-10">10</a></span>
+<span class="normal"><a href="#__codelineno-4-11">11</a></span>
+<span class="normal"><a href="#__codelineno-4-12">12</a></span>
+<span class="normal"><a href="#__codelineno-4-13">13</a></span>
+<span class="normal"><a href="#__codelineno-4-14">14</a></span>
+<span class="normal"><a href="#__codelineno-4-15">15</a></span>
+<span class="normal"><a href="#__codelineno-4-16">16</a></span>
+<span class="normal"><a href="#__codelineno-4-17">17</a></span>
+<span class="normal"><a href="#__codelineno-4-18">18</a></span>
+<span class="normal"><a href="#__codelineno-4-19">19</a></span>
+<span class="normal"><a href="#__codelineno-4-20">20</a></span>
+<span class="normal"><a href="#__codelineno-4-21">21</a></span>
+<span class="normal"><a href="#__codelineno-4-22">22</a></span>
+<span class="normal"><a href="#__codelineno-4-23">23</a></span>
+<span class="normal"><a href="#__codelineno-4-24">24</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stm32f10x.h&quot;</span><span class="c1">                  // Device header</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;Delay.h&quot;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;OLED.h&quot;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;usart.h&quot;</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="kt">uint8_t</span><span class="w"> </span><span class="n">Data</span><span class="w"> </span><span class="p">;</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7"></a>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="p">{</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="w">  </span><span class="n">NVIC_PriorityGroupConfig</span><span class="p">(</span><span class="n">NVIC_PriorityGroup_2</span><span class="p">);</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11"></a><span class="w">  </span><span class="n">OLED_Init</span><span class="p">();</span><span class="w">  </span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12"></a><span class="w">  </span><span class="n">Usart_Init</span><span class="p">();</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13"></a>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14"></a><span class="w">  </span><span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16"></a>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17"></a><span class="c1">//    if(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == SET)//接收数据完成标志 RXNE == 1表示数据接收完成</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18"></a><span class="c1">//    {</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19"></a><span class="c1">//      Data = USART_ReceiveData(USART1);</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20"></a><span class="c1">//      OLED_ShowHexNum(1,1,Data,2);</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21"></a><span class="c1">//    }</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22"></a>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="usart_3">USART 库函数<a class="headerlink" href="#usart_3" title="Permanent link">&para;</a></h2>
+<p><strong>Table 1. USART</strong> 库函数 </p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>USART_DeInit</td>
+<td>将外设  USARTx 寄存器重设为缺省值</td>
+</tr>
+<tr>
+<td><strong>USART_Init</strong></td>
+<td>根据 USART_InitStruct  中指定的参数初始化外设 USARTx 寄存器</td>
+</tr>
+<tr>
+<td>USART_StructInit</td>
+<td>把 USART_InitStruct 中的每一个参数按缺省值填入</td>
+</tr>
+<tr>
+<td><strong>USART_Cmd</strong></td>
+<td>使能或者失能  USART 外设</td>
+</tr>
+<tr>
+<td><strong>USART_ITConfig</strong></td>
+<td>使能或者失能指定的  USART 中断</td>
+</tr>
+<tr>
+<td>USART_DMACmd</td>
+<td>使能或者失能指定  USART 的 DMA 请求</td>
+</tr>
+<tr>
+<td>USART_SetAddress</td>
+<td>设置  USART 节点的地址</td>
+</tr>
+<tr>
+<td>USART_WakeUpConfig</td>
+<td>选择  USART 的唤醒方式</td>
+</tr>
+<tr>
+<td>USART_ReceiverWakeUpCmd</td>
+<td>检查  USART 是否处于静默模式</td>
+</tr>
+<tr>
+<td>USART_LINBreakDetectLengthConfig</td>
+<td>设置  USART LIN 中断检测长度</td>
+</tr>
+<tr>
+<td>USART_LINCmd</td>
+<td>使能或者失能  USARTx 的 LIN 模式</td>
+</tr>
+<tr>
+<td><strong>USART_SendData</strong></td>
+<td>通过外设  USARTx 发送单个数据</td>
+</tr>
+<tr>
+<td><strong>USART_ReceiveData</strong></td>
+<td>返回  USARTx 近接收到的数据</td>
+</tr>
+<tr>
+<td>USART_SendBreak</td>
+<td>发送中断字</td>
+</tr>
+<tr>
+<td>USART_SetGuardTime</td>
+<td>设置指定的  USART 保护时间</td>
+</tr>
+<tr>
+<td>USART_SetPrescaler</td>
+<td>设置  USART 时钟预分频</td>
+</tr>
+<tr>
+<td>USART_SmartCardCmd</td>
+<td>使能或者失能指定  USART 的智能卡模式</td>
+</tr>
+<tr>
+<td>USART_SmartCardNackCmd</td>
+<td>使能或者失能  NACK 传输</td>
+</tr>
+<tr>
+<td>USART_HalfDuplexCmd</td>
+<td>使能或者失能  USART 半双工模式</td>
+</tr>
+<tr>
+<td>USART_IrDAConfig</td>
+<td>设置  USART IrDA 模式</td>
+</tr>
+<tr>
+<td>USART_IrDACmd</td>
+<td>使能或者失能  USART IrDA 模式</td>
+</tr>
+<tr>
+<td><strong>USART_GetFlagStatus</strong></td>
+<td>检查指定的  USART 标志位设置与否</td>
+</tr>
+<tr>
+<td><strong>USART_ClearFlag</strong></td>
+<td>清除  USARTx 的待处理标志位</td>
+</tr>
+<tr>
+<td><strong>USART_GetITStatus</strong></td>
+<td>检查指定的  USART 中断发生与否</td>
+</tr>
+<tr>
+<td><strong>USART_ClearITPendingBit</strong></td>
+<td>清除  USARTx 的中断待处理位</td>
+</tr>
+</tbody>
+</table>
+<h3 id="usart_init">函数 USART_Init<a class="headerlink" href="#usart_init" title="Permanent link">&para;</a></h3>
+<p><strong>Table 2.</strong> 函数 <strong>USART_Init</strong> </p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>USART_Init</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数原形</td>
+<td>void USART_Init(USART_TypeDef<em> USARTx,  USART_InitTypeDef</em> USART_InitStruct)</td>
+</tr>
+<tr>
+<td>功能描述</td>
+<td>根据  USART_InitStruct 中指定的参数初始化外设 USARTx 寄存器</td>
+</tr>
+<tr>
+<td>输入参数 1</td>
+<td><strong>USARTx</strong>：x 可以是 1，2 或者 3，来选择 USART  外设</td>
+</tr>
+<tr>
+<td>输入参数 2</td>
+<td><strong>USART_InitStruct</strong>：指向结构 USART_InitTypeDef  的指针，包含了外设 USART 的配置信息。参阅 Section：USART_InitTypeDef 查阅更多该参数允许取值范围</td>
+</tr>
+<tr>
+<td>输出参数</td>
+<td>无</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>无</td>
+</tr>
+<tr>
+<td>先决条件</td>
+<td>无</td>
+</tr>
+<tr>
+<td>被调用函数</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<h4 id="usart_inittypedef-structure">结构体 USART_InitTypeDef structure<a class="headerlink" href="#usart_inittypedef-structure" title="Permanent link">&para;</a></h4>
+<div class="language-c highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">USART_InitTypeDef structure</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-5-10">10</a></span>
+<span class="normal"><a href="#__codelineno-5-11">11</a></span>
+<span class="normal"><a href="#__codelineno-5-12">12</a></span>
+<span class="normal"><a href="#__codelineno-5-13">13</a></span>
+<span class="normal"><a href="#__codelineno-5-14">14</a></span>
+<span class="normal"><a href="#__codelineno-5-15">15</a></span>
+<span class="normal"><a href="#__codelineno-5-16">16</a></span>
+<span class="normal"><a href="#__codelineno-5-17">17</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="c1">//USART_InitTypeDef 定义于文件“stm32f10x_usart.h”： </span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="p">{</span><span class="w"> </span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="w">    </span><span class="n">u32</span><span class="w"> </span><span class="n">USART_BaudRate</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="w">    </span><span class="n">u16</span><span class="w"> </span><span class="n">USART_WordLength</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="w">    </span><span class="n">u16</span><span class="w"> </span><span class="n">USART_StopBits</span><span class="p">;</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="w">    </span><span class="n">u16</span><span class="w"> </span><span class="n">USART_Parity</span><span class="p">;</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="w">    </span><span class="n">u16</span><span class="w"> </span><span class="n">USART_HardwareFlowControl</span><span class="p">;</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="w">    </span><span class="n">u16</span><span class="w"> </span><span class="n">USART_Mode</span><span class="p">;</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="w">    </span><span class="n">u16</span><span class="w"> </span><span class="n">USART_Clock</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13"></a><span class="w">    </span><span class="n">u16</span><span class="w"> </span><span class="n">USART_CPOL</span><span class="p">;</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14"></a><span class="w">    </span><span class="n">u16</span><span class="w"> </span><span class="n">USART_CPHA</span><span class="p">;</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15"></a><span class="w">    </span><span class="n">u16</span><span class="w"> </span><span class="n">USART_LastBit</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16"></a>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17"></a><span class="p">}</span><span class="w"> </span><span class="n">USART_InitTypeDef</span><span class="p">;</span><span class="w"> </span>
+</span></code></pre></div></td></tr></table></div>
+<p>Table 3. 描述了结构 USART_InitTypeDef 在同步和异步模式下使用的不同成员。</p>
+<p><strong>Table 708. USART_InitTypeDef</strong> 成员 <strong>USART</strong> 模式对比 </p>
+<table>
+<thead>
+<tr>
+<th>成员</th>
+<th>异步模式</th>
+<th>同步模式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>USART_BaudRate</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>USART_WordLength</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>USART_StopBits</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>USART_Parity</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>USART_HardwareFlowControl</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>USART_Mode</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>USART_Clock</td>
+<td></td>
+<td>√</td>
+</tr>
+<tr>
+<td>USART_CPOL</td>
+<td></td>
+<td>√</td>
+</tr>
+<tr>
+<td>USART_CPHA</td>
+<td></td>
+<td>√</td>
+</tr>
+<tr>
+<td>USART_LastBit</td>
+<td></td>
+<td>√</td>
+</tr>
+</tbody>
+</table>
+<h4 id="usart_baudrate">参数 USART_BaudRate<a class="headerlink" href="#usart_baudrate" title="Permanent link">&para;</a></h4>
+<p>该成员设置了 USART 传输的波特率，波特率可以由以下公式计算：</p>
+<p>IntegerDivider = ((APBClock) / (16 * (USART_InitStruct-&gt;USART_BaudRate))) </p>
+<p>FractionalDivider = ((IntegerDivider - ((u32) IntegerDivider)) * 16) + 0.5 </p>
+<h4 id="usart_wordlength">参数 USART_WordLength<a class="headerlink" href="#usart_wordlength" title="Permanent link">&para;</a></h4>
+<p>USART_WordLength 提示了在一个帧中传输或者接收到的数据位数。Table 709. 给出了该参数可取的值。 </p>
+<p><strong>Table 4. USART_WordLength</strong> 定义 </p>
+<table>
+<thead>
+<tr>
+<th><strong>USART_WordLength</strong></th>
+<th></th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>USART_WordLength_8b</td>
+<td>8 位数据</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_WordLength_9b</td>
+<td>9 位数据</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="usart_stopbits">参数 USART_StopBits<a class="headerlink" href="#usart_stopbits" title="Permanent link">&para;</a></h4>
+<p>USART_StopBits 定义了发送的停止位数目。Table 710. 给出了该参数可取的值。 </p>
+<p><strong>Table 5. USART_StopBits</strong> 定义 </p>
+<table>
+<thead>
+<tr>
+<th><strong>USART_StopBits</strong></th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>USART_StopBits_1</td>
+<td>在帧结尾传输  1 个停止位</td>
+</tr>
+<tr>
+<td>USART_StopBits_0.5</td>
+<td>在帧结尾传输  0.5 个停止位</td>
+</tr>
+<tr>
+<td>USART_StopBits_2</td>
+<td>在帧结尾传输  2 个停止位</td>
+</tr>
+<tr>
+<td>USART_StopBits_1.5</td>
+<td>在帧结尾传输  1.5 个停止位</td>
+</tr>
+</tbody>
+</table>
+<h4 id="usart_parity">参数 USART_Parity<a class="headerlink" href="#usart_parity" title="Permanent link">&para;</a></h4>
+<p>USART_Parity 定义了奇偶模式。Table 711. 给出了该参数可取的值。</p>
+<p><strong>Table 6. USART_Parity</strong> 定义 </p>
+<table>
+<thead>
+<tr>
+<th><strong>USART_Parity</strong></th>
+<th></th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>USART_Parity_No</td>
+<td>奇偶失能</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_Parity_Even</td>
+<td>偶模式</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_Parity_Odd</td>
+<td>奇模式</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>注意：奇偶校验一旦使能，在发送数据的 MSB 位插入经计算的奇偶位（字长 9 位时的第 9 位，字长 8 位时的第 8 位）。 </p>
+<h4 id="usart_hardwareflowcontrol">参数 USART_HardwareFlowControl<a class="headerlink" href="#usart_hardwareflowcontrol" title="Permanent link">&para;</a></h4>
+<p>USART_HardwareFlowControl 指定了硬件流控制模式使能还是失能。Table 712. 给出了该参数可取的值。 </p>
+<p><strong>Table 7. USART_HardwareFlowControl</strong> 定义 </p>
+<table>
+<thead>
+<tr>
+<th><strong>USART_HardwareFlowControl</strong></th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>USART_HardwareFlowControl_None</td>
+<td>硬件流控制失能</td>
+</tr>
+<tr>
+<td>USART_HardwareFlowControl_RTS</td>
+<td>发送请求  RTS 使能</td>
+</tr>
+<tr>
+<td>USART_HardwareFlowControl_CTS</td>
+<td>清除发送  CTS 使能</td>
+</tr>
+<tr>
+<td>USART_HardwareFlowControl_RTS_CTS</td>
+<td>RTS 和 CTS 使能</td>
+</tr>
+</tbody>
+</table>
+<h4 id="usart_mode">参数 USART_Mode<a class="headerlink" href="#usart_mode" title="Permanent link">&para;</a></h4>
+<p>USART_Mode 指定了使能或者失能发送和接收模式。Table 713. 给出了该参数可取的值。 </p>
+<p><strong>Table 8. USART_Mode</strong> 定义 </p>
+<table>
+<thead>
+<tr>
+<th><strong>USART_Mode</strong></th>
+<th></th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>USART_Mode_Tx</td>
+<td>发送使能</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_Mode_Rx</td>
+<td>接收使能</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>例： </p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-6-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-6-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-6-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-6-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-6-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-6-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-6-10">10</a></span>
+<span class="normal"><a href="#__codelineno-6-11">11</a></span>
+<span class="normal"><a href="#__codelineno-6-12">12</a></span>
+<span class="normal"><a href="#__codelineno-6-13">13</a></span>
+<span class="normal"><a href="#__codelineno-6-14">14</a></span>
+<span class="normal"><a href="#__codelineno-6-15">15</a></span>
+<span class="normal"><a href="#__codelineno-6-16">16</a></span>
+<span class="normal"><a href="#__codelineno-6-17">17</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="cm">/* The following example illustrates how to configure the USART1 */</span><span class="w"> </span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="n">USART_InitTypeDef</span><span class="w"> </span><span class="n">USART_InitStructure</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_BaudRate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9600</span><span class="p">;</span><span class="w"> </span><span class="c1">//波特率</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_WordLength</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART_WordLength_8b</span><span class="p">;</span><span class="w"> </span><span class="c1">//数据帧长度</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8"></a>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_StopBits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART_StopBits_1</span><span class="p">;</span><span class="w"> </span><span class="c1">//停止位</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10"></a>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_Parity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART_Parity_NO</span><span class="p">;</span><span class="w"> </span><span class="c1">//检验位</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12"></a>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_HardwareFlowControl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART_HardwareFlowControl_None</span><span class="p">;</span><span class="w"> </span><span class="c1">//硬件流控制</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14"></a>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15"></a><span class="n">USART_InitStructure</span><span class="p">.</span><span class="n">USART_Mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART_Mode_Tx</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">USART_Mode_Rx</span><span class="p">;</span><span class="w"> </span><span class="c1">//模式</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16"></a>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17"></a><span class="n">USART_Init</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">USART_InitStructure</span><span class="p">);</span><span class="w"> </span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="usart_cmd">函数 USART_Cmd<a class="headerlink" href="#usart_cmd" title="Permanent link">&para;</a></h3>
+<p><strong>Table 9.</strong> 函数 <strong>USART_ Cmd</strong> </p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>USART_ Cmd</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数原形</td>
+<td>void USART_Cmd(USART_TypeDef* USARTx,  FunctionalState NewState)</td>
+</tr>
+<tr>
+<td>功能描述</td>
+<td>使能或者失能  USART 外设</td>
+</tr>
+<tr>
+<td>输入参数  1</td>
+<td><strong>USARTx</strong>：x 可以是 1，2 或者 3，来选择 USART  外设</td>
+</tr>
+<tr>
+<td>输入参数  2</td>
+<td><strong>NewState</strong>: 外设 USARTx 的新状态这个参数可以取：ENABLE 或者 DISABLE</td>
+</tr>
+<tr>
+<td>输出参数</td>
+<td>无</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>无</td>
+</tr>
+<tr>
+<td>先决条件</td>
+<td>无</td>
+</tr>
+<tr>
+<td>被调用函数</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<p>例： </p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
+<span class="normal"><a href="#__codelineno-7-2">2</a></span>
+<span class="normal"><a href="#__codelineno-7-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="cm">/* Enable the USART1 */</span><span class="w"> </span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="n">USART_Cmd</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span><span class="w"> </span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="usart_itconfig">函数 USART_ITConfig<a class="headerlink" href="#usart_itconfig" title="Permanent link">&para;</a></h3>
+<p><strong>Table 10.</strong> 函数 <strong>USART_ITConfig</strong> </p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>USART_ITConfig</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数原形</td>
+<td>void USART_ITConfig(USART_TypeDef*  USARTx, u16 USART_IT, FunctionalState NewState)</td>
+</tr>
+<tr>
+<td>功能描述</td>
+<td>使能或者失能指定的  USART 中断</td>
+</tr>
+<tr>
+<td>输入参数  1</td>
+<td><strong>USARTx</strong>：x 可以是 1，2 或者 3，来选择 USART  外设</td>
+</tr>
+<tr>
+<td>输入参数  2</td>
+<td><strong>USART_IT</strong>：待使能或者失能的 USART 中断源参阅 Section：USART_IT 查阅更多该参数允许取值范围</td>
+</tr>
+<tr>
+<td>输入参数  3</td>
+<td><strong>NewState</strong>：USARTx 中断的新状态这个参数可以取：ENABLE 或者 DISABLE</td>
+</tr>
+<tr>
+<td>输出参数</td>
+<td>无</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>无</td>
+</tr>
+<tr>
+<td>先决条件</td>
+<td>无</td>
+</tr>
+<tr>
+<td>被调用函数</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<h4 id="usart_it">参数 USART_IT<a class="headerlink" href="#usart_it" title="Permanent link">&para;</a></h4>
+<p>输入参数 USART_IT 使能或者失能 USART 的中断。可以取下表的一个或者多个取值的组合作为该参数的值。</p>
+<p><strong>Table 11. USART_IT</strong> 值 </p>
+<table>
+<thead>
+<tr>
+<th><strong>USART_IT</strong></th>
+<th></th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>USART_IT_PE</td>
+<td>奇偶错误中断</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_IT_TXE</td>
+<td>发送中断</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_IT_TC</td>
+<td>传输完成中断</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>USART_IT_RXNE</strong></td>
+<td>接收中断</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>USART_IT_IDLE</strong></td>
+<td>空闲总线中断</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_IT_LBD</td>
+<td>LIN 中断检测中断</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_IT_CTS</td>
+<td>CTS 中断</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_IT_ERR</td>
+<td>错误中断</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>例： </p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
+<span class="normal"><a href="#__codelineno-8-2">2</a></span>
+<span class="normal"><a href="#__codelineno-8-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="cm">/* Enables the USART1 transmit interrupt */</span><span class="w"> </span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="n">USART_ITConfig</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="w"> </span><span class="n">USART_IT_RXNE</span><span class="err">，</span><span class="n">ENABLE</span><span class="p">);</span><span class="w"> </span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="usart_senddata">函数 USART_SendData<a class="headerlink" href="#usart_senddata" title="Permanent link">&para;</a></h3>
+<p><strong>Table 12.</strong> 函数 <strong>USART_ SendData</strong> </p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>USART_ SendData</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数原形</td>
+<td>void USART_SendData(USART_TypeDef*  USARTx, u8 Data)</td>
+</tr>
+<tr>
+<td>功能描述</td>
+<td>通过外设  USARTx 发送单个数据</td>
+</tr>
+<tr>
+<td>输入参数  1</td>
+<td><strong>USARTx</strong>：x 可以是 1，2 或者 3，来选择 USART  外设</td>
+</tr>
+<tr>
+<td>输入参数  2</td>
+<td>Data: 待发送的数据</td>
+</tr>
+<tr>
+<td>输出参数</td>
+<td>无</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>无</td>
+</tr>
+<tr>
+<td>先决条件</td>
+<td>无</td>
+</tr>
+<tr>
+<td>被调用函数</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<p>例： </p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
+<span class="normal"><a href="#__codelineno-9-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="cm">/* Send one HalfWord on USART3 */</span><span class="w"> </span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="n">USART_SendData</span><span class="p">(</span><span class="n">USART3</span><span class="p">,</span><span class="w"> </span><span class="mh">0x26</span><span class="p">);</span><span class="w"> </span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="usart_receivedata">函数 USART_ReceiveData<a class="headerlink" href="#usart_receivedata" title="Permanent link">&para;</a></h3>
+<p><strong>Table 13.</strong> 函数 <strong>USART_ReceiveData</strong> </p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>USART_ ReceiveData</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数原形</td>
+<td>u8 USART_ReceiveData(USART_TypeDef*  USARTx)</td>
+</tr>
+<tr>
+<td>功能描述</td>
+<td>返回  USARTx 近接收到的数据</td>
+</tr>
+<tr>
+<td>输入参数</td>
+<td>USARTx：x 可以是 1，2 或者 3，来选择 USART  外设</td>
+</tr>
+<tr>
+<td>输出参数</td>
+<td>无</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>接收到的字</td>
+</tr>
+<tr>
+<td>先决条件</td>
+<td>无</td>
+</tr>
+<tr>
+<td>被调用函数</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<p>例： </p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
+<span class="normal"><a href="#__codelineno-10-2">2</a></span>
+<span class="normal"><a href="#__codelineno-10-3">3</a></span>
+<span class="normal"><a href="#__codelineno-10-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="cm">/* Receive one halfword on USART2 */</span><span class="w"> </span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="n">u16</span><span class="w"> </span><span class="n">RxData</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="n">RxData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART_ReceiveData</span><span class="p">(</span><span class="n">USART2</span><span class="p">);</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="usart_getflagstatus">函数 USART_GetFlagStatus<a class="headerlink" href="#usart_getflagstatus" title="Permanent link">&para;</a></h3>
+<p><strong>Table 14.</strong> 函数 <strong>USART_ GetFlagStatus</strong> </p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>USART_ GetFlagStatus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数原形</td>
+<td>FlagStatus  USART_GetFlagStatus(USART_TypeDef* USARTx, u16 USART_FLAG)</td>
+</tr>
+<tr>
+<td>功能描述</td>
+<td>检查指定的  USART 标志位设置与否</td>
+</tr>
+<tr>
+<td>输入参数  1</td>
+<td><strong>USARTx</strong>：x 可以是 1，2 或者 3，来选择 USART  外设</td>
+</tr>
+<tr>
+<td>输入参数  2</td>
+<td><strong>USART_FLAG</strong>：待检查的 USART 标志位参阅 Section：USART_FLAG  查阅更多该参数允许取值范围</td>
+</tr>
+<tr>
+<td>输出参数</td>
+<td>无</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td><strong>USART_FLAG 的新状态（SET  或者 RESET）</strong></td>
+</tr>
+<tr>
+<td>先决条件</td>
+<td>无</td>
+</tr>
+<tr>
+<td>被调用函数</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<p><strong>USART_FLAG</strong> </p>
+<p>Table 15. 给出了所有可以被函数USART_ GetFlagStatus检查的标志位列表 </p>
+<p><strong>Table 15. USART_FLAG</strong> 值 </p>
+<table>
+<thead>
+<tr>
+<th><strong>USART_FLAG</strong></th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>USART_FLAG_CTS</td>
+<td>CTS 标志位</td>
+</tr>
+<tr>
+<td>USART_FLAG_LBD</td>
+<td>LIN 中断检测标志位</td>
+</tr>
+<tr>
+<td><strong>USART_FLAG_TXE</strong></td>
+<td>发送数据寄存器空标志位</td>
+</tr>
+<tr>
+<td><strong>USART_FLAG_TC</strong></td>
+<td>发送完成标志位</td>
+</tr>
+<tr>
+<td><strong>USART_FLAG_RXNE</strong></td>
+<td>接收数据寄存器非空标志位</td>
+</tr>
+<tr>
+<td><strong>USART_FLAG_IDLE</strong></td>
+<td>空闲总线标志位</td>
+</tr>
+<tr>
+<td>USART_FLAG_ORE</td>
+<td>溢出错误标志位</td>
+</tr>
+<tr>
+<td>USART_FLAG_NE</td>
+<td>噪声错误标志位</td>
+</tr>
+<tr>
+<td>USART_FLAG_FE</td>
+<td>帧错误标志位</td>
+</tr>
+<tr>
+<td>USART_FLAG_PE</td>
+<td>奇偶错误标志位</td>
+</tr>
+</tbody>
+</table>
+<p>例： </p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span>
+<span class="normal"><a href="#__codelineno-11-2">2</a></span>
+<span class="normal"><a href="#__codelineno-11-3">3</a></span>
+<span class="normal"><a href="#__codelineno-11-4">4</a></span>
+<span class="normal"><a href="#__codelineno-11-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="cm">/* Check if the transmit data register is full or not */</span><span class="w"> </span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2"></a>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="n">FlagStatus</span><span class="w"> </span><span class="n">Status</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4"></a>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="n">Status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART_GetFlagStatus</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="w"> </span><span class="n">USART_FLAG_TXE</span><span class="p">);</span><span class="w"> </span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="usart_clearflag">函数 USART_ClearFlag<a class="headerlink" href="#usart_clearflag" title="Permanent link">&para;</a></h3>
+<p><strong>Table 16.</strong> 函数 <strong>USART_ ClearFlag</strong> </p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>USART_ ClearFlag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数原形</td>
+<td>void USART_ClearFlag(USART_TypeDef*  USARTx, u16 USART_FLAG)</td>
+</tr>
+<tr>
+<td>功能描述</td>
+<td>清除  USARTx 的待处理标志位</td>
+</tr>
+<tr>
+<td>输入参数  1</td>
+<td>USARTx：x 可以是 1，2 或者 3，来选择 USART  外设</td>
+</tr>
+<tr>
+<td>输入参数  2</td>
+<td>USART_FLAG：待清除的 USART 标志位参阅 Section：USART_FLAG  查阅更多该参数允许取值范围</td>
+</tr>
+<tr>
+<td>输出参数</td>
+<td>无</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>无</td>
+</tr>
+<tr>
+<td>先决条件</td>
+<td>无</td>
+</tr>
+<tr>
+<td>被调用函数</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<p>例： </p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
+<span class="normal"><a href="#__codelineno-12-2">2</a></span>
+<span class="normal"><a href="#__codelineno-12-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="cm">/* Clear Overrun error flag */</span><span class="w"> </span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2"></a>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="n">USART_ClearFlag</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="n">USART_FLAG_OR</span><span class="p">);</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="usart_getitstatus">函数 USART_GetITStatus<a class="headerlink" href="#usart_getitstatus" title="Permanent link">&para;</a></h3>
+<p><strong>Table 17.</strong> 函数 <strong>USART_ GetITStatus</strong> </p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>USART_ GetITStatus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数原形</td>
+<td>ITStatus  USART_GetITStatus(USART_TypeDef* USARTx, u16 USART_IT)</td>
+</tr>
+<tr>
+<td>功能描述</td>
+<td>检查指定的  USART 中断发生与否</td>
+</tr>
+<tr>
+<td>输入参数  1</td>
+<td>USARTx：x 可以是 1，2 或者 3，来选择 USART  外设</td>
+</tr>
+<tr>
+<td>输入参数  2</td>
+<td>USART_IT：待检查的 USART 中断源参阅 Section：USART_IT  查阅更多该参数允许取值范围</td>
+</tr>
+<tr>
+<td>输出参数</td>
+<td>无</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>USART_IT 的新状态</td>
+</tr>
+<tr>
+<td>先决条件</td>
+<td>无</td>
+</tr>
+<tr>
+<td>被调用函数</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<h4 id="usart_it_1">参数 USART_IT<a class="headerlink" href="#usart_it_1" title="Permanent link">&para;</a></h4>
+<p>Table 18. 给出了所有可以被函数USART_ GetITStatus检查的中断标志位列表 </p>
+<p><strong>Table 18. USART_IT</strong> 值 </p>
+<table>
+<thead>
+<tr>
+<th><strong>USART_IT</strong></th>
+<th></th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>USART_IT_PE</td>
+<td>奇偶错误中断</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_IT_TXE</td>
+<td>发送中断</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_IT_TC</td>
+<td>发送完成中断</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_IT_RXNE</td>
+<td>接收中断</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_IT_IDLE</td>
+<td>空闲总线中断</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_IT_LBD</td>
+<td>LIN 中断探测中断</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_IT_CTS</td>
+<td>CTS 中断</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_IT_ORE</td>
+<td>溢出错误中断</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_IT_NE</td>
+<td>噪音错误中断</td>
+<td></td>
+</tr>
+<tr>
+<td>USART_IT_FE</td>
+<td>帧错误中断</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>例： </p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span>
+<span class="normal"><a href="#__codelineno-13-2">2</a></span>
+<span class="normal"><a href="#__codelineno-13-3">3</a></span>
+<span class="normal"><a href="#__codelineno-13-4">4</a></span>
+<span class="normal"><a href="#__codelineno-13-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="cm">/* Get the USART1 Overrun Error interrupt status */</span><span class="w"> </span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2"></a>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="n">ITStatus</span><span class="w"> </span><span class="n">ErrorITStatus</span><span class="p">;</span><span class="w"> </span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4"></a>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="n">ErrorITStatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">USART_GetITStatus</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="w"> </span><span class="n">USART_IT_OverrunError</span><span class="p">);</span><span class="w"> </span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="usart_clearitpendingbit">函数 USART_ClearITPendingBit<a class="headerlink" href="#usart_clearitpendingbit" title="Permanent link">&para;</a></h3>
+<p>Table 19. 描述了函数USART_ ClearITPendingBit  </p>
+<p><strong>Table 19.</strong> 函数 <strong>USART_ ClearITPendingBit</strong> </p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>USART_ ClearITPendingBit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数原形</td>
+<td>void  USART_ClearITPendingBit(USART_TypeDef* USARTx, u16 USART_IT)</td>
+</tr>
+<tr>
+<td>功能描述</td>
+<td>清除  USARTx 的中断待处理位</td>
+</tr>
+<tr>
+<td>输入参数  1</td>
+<td><strong>USARTx</strong>：x 可以是 1，2 或者 3，来选择 USART  外设</td>
+</tr>
+<tr>
+<td>输入参数  2</td>
+<td><strong>USART_IT</strong>：待检查的 USART 中断源参阅 Section：USART_IT  查阅更多该参数允许取值范围</td>
+</tr>
+<tr>
+<td>输出参数</td>
+<td>无</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>无</td>
+</tr>
+<tr>
+<td>先决条件</td>
+<td>无</td>
+</tr>
+<tr>
+<td>被调用函数</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<p>例： </p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1">1</a></span>
+<span class="normal"><a href="#__codelineno-14-2">2</a></span>
+<span class="normal"><a href="#__codelineno-14-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="cm">/* Clear the Overrun Error interrupt pending bit */</span><span class="w"> </span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2"></a>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3"></a><span class="n">USART_ClearITPendingBit</span><span class="p">(</span><span class="n">USART1</span><span class="p">,</span><span class="n">USART_IT_OverrunError</span><span class="p">);</span><span class="w"> </span>
+</span></code></pre></div></td></tr></table></div>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      最后更新:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 27, 2023</span>
+      
+        <br>
+        创建日期:
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 27, 2023</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+
+  <h2 id="__comments">评论</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js"
+        data-repo="Sakura-Ji/Comment"
+        data-repo-id="R_kgDOJx0I-g"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOJx0I-s4CZqEw"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+  </script>
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "transparent_dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            回到页面顶部
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../TIM/" class="md-footer__link md-footer__link--prev" aria-label="上一页: STM32之TIM定时器">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                STM32之TIM定时器
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../OLED/" class="md-footer__link md-footer__link--next" aria-label="下一页: STM32之OLED">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                STM32之OLED
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Sakura-Ji CC-BY-4.0
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/Sakura-Ji" target="_blank" rel="noopener" title="Github | Sakura-Ji" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.expand", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "search.share", "navigation.footer", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.726fbb30.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../../javascripts/lovestart.js"></script>
+      
+        <script src="../../../javascripts/Music.js"></script>
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>

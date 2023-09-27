@@ -1,0 +1,2805 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="纪博文的个人网站">
+      
+      
+        <meta name="author" content="纪博文">
+      
+      
+        <link rel="canonical" href="https://Sakura-Ji.github.io/EmbeddedSyS/STM32/StepMotor/">
+      
+      
+        <link rel="prev" href="../LCD/">
+      
+      
+        <link rel="next" href="../../../MindMaps/Mind/">
+      
+      
+      <link rel="icon" href="../../../images/Cat.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.2">
+    
+    
+      
+        <title>STM32之步进电机 - Sakura-Ji</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.d451bc0e.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.a5377069.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/primarycolor.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+        html.glightbox-open { overflow: initial; height: 100%; }
+        .gslide-title { margin-top: 0px; user-select: text; }
+        .gslide-desc { color: #666; user-select: text; }
+        .gslide-image img { background: white; }
+        
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+            </style> <script src="../../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="pink">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="Sakura-Ji" class="md-header__button md-logo" aria-label="Sakura-Ji" data-md-component="logo">
+      
+  <img src="../../../images/Cat.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Sakura-Ji
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              STM32之步进电机
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="pink"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Sakura-Ji/Sakura-Ji.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Sakura-Ji.github.io
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  简介
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Programing_Language/Introduction/" class="md-tabs__link">
+          
+  
+    
+  
+  编程语言
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../LinuxSystem/Lintroduct/" class="md-tabs__link">
+          
+  
+    
+  
+  Linux系统
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../Eintroduct/" class="md-tabs__link">
+          
+  
+    
+  
+  嵌入式编程
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../MindMaps/Mind/" class="md-tabs__link">
+          
+  
+    
+  
+  思维导图
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Tool/MapDepot/" class="md-tabs__link">
+          
+  
+    
+  
+  GodTool
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Sakura-Ji" class="md-nav__button md-logo" aria-label="Sakura-Ji" data-md-component="logo">
+      
+  <img src="../../../images/Cat.png" alt="logo">
+
+    </a>
+    Sakura-Ji
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Sakura-Ji/Sakura-Ji.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Sakura-Ji.github.io
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    简介
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    编程语言
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            编程语言
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    C
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            C
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/C_language/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    模板
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/main/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    main
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/pointer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    指针
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/array/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    数组
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/link/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    链表
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/floder/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    文件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/stack/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    堆栈
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/C/keywords/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    模块
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    WebDesign
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            WebDesign
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/WebDesign/WebIntro/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    关于前端
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_2" id="__nav_2_3_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Html
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Html
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/WebDesign/HtmlLearn/HtmlFir/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    这里记录Html
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_3" id="__nav_2_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    CSS
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            CSS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Programing_Language/WebDesign/CssLearn/CssFir/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    这里记录学习Css
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Linux系统
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Linux系统
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Lintroduct/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linuxconfig
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Gccinfo/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gcc编译器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Makefile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MakeFile
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/File/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux文件
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Multi-process/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux进程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Communication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux通信
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Posix/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux线程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/Internet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux网路
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    网络聊天室
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            网络聊天室
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/WebChatMind/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    思维导图
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LinuxSystem/WebChatCode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    代码解析
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    嵌入式编程
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            嵌入式编程
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Eintroduct/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Embedded System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    C51
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            C51
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../C51/C51Introd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    介绍C51
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    STM32
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            STM32
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../STM32Introd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32的介绍
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../KeilUse/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Keil5的使用
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FirstFile/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    新建第一个程序模板
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GPIO/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之GPIO外设
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EXTI/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之EXTI外部中断
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TIM/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之TIM定时器
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../USART/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之USART串口通信
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OLED/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之OLED
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LCD/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之LCD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    STM32之步进电机
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    STM32之步进电机
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    步进电机的介绍
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    步进电机的单极性和双极性
+  </a>
+  
+    <nav class="md-nav" aria-label="步进电机的单极性和双极性">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    单极性步进电机
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    双极性步进电机
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    步进电机的一些专业词
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    步进电机的进一步认知
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    步进电机驱动器
+  </a>
+  
+    <nav class="md-nav" aria-label="步进电机驱动器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    细分器驱动原理
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stm32-" class="md-nav__link">
+    STM32--步进电机实战演习
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    思维导图
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            思维导图
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../MindMaps/Mind/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Sakura_JI的知识库
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    GodTool
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            GodTool
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Tool/MapDepot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    依赖于Github图床的个人搭建
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Tool/Testool/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    特性工具的测试
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    步进电机的介绍
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    步进电机的单极性和双极性
+  </a>
+  
+    <nav class="md-nav" aria-label="步进电机的单极性和双极性">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    单极性步进电机
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    双极性步进电机
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    步进电机的一些专业词
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    步进电机的进一步认知
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    步进电机驱动器
+  </a>
+  
+    <nav class="md-nav" aria-label="步进电机驱动器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    细分器驱动原理
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stm32-" class="md-nav__link">
+    STM32--步进电机实战演习
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="_1">步进电机<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>学习资料:</p>
+<ul>
+<li><a href="https://doc.embedfire.com/motor/motor_tutorial/zh/latest/index.html">野火电机应用开发实战指南</a></li>
+<li><a href="https://www.monolithicpower.cn/bipolar-stepper-motors-part-i-control-modes">双极性步进电机（上）：控制模式 |文章 | MPS (monolithicpower.cn)</a></li>
+<li><a href="https://www.bilibili.com/video/BV1cN4y197TG/?share_source=copy_web&amp;vd_source=1f86b29b1eacf120a2143333a298e645">爱上半导体---步进电机的工作原理</a></li>
+</ul>
+<h2 id="_2">步进电机的介绍<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>步进电机又称为脉冲电机，是一种将电脉冲信号转换成相应的角位移或线位移的电动机。</p>
+<ul>
+<li>每输入一个脉冲信号，转子就转动一个角度或前进一步</li>
+<li>其输出的角位移或线位移与输入的脉冲数成正比 </li>
+<li>转速与脉冲频率成正比 </li>
+</ul>
+<p><strong>从控制芯片来看(STM32芯片)上面的话:</strong></p>
+<ul>
+<li>假如使用TIM输出比较中的PWM1向上计数模式，输出1个PWM波--脉冲信号--&gt;转子转动一个角度</li>
+<li>输入脉冲的数量 --&gt; 一共输入多少个PWM波形 --&gt; 计数器CNT从0加到重装栽植ARR(一个周期) == 一个PWM波形 --&gt; 转子的角位移</li>
+<li>单位时间输入脉冲的数量：</li>
+<li>500HZ --(1s发送500个脉冲)  2ms一个周期1个脉冲    快</li>
+<li>50HZ   -- (1s发送50个脉冲)   20ms一个周期1个脉冲  慢</li>
+</ul>
+<hr />
+<h2 id="_3">步进电机的单极性和双极性<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce8ec458853aef34ef7c/StepMotor_Line.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="StepMotor_Line" src="https://pic.imgdb.cn/item/6513ce8ec458853aef34ef7c/StepMotor_Line.png" /></a></p>
+<h3 id="_4">单极性步进电机<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>五线四相单极性: A、B、C、D四相，共阳极</p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce8dc458853aef34ef21/5line4xiang.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="5line4xiang" src="https://pic.imgdb.cn/item/6513ce8dc458853aef34ef21/5line4xiang.png" /></a></p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce8cc458853aef34eed5/single_StepMotor.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="single_StepMotor" src="https://pic.imgdb.cn/item/6513ce8cc458853aef34eed5/single_StepMotor.png" /></a></p>
+<p>在图示中分为 5 根线，分别为 A、B、C、D 和公 共端（+），公共端需要一直通电，剩下 ABCD 相中只要有一个相通电，即可形成回路产生磁场， 图中的通电顺序为A- &gt;AB-&gt;B-&gt;BC-&gt;C-&gt;CD-&gt;D-&gt;DA，即可完成上图中的顺时针旋转，如果想要逆时针旋转只需要将 其倒序即可</p>
+<h3 id="_5">双极性步进电机<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce8ac458853aef34ee1f/douStr_StepMotor.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="douStr_StepMotor" src="https://pic.imgdb.cn/item/6513ce8ac458853aef34ee1f/douStr_StepMotor.png" /></a></p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce8bc458853aef34ee6c/double_StepMotor.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="double_StepMotor" src="https://pic.imgdb.cn/item/6513ce8bc458853aef34ee6c/double_StepMotor.png" /></a></p>
+<ol>
+<li>A 相通电，B 相不通电</li>
+<li>A、B 相全部通电，且电流相同，产生相同磁性 </li>
+<li>B 相通电，A 断电 </li>
+<li>B 相通电，A 相通电，且电流相等，产生相同磁性</li>
+<li>A 相通电，B 断电</li>
+<li>A、B 相全部通电，且电流相同，产生相同磁性</li>
+<li>B 相通电，A 断电 </li>
+<li>B 相通电，A 相通电，且电流相等，产生相同磁性</li>
+</ol>
+<p>其中 1~4 步与 5~8 步的电流方向相反（电流相反，电磁的极性就相反）</p>
+<h2 id="_6">步进电机的一些专业词<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>相数</strong>：产生不同对极 N、S 磁场的激磁线圈对数，也可以理解为步进电机中线圈的组数，其中两相步进电机步距角为 1.8°，三相的步进电机步距角为 1.5°，相数越多的步进电机，其步距角就越小。</p>
+</li>
+<li>
+<p><strong>拍数</strong>：完成一个磁场周期性变化所需脉冲数或导电状态用 n 表示，或指电机转过一个齿距角所需脉冲数，以四相电机为例，有四相四拍运行方式即 AB-BC-CD-DA-AB，四相八拍运行方式即 A-AB-B-BC-C-CD-D-DA-A。</p>
+</li>
+<li>
+<p><strong>步距角</strong>：一个脉冲信号所对应的电机转动的角度，可以简单理解为一个脉冲信号驱动的角度，电机上都有写，一般 42 步进电机的步距角为 1.8°</p>
+</li>
+<li>
+<p><strong>定位转矩</strong>：电机在不通电状态下，电机转子自身的锁定力矩（由磁场齿形的谐波以及机械误差造成的）。</p>
+</li>
+<li>
+<p><strong>静转矩</strong>：电机在额定静态电压作用下，电机不作旋转运动时，电机转轴的锁定力矩。此力 矩是衡量电机体积的标准，与驱动电压及驱动电源等无关。</p>
+</li>
+<li><strong>步距角精度</strong>：步进电机转动一个步距角度的理论值与实际值的误差。用百分比表示：误差/步 距角 *100%。</li>
+<li><strong>失步</strong>：电机运转时运转的步数，不等于理论上的步数。也可以叫做丢步，一般都是因负载太大或者是频率过快。</li>
+<li><strong>失调角</strong>：转子齿轴线偏移定子齿轴线的角度，电机运转必存在失调角，由失调角产生的误 差，采用细分驱动是不能解决的。 </li>
+<li><strong>最大空载起动频率</strong>：在不加负载的情况下，能够直接起动的最大频率。</li>
+<li><strong>最大空载的运行频率</strong>：电机不带负载的最高转速频率。</li>
+<li><strong>运行转矩特性</strong>：电机的动态力矩取决于电机运行时的平均电流（而非静态电流），平均电流 越大，电机输出力矩越大，即电机的频率特性越硬。 </li>
+<li><strong>电机正反转控制</strong>：通过改变通电顺序而改变电机的正反转。</li>
+</ul>
+<h2 id="_7">步进电机的进一步认知<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<p>从上面学习来看，我们实现一次的转动角度最小是45度，但是如果我们想实现更小的转动角度，那么如何实现呢，一般最先想到的是增加相数对吧，这最好理解了，但是呢没有采用说明复杂度太大?我后 </p>
+<p>原来是:人们是通过设计机械结构来决定的 --&gt;  在上面的示意图中，转子是由一根磁体，有N,S两级，步距角是45度，于是人们把转子改成一个拥有50个齿轮的全S极，然后设置定子的轮齿是48个</p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce88c458853aef34ed97/StepMotor_go.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="StepMotor_go" src="https://pic.imgdb.cn/item/6513ce88c458853aef34ed97/StepMotor_go.png" /></a></p>
+<p>这样以 <strong>单相步进</strong> 完成一个 <strong>4拍数</strong> --&gt; A-B-<span class="arithmatex">\(\overline A\)</span>-<span class="arithmatex">\(\overline B\)</span> 前进了7.2度，一个脉冲信号所对应的电机转动的角度--&gt;<strong>步距角1.8度</strong></p>
+<h2 id="_8">步进电机驱动器<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>为什么要使用驱动器 -- 因为驱动器起到将<strong>控制器信号放大</strong>或者<strong>转换的作用</strong></p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce88c458853aef34ed0b/StepDriver.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="StepDriver" src="https://pic.imgdb.cn/item/6513ce88c458853aef34ed0b/StepDriver.png" /></a></p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce57c458853aef34d614/MicrostepDriver.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="MicrostepDriver" src="https://pic.imgdb.cn/item/6513ce57c458853aef34d614/MicrostepDriver.png" /></a></p>
+<h3 id="_9">细分器驱动原理<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p><strong>细分的原理</strong>就是：通过改变<strong>定子的电流比例</strong>，改变转子在一个整步中的不同位置，可以将一个整步分成多个小步来运行。</p>
+<p>驱动器的细分设置由拨码开关的 SW1~SW3 来设定，默认为 2 细分，一般的<strong>两相四线(A+、B+、A-、B-)制步进电机</strong>的步进角都是1.8°，因此<strong>电机旋转一圈需要 360° /1.8° =200 个脉冲</strong>，这里 <strong>2 细分转一圈</strong>需要<strong>200*2=400 个脉冲</strong>。</p>
+<p><a class="glightbox" href="https://pic.imgdb.cn/item/6513ce87c458853aef34ecaa/micro_StepDriver.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="micro_StepDriver" src="https://pic.imgdb.cn/item/6513ce87c458853aef34ecaa/micro_StepDriver.png" /></a></p>
+<h2 id="stm32-">STM32--步进电机实战演习<a class="headerlink" href="#stm32-" title="Permanent link">&para;</a></h2>
+<p>由以上学习可知，我们使用MCU--STM32控制步进电机，只需要给它两个控制信号，1个是方向信号，一个是脉冲信号</p>
+<p><code>StepMotor.h</code></p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span>
+<span class="normal"><a href="#__codelineno-0-17">17</a></span>
+<span class="normal"><a href="#__codelineno-0-18">18</a></span>
+<span class="normal"><a href="#__codelineno-0-19">19</a></span>
+<span class="normal"><a href="#__codelineno-0-20">20</a></span>
+<span class="normal"><a href="#__codelineno-0-21">21</a></span>
+<span class="normal"><a href="#__codelineno-0-22">22</a></span>
+<span class="normal"><a href="#__codelineno-0-23">23</a></span>
+<span class="normal"><a href="#__codelineno-0-24">24</a></span>
+<span class="normal"><a href="#__codelineno-0-25">25</a></span>
+<span class="normal"><a href="#__codelineno-0-26">26</a></span>
+<span class="normal"><a href="#__codelineno-0-27">27</a></span>
+<span class="normal"><a href="#__codelineno-0-28">28</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="cp">#ifndef  __STEPMOTOR_H__</span><span class="c1">//如果没有定义了则参加以下编译</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="cp">#define  __STEPMOTOR_H__</span><span class="c1">//一旦定义就有了定义 所以 其目的就是防止模块重复编译</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;stm32f10x.h&quot;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="p">{</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">    </span><span class="n">u32</span><span class="w">   </span><span class="n">subdiv</span><span class="p">;</span><span class="w">                   </span><span class="c1">//细分值</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">speed</span><span class="p">;</span><span class="w">                    </span><span class="c1">//速度</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">angle</span><span class="p">;</span><span class="w">                    </span><span class="c1">//当前角度</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">targetangel</span><span class="p">;</span><span class="w">              </span><span class="c1">//目标角度</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">pulseangle</span><span class="p">;</span><span class="w">               </span><span class="c1">//单脉冲的角度</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="p">}</span><span class="n">STEPMOTOR_TypeDef</span><span class="p">;</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="k">typedef</span><span class="w"> </span><span class="k">enum</span><span class="p">{</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w">    </span><span class="n">DIR_LEFT</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="w">    </span><span class="n">DIR_RIGHT</span><span class="p">,</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="p">}</span><span class="n">STEPDIR_Def</span><span class="p">;</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="cp">#define STEPDIRGET()  (GPIOB-&gt;ODR &amp; (1&lt;&lt;5)) </span><span class="c1">//如果PB5输出是1 与1得1 右转 -- 输出0 与0得0 左转 </span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="cp">#define STEPDIR(x)    x?(GPIOB-&gt;ODR |= (1&lt;&lt;5)):(GPIOB-&gt;ODR &amp;=~ (1&lt;&lt;5))</span><span class="c1">//x=1 或1得1 ; x=0 与0得0</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="kt">void</span><span class="w"> </span><span class="nf">StepMotor_Init</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="kt">void</span><span class="w"> </span><span class="nf">StepMontor_Move</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">angle</span><span class="p">);</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="kt">void</span><span class="w"> </span><span class="nf">StepMontor_Stop</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="kt">void</span><span class="w"> </span><span class="nf">StepMotor_SetSpeed</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">angle</span><span class="p">);</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="n">u8</span><span class="w"> </span><span class="nf">Step_MoveCheck</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27"></a>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="cp">#endif  </span><span class="c1">//结束编译</span>
+</span></code></pre></div></td></tr></table></div>
+<p><code>StepMotor.c</code></p>
+<div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">  1</a></span>
+<span class="normal"><a href="#__codelineno-1-2">  2</a></span>
+<span class="normal"><a href="#__codelineno-1-3">  3</a></span>
+<span class="normal"><a href="#__codelineno-1-4">  4</a></span>
+<span class="normal"><a href="#__codelineno-1-5">  5</a></span>
+<span class="normal"><a href="#__codelineno-1-6">  6</a></span>
+<span class="normal"><a href="#__codelineno-1-7">  7</a></span>
+<span class="normal"><a href="#__codelineno-1-8">  8</a></span>
+<span class="normal"><a href="#__codelineno-1-9">  9</a></span>
+<span class="normal"><a href="#__codelineno-1-10"> 10</a></span>
+<span class="normal"><a href="#__codelineno-1-11"> 11</a></span>
+<span class="normal"><a href="#__codelineno-1-12"> 12</a></span>
+<span class="normal"><a href="#__codelineno-1-13"> 13</a></span>
+<span class="normal"><a href="#__codelineno-1-14"> 14</a></span>
+<span class="normal"><a href="#__codelineno-1-15"> 15</a></span>
+<span class="normal"><a href="#__codelineno-1-16"> 16</a></span>
+<span class="normal"><a href="#__codelineno-1-17"> 17</a></span>
+<span class="normal"><a href="#__codelineno-1-18"> 18</a></span>
+<span class="normal"><a href="#__codelineno-1-19"> 19</a></span>
+<span class="normal"><a href="#__codelineno-1-20"> 20</a></span>
+<span class="normal"><a href="#__codelineno-1-21"> 21</a></span>
+<span class="normal"><a href="#__codelineno-1-22"> 22</a></span>
+<span class="normal"><a href="#__codelineno-1-23"> 23</a></span>
+<span class="normal"><a href="#__codelineno-1-24"> 24</a></span>
+<span class="normal"><a href="#__codelineno-1-25"> 25</a></span>
+<span class="normal"><a href="#__codelineno-1-26"> 26</a></span>
+<span class="normal"><a href="#__codelineno-1-27"> 27</a></span>
+<span class="normal"><a href="#__codelineno-1-28"> 28</a></span>
+<span class="normal"><a href="#__codelineno-1-29"> 29</a></span>
+<span class="normal"><a href="#__codelineno-1-30"> 30</a></span>
+<span class="normal"><a href="#__codelineno-1-31"> 31</a></span>
+<span class="normal"><a href="#__codelineno-1-32"> 32</a></span>
+<span class="normal"><a href="#__codelineno-1-33"> 33</a></span>
+<span class="normal"><a href="#__codelineno-1-34"> 34</a></span>
+<span class="normal"><a href="#__codelineno-1-35"> 35</a></span>
+<span class="normal"><a href="#__codelineno-1-36"> 36</a></span>
+<span class="normal"><a href="#__codelineno-1-37"> 37</a></span>
+<span class="normal"><a href="#__codelineno-1-38"> 38</a></span>
+<span class="normal"><a href="#__codelineno-1-39"> 39</a></span>
+<span class="normal"><a href="#__codelineno-1-40"> 40</a></span>
+<span class="normal"><a href="#__codelineno-1-41"> 41</a></span>
+<span class="normal"><a href="#__codelineno-1-42"> 42</a></span>
+<span class="normal"><a href="#__codelineno-1-43"> 43</a></span>
+<span class="normal"><a href="#__codelineno-1-44"> 44</a></span>
+<span class="normal"><a href="#__codelineno-1-45"> 45</a></span>
+<span class="normal"><a href="#__codelineno-1-46"> 46</a></span>
+<span class="normal"><a href="#__codelineno-1-47"> 47</a></span>
+<span class="normal"><a href="#__codelineno-1-48"> 48</a></span>
+<span class="normal"><a href="#__codelineno-1-49"> 49</a></span>
+<span class="normal"><a href="#__codelineno-1-50"> 50</a></span>
+<span class="normal"><a href="#__codelineno-1-51"> 51</a></span>
+<span class="normal"><a href="#__codelineno-1-52"> 52</a></span>
+<span class="normal"><a href="#__codelineno-1-53"> 53</a></span>
+<span class="normal"><a href="#__codelineno-1-54"> 54</a></span>
+<span class="normal"><a href="#__codelineno-1-55"> 55</a></span>
+<span class="normal"><a href="#__codelineno-1-56"> 56</a></span>
+<span class="normal"><a href="#__codelineno-1-57"> 57</a></span>
+<span class="normal"><a href="#__codelineno-1-58"> 58</a></span>
+<span class="normal"><a href="#__codelineno-1-59"> 59</a></span>
+<span class="normal"><a href="#__codelineno-1-60"> 60</a></span>
+<span class="normal"><a href="#__codelineno-1-61"> 61</a></span>
+<span class="normal"><a href="#__codelineno-1-62"> 62</a></span>
+<span class="normal"><a href="#__codelineno-1-63"> 63</a></span>
+<span class="normal"><a href="#__codelineno-1-64"> 64</a></span>
+<span class="normal"><a href="#__codelineno-1-65"> 65</a></span>
+<span class="normal"><a href="#__codelineno-1-66"> 66</a></span>
+<span class="normal"><a href="#__codelineno-1-67"> 67</a></span>
+<span class="normal"><a href="#__codelineno-1-68"> 68</a></span>
+<span class="normal"><a href="#__codelineno-1-69"> 69</a></span>
+<span class="normal"><a href="#__codelineno-1-70"> 70</a></span>
+<span class="normal"><a href="#__codelineno-1-71"> 71</a></span>
+<span class="normal"><a href="#__codelineno-1-72"> 72</a></span>
+<span class="normal"><a href="#__codelineno-1-73"> 73</a></span>
+<span class="normal"><a href="#__codelineno-1-74"> 74</a></span>
+<span class="normal"><a href="#__codelineno-1-75"> 75</a></span>
+<span class="normal"><a href="#__codelineno-1-76"> 76</a></span>
+<span class="normal"><a href="#__codelineno-1-77"> 77</a></span>
+<span class="normal"><a href="#__codelineno-1-78"> 78</a></span>
+<span class="normal"><a href="#__codelineno-1-79"> 79</a></span>
+<span class="normal"><a href="#__codelineno-1-80"> 80</a></span>
+<span class="normal"><a href="#__codelineno-1-81"> 81</a></span>
+<span class="normal"><a href="#__codelineno-1-82"> 82</a></span>
+<span class="normal"><a href="#__codelineno-1-83"> 83</a></span>
+<span class="normal"><a href="#__codelineno-1-84"> 84</a></span>
+<span class="normal"><a href="#__codelineno-1-85"> 85</a></span>
+<span class="normal"><a href="#__codelineno-1-86"> 86</a></span>
+<span class="normal"><a href="#__codelineno-1-87"> 87</a></span>
+<span class="normal"><a href="#__codelineno-1-88"> 88</a></span>
+<span class="normal"><a href="#__codelineno-1-89"> 89</a></span>
+<span class="normal"><a href="#__codelineno-1-90"> 90</a></span>
+<span class="normal"><a href="#__codelineno-1-91"> 91</a></span>
+<span class="normal"><a href="#__codelineno-1-92"> 92</a></span>
+<span class="normal"><a href="#__codelineno-1-93"> 93</a></span>
+<span class="normal"><a href="#__codelineno-1-94"> 94</a></span>
+<span class="normal"><a href="#__codelineno-1-95"> 95</a></span>
+<span class="normal"><a href="#__codelineno-1-96"> 96</a></span>
+<span class="normal"><a href="#__codelineno-1-97"> 97</a></span>
+<span class="normal"><a href="#__codelineno-1-98"> 98</a></span>
+<span class="normal"><a href="#__codelineno-1-99"> 99</a></span>
+<span class="normal"><a href="#__codelineno-1-100">100</a></span>
+<span class="normal"><a href="#__codelineno-1-101">101</a></span>
+<span class="normal"><a href="#__codelineno-1-102">102</a></span>
+<span class="normal"><a href="#__codelineno-1-103">103</a></span>
+<span class="normal"><a href="#__codelineno-1-104">104</a></span>
+<span class="normal"><a href="#__codelineno-1-105">105</a></span>
+<span class="normal"><a href="#__codelineno-1-106">106</a></span>
+<span class="normal"><a href="#__codelineno-1-107">107</a></span>
+<span class="normal"><a href="#__codelineno-1-108">108</a></span>
+<span class="normal"><a href="#__codelineno-1-109">109</a></span>
+<span class="normal"><a href="#__codelineno-1-110">110</a></span>
+<span class="normal"><a href="#__codelineno-1-111">111</a></span>
+<span class="normal"><a href="#__codelineno-1-112">112</a></span>
+<span class="normal"><a href="#__codelineno-1-113">113</a></span>
+<span class="normal"><a href="#__codelineno-1-114">114</a></span>
+<span class="normal"><a href="#__codelineno-1-115">115</a></span>
+<span class="normal"><a href="#__codelineno-1-116">116</a></span>
+<span class="normal"><a href="#__codelineno-1-117">117</a></span>
+<span class="normal"><a href="#__codelineno-1-118">118</a></span>
+<span class="normal"><a href="#__codelineno-1-119">119</a></span>
+<span class="normal"><a href="#__codelineno-1-120">120</a></span>
+<span class="normal"><a href="#__codelineno-1-121">121</a></span>
+<span class="normal"><a href="#__codelineno-1-122">122</a></span>
+<span class="normal"><a href="#__codelineno-1-123">123</a></span>
+<span class="normal"><a href="#__codelineno-1-124">124</a></span>
+<span class="normal"><a href="#__codelineno-1-125">125</a></span>
+<span class="normal"><a href="#__codelineno-1-126">126</a></span>
+<span class="normal"><a href="#__codelineno-1-127">127</a></span>
+<span class="normal"><a href="#__codelineno-1-128">128</a></span>
+<span class="normal"><a href="#__codelineno-1-129">129</a></span>
+<span class="normal"><a href="#__codelineno-1-130">130</a></span>
+<span class="normal"><a href="#__codelineno-1-131">131</a></span>
+<span class="normal"><a href="#__codelineno-1-132">132</a></span>
+<span class="normal"><a href="#__codelineno-1-133">133</a></span>
+<span class="normal"><a href="#__codelineno-1-134">134</a></span>
+<span class="normal"><a href="#__codelineno-1-135">135</a></span>
+<span class="normal"><a href="#__codelineno-1-136">136</a></span>
+<span class="normal"><a href="#__codelineno-1-137">137</a></span>
+<span class="normal"><a href="#__codelineno-1-138">138</a></span>
+<span class="normal"><a href="#__codelineno-1-139">139</a></span>
+<span class="normal"><a href="#__codelineno-1-140">140</a></span>
+<span class="normal"><a href="#__codelineno-1-141">141</a></span>
+<span class="normal"><a href="#__codelineno-1-142">142</a></span>
+<span class="normal"><a href="#__codelineno-1-143">143</a></span>
+<span class="normal"><a href="#__codelineno-1-144">144</a></span>
+<span class="normal"><a href="#__codelineno-1-145">145</a></span>
+<span class="normal"><a href="#__codelineno-1-146">146</a></span>
+<span class="normal"><a href="#__codelineno-1-147">147</a></span>
+<span class="normal"><a href="#__codelineno-1-148">148</a></span>
+<span class="normal"><a href="#__codelineno-1-149">149</a></span>
+<span class="normal"><a href="#__codelineno-1-150">150</a></span>
+<span class="normal"><a href="#__codelineno-1-151">151</a></span>
+<span class="normal"><a href="#__codelineno-1-152">152</a></span>
+<span class="normal"><a href="#__codelineno-1-153">153</a></span>
+<span class="normal"><a href="#__codelineno-1-154">154</a></span>
+<span class="normal"><a href="#__codelineno-1-155">155</a></span>
+<span class="normal"><a href="#__codelineno-1-156">156</a></span>
+<span class="normal"><a href="#__codelineno-1-157">157</a></span>
+<span class="normal"><a href="#__codelineno-1-158">158</a></span>
+<span class="normal"><a href="#__codelineno-1-159">159</a></span>
+<span class="normal"><a href="#__codelineno-1-160">160</a></span>
+<span class="normal"><a href="#__codelineno-1-161">161</a></span>
+<span class="normal"><a href="#__codelineno-1-162">162</a></span>
+<span class="normal"><a href="#__codelineno-1-163">163</a></span>
+<span class="normal"><a href="#__codelineno-1-164">164</a></span>
+<span class="normal"><a href="#__codelineno-1-165">165</a></span>
+<span class="normal"><a href="#__codelineno-1-166">166</a></span>
+<span class="normal"><a href="#__codelineno-1-167">167</a></span>
+<span class="normal"><a href="#__codelineno-1-168">168</a></span>
+<span class="normal"><a href="#__codelineno-1-169">169</a></span>
+<span class="normal"><a href="#__codelineno-1-170">170</a></span>
+<span class="normal"><a href="#__codelineno-1-171">171</a></span>
+<span class="normal"><a href="#__codelineno-1-172">172</a></span>
+<span class="normal"><a href="#__codelineno-1-173">173</a></span>
+<span class="normal"><a href="#__codelineno-1-174">174</a></span>
+<span class="normal"><a href="#__codelineno-1-175">175</a></span>
+<span class="normal"><a href="#__codelineno-1-176">176</a></span>
+<span class="normal"><a href="#__codelineno-1-177">177</a></span>
+<span class="normal"><a href="#__codelineno-1-178">178</a></span>
+<span class="normal"><a href="#__codelineno-1-179">179</a></span>
+<span class="normal"><a href="#__codelineno-1-180">180</a></span>
+<span class="normal"><a href="#__codelineno-1-181">181</a></span>
+<span class="normal"><a href="#__codelineno-1-182">182</a></span>
+<span class="normal"><a href="#__codelineno-1-183">183</a></span>
+<span class="normal"><a href="#__codelineno-1-184">184</a></span>
+<span class="normal"><a href="#__codelineno-1-185">185</a></span>
+<span class="normal"><a href="#__codelineno-1-186">186</a></span>
+<span class="normal"><a href="#__codelineno-1-187">187</a></span>
+<span class="normal"><a href="#__codelineno-1-188">188</a></span>
+<span class="normal"><a href="#__codelineno-1-189">189</a></span>
+<span class="normal"><a href="#__codelineno-1-190">190</a></span>
+<span class="normal"><a href="#__codelineno-1-191">191</a></span>
+<span class="normal"><a href="#__codelineno-1-192">192</a></span>
+<span class="normal"><a href="#__codelineno-1-193">193</a></span>
+<span class="normal"><a href="#__codelineno-1-194">194</a></span>
+<span class="normal"><a href="#__codelineno-1-195">195</a></span>
+<span class="normal"><a href="#__codelineno-1-196">196</a></span>
+<span class="normal"><a href="#__codelineno-1-197">197</a></span>
+<span class="normal"><a href="#__codelineno-1-198">198</a></span>
+<span class="normal"><a href="#__codelineno-1-199">199</a></span>
+<span class="normal"><a href="#__codelineno-1-200">200</a></span>
+<span class="normal"><a href="#__codelineno-1-201">201</a></span>
+<span class="normal"><a href="#__codelineno-1-202">202</a></span>
+<span class="normal"><a href="#__codelineno-1-203">203</a></span>
+<span class="normal"><a href="#__codelineno-1-204">204</a></span>
+<span class="normal"><a href="#__codelineno-1-205">205</a></span>
+<span class="normal"><a href="#__codelineno-1-206">206</a></span>
+<span class="normal"><a href="#__codelineno-1-207">207</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;StepMotor.h&quot;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="n">STEPMOTOR_TypeDef</span><span class="w"> </span><span class="n">stepmotor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1600</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">};</span><span class="c1">//初始化结构体</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="cm">/**</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="cm">  * @brief  StepMotor_Init()电机初始化函数</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="cm">            PB5 --&gt; DIR+方向 </span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="cm">            PB6 --&gt; PUL+脉冲  </span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="cm">            标志脉冲是方波 所以占空比=50%</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="cm">  * @param  无</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="cm">  * @retval 无</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="cm">  */</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="kt">void</span><span class="w"> </span><span class="nf">StepMotor_Init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="p">{</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="w">  </span><span class="c1">//1.开启时钟</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="w">  </span><span class="n">RCC_APB1PeriphClockCmd</span><span class="p">(</span><span class="n">RCC_APB1Periph_TIM4</span><span class="p">,</span><span class="n">ENABLE</span><span class="p">);</span><span class="c1">//开启定时器4时钟</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="w">  </span><span class="n">RCC_APB2PeriphClockCmd</span><span class="p">(</span><span class="n">RCC_APB2Periph_GPIOB</span><span class="p">,</span><span class="n">ENABLE</span><span class="p">);</span><span class="c1">//开启GPIOB时钟</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19"></a><span class="w">  </span><span class="c1">//2.初始化IO口 </span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20"></a><span class="w">  </span><span class="n">GPIO_InitTypeDef</span><span class="w"> </span><span class="n">GPIO_InitStructure</span><span class="p">;</span><span class="c1">//定义结构体</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21"></a>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22"></a><span class="w">  </span><span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Pin_6</span><span class="p">;</span><span class="c1">//TIM4的PWM的OC1通道输出在PB6引脚 -- 看引脚手册</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23"></a><span class="w">  </span><span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Mode_AF_PP</span><span class="w"> </span><span class="p">;</span><span class="c1">//设置为复用推挽输出 -- 使用片上外设输出</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24"></a><span class="w">  </span><span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Speed_50MHz</span><span class="w"> </span><span class="p">;</span><span class="c1">//设置输出速度为50MHZ</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25"></a><span class="w">  </span><span class="n">GPIO_Init</span><span class="p">(</span><span class="n">GPIOB</span><span class="p">,</span><span class="o">&amp;</span><span class="n">GPIO_InitStructure</span><span class="p">);</span><span class="c1">//初始化</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26"></a>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27"></a><span class="w">  </span><span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Pin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Pin_5</span><span class="p">;</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28"></a><span class="w">  </span><span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Mode_Out_PP</span><span class="w"> </span><span class="p">;</span><span class="c1">//设置为推挽输出</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29"></a><span class="w">  </span><span class="n">GPIO_InitStructure</span><span class="p">.</span><span class="n">GPIO_Speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_Speed_50MHz</span><span class="w"> </span><span class="p">;</span><span class="c1">//设置输出速度为50MHZ</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30"></a><span class="w">  </span><span class="n">GPIO_Init</span><span class="p">(</span><span class="n">GPIOB</span><span class="p">,</span><span class="o">&amp;</span><span class="n">GPIO_InitStructure</span><span class="p">);</span><span class="c1">//初始化</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31"></a>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32"></a><span class="w">  </span><span class="c1">//3.初始化TIM定时器</span>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33"></a>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34"></a><span class="w">  </span><span class="n">TIM_InternalClockConfig</span><span class="p">(</span><span class="n">TIM4</span><span class="p">);</span><span class="w"> </span><span class="c1">//设置TIM4使用内部时钟 -- 可不写 原因--STM32默认使用内部时钟</span>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35"></a>
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36"></a><span class="w">  </span><span class="n">TIM_TimeBaseInitTypeDef</span><span class="w"> </span><span class="n">TIM_TimeBaseStructure</span><span class="p">;</span><span class="w"> </span><span class="c1">//定义定时器初始化结构体</span>
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37"></a><span class="w">  </span><span class="c1">//CK_CNT_OV = CK_PSC / (PSC + 1) / (ARR + 1) 通过这个公式可得出 设置500HZ频率 每2ms加一，72000000/72/2000</span>
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38"></a><span class="w">  </span><span class="n">TIM_TimeBaseStructure</span><span class="p">.</span><span class="n">TIM_Period</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2000-1</span><span class="p">;</span><span class="w"> </span><span class="c1">//自动重装载寄存器周期的值 -- ARR </span>
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39"></a><span class="w">  </span><span class="n">TIM_TimeBaseStructure</span><span class="p">.</span><span class="n">TIM_Prescaler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">72</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">//预分频值 -- PSC </span>
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40"></a><span class="w">  </span><span class="n">TIM_TimeBaseStructure</span><span class="p">.</span><span class="n">TIM_ClockDivision</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TIM_CKD_DIV1</span><span class="p">;</span><span class="w"> </span><span class="c1">//滤波频率 1分频 也就是 不分频 使用系统时钟频率</span>
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41"></a><span class="w">  </span><span class="n">TIM_TimeBaseStructure</span><span class="p">.</span><span class="n">TIM_RepetitionCounter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">//重复计数器只要高级定时器才有 --TIM1/TIM8</span>
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42"></a><span class="w">  </span><span class="n">TIM_TimeBaseStructure</span><span class="p">.</span><span class="n">TIM_CounterMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TIM_CounterMode_Up</span><span class="p">;</span><span class="w"> </span><span class="c1">//定时器模式 -- 向上计数</span>
+</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43"></a><span class="w">  </span><span class="n">TIM_TimeBaseInit</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">TIM_TimeBaseStructure</span><span class="p">);</span><span class="c1">//初始化定时器4</span>
+</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44"></a>
+</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45"></a><span class="w">  </span><span class="c1">//4.初始化输出比较 --&gt;PWM1模式</span>
+</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46"></a><span class="w">  </span><span class="cm">/* Configures the TIM4 OC1 in PWM1 Mode */</span><span class="w"> </span>
+</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47"></a><span class="w">  </span><span class="n">TIM_OCInitTypeDef</span><span class="w"> </span><span class="n">TIM_OCInitStructure</span><span class="p">;</span><span class="w"> </span><span class="c1">//定义结构体</span>
+</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48"></a><span class="w">  </span><span class="cm">/*</span>
+</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49"></a><span class="cm">  *因为  我们只需要给下面部分结构体成员设置初始值，而结构体里面的成员有些没有使用到(比如高级定时器的部分),导致一些不确定的因素</span>
+</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50"></a><span class="cm">  *所以  为了避免这些不确定的因素 我们使用TIM_OCStructInit函数 设置默认值</span>
+</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51"></a><span class="cm">  */</span>
+</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52"></a><span class="w">  </span><span class="n">TIM_OCStructInit</span><span class="p">(</span><span class="o">&amp;</span><span class="w"> </span><span class="n">TIM_OCInitStructure</span><span class="p">);</span><span class="w"> </span>
+</span><span id="__span-1-53"><a id="__codelineno-1-53" name="__codelineno-1-53"></a><span class="w">  </span><span class="n">TIM_OCInitStructure</span><span class="p">.</span><span class="n">TIM_OCMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TIM_OCMode_PWM1</span><span class="p">;</span><span class="w"> </span><span class="c1">//设置输出模式</span>
+</span><span id="__span-1-54"><a id="__codelineno-1-54" name="__codelineno-1-54"></a><span class="w">  </span><span class="cm">/*</span>
+</span><span id="__span-1-55"><a id="__codelineno-1-55" name="__codelineno-1-55"></a><span class="cm">  *  TIM_OCPolarity_High , 高极性 极性不翻转 REF波形直接输出 高电平  (有效电平)</span>
+</span><span id="__span-1-56"><a id="__codelineno-1-56" name="__codelineno-1-56"></a><span class="cm">  *  TIM_OCPolarity_Low , 低极性，极性不翻转 REF波形直接输出 低电平  (有效电平)</span>
+</span><span id="__span-1-57"><a id="__codelineno-1-57" name="__codelineno-1-57"></a><span class="cm">  *  </span>
+</span><span id="__span-1-58"><a id="__codelineno-1-58" name="__codelineno-1-58"></a><span class="cm">  */</span>
+</span><span id="__span-1-59"><a id="__codelineno-1-59" name="__codelineno-1-59"></a><span class="w">  </span><span class="n">TIM_OCInitStructure</span><span class="p">.</span><span class="n">TIM_OCPolarity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TIM_OCPolarity_High</span><span class="p">;</span><span class="w"> </span><span class="c1">//设置输出比较模式的极性</span>
+</span><span id="__span-1-60"><a id="__codelineno-1-60" name="__codelineno-1-60"></a><span class="w">  </span><span class="n">TIM_OCInitStructure</span><span class="p">.</span><span class="n">TIM_OutputState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TIM_OutputState_Enable</span><span class="p">;</span><span class="c1">//设置输出使能</span>
+</span><span id="__span-1-61"><a id="__codelineno-1-61" name="__codelineno-1-61"></a><span class="w">  </span><span class="n">TIM_OCInitStructure</span><span class="p">.</span><span class="n">TIM_Pulse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">//设置CCR --&gt; 占空比 </span>
+</span><span id="__span-1-62"><a id="__codelineno-1-62" name="__codelineno-1-62"></a><span class="w">  </span><span class="n">TIM_OC1Init</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">TIM_OCInitStructure</span><span class="p">);</span><span class="w"> </span><span class="c1">//选择TIM4 的 OC1通道 输出PWM波形  使用引脚手册查看输出到那个引脚上了  -- 这里是OC2 == CH2通道</span>
+</span><span id="__span-1-63"><a id="__codelineno-1-63" name="__codelineno-1-63"></a>
+</span><span id="__span-1-64"><a id="__codelineno-1-64" name="__codelineno-1-64"></a><span class="w">  </span><span class="c1">//5. 启动预装载寄存器 --&gt; 写入的值不会立即生效而是更新事件时生效 --&gt; 避免一些小问题</span>
+</span><span id="__span-1-65"><a id="__codelineno-1-65" name="__codelineno-1-65"></a><span class="w">  </span><span class="n">TIM_OC1PreloadConfig</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="n">TIM_OCPreload_Enable</span><span class="p">);</span>
+</span><span id="__span-1-66"><a id="__codelineno-1-66" name="__codelineno-1-66"></a><span class="w">  </span><span class="n">TIM_ARRPreloadConfig</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span>
+</span><span id="__span-1-67"><a id="__codelineno-1-67" name="__codelineno-1-67"></a><span class="w">  </span><span class="n">TIM_SetCompare1</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="mi">1000-1</span><span class="p">);</span><span class="cm">/*单独更改TIM4_CCR1寄存器值的函数 --&gt; 修改占空比50%*/</span>
+</span><span id="__span-1-68"><a id="__codelineno-1-68" name="__codelineno-1-68"></a>
+</span><span id="__span-1-69"><a id="__codelineno-1-69" name="__codelineno-1-69"></a><span class="w">  </span><span class="c1">//6.初始化步进电机速度</span>
+</span><span id="__span-1-70"><a id="__codelineno-1-70" name="__codelineno-1-70"></a><span class="w">  </span><span class="n">StepMotor_SetSpeed</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span><span class="c1">//初始速度为50°/s </span>
+</span><span id="__span-1-71"><a id="__codelineno-1-71" name="__codelineno-1-71"></a><span class="w">  </span><span class="n">StepMontor_Stop</span><span class="p">();</span><span class="c1">//防止步进电机动</span>
+</span><span id="__span-1-72"><a id="__codelineno-1-72" name="__codelineno-1-72"></a>
+</span><span id="__span-1-73"><a id="__codelineno-1-73" name="__codelineno-1-73"></a><span class="w">  </span><span class="n">TIM_ClearFlag</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="n">TIM_FLAG_Update</span><span class="p">);</span><span class="c1">//清除中断状态标志位</span>
+</span><span id="__span-1-74"><a id="__codelineno-1-74" name="__codelineno-1-74"></a><span class="w">  </span><span class="c1">//7.配置中断输出控制函数</span>
+</span><span id="__span-1-75"><a id="__codelineno-1-75" name="__codelineno-1-75"></a><span class="w">  </span><span class="n">TIM_ITConfig</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="n">TIM_IT_Update</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="c1">//TIM2配置中断输出控制 -- 更新中断</span>
+</span><span id="__span-1-76"><a id="__codelineno-1-76" name="__codelineno-1-76"></a><span class="w">  </span><span class="c1">//8.初始化外部中断函数</span>
+</span><span id="__span-1-77"><a id="__codelineno-1-77" name="__codelineno-1-77"></a><span class="w">  </span><span class="n">NVIC_InitTypeDef</span><span class="w"> </span><span class="n">NVIC_InitStructure</span><span class="p">;</span><span class="w"> </span><span class="c1">//定义结构体</span>
+</span><span id="__span-1-78"><a id="__codelineno-1-78" name="__codelineno-1-78"></a>
+</span><span id="__span-1-79"><a id="__codelineno-1-79" name="__codelineno-1-79"></a><span class="w">  </span><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TIM4_IRQn</span><span class="p">;</span><span class="w"> </span><span class="c1">//根据上面的我们所选取的是定时器2 -- 在中断通道的TIM2 所以这里选择 TIM2_IRQn</span>
+</span><span id="__span-1-80"><a id="__codelineno-1-80" name="__codelineno-1-80"></a>
+</span><span id="__span-1-81"><a id="__codelineno-1-81" name="__codelineno-1-81"></a><span class="w">  </span><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelPreemptionPriority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="c1">//这里选择的是抢占 2</span>
+</span><span id="__span-1-82"><a id="__codelineno-1-82" name="__codelineno-1-82"></a>
+</span><span id="__span-1-83"><a id="__codelineno-1-83" name="__codelineno-1-83"></a><span class="w">  </span><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelSubPriority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">//这里选择的是响应1</span>
+</span><span id="__span-1-84"><a id="__codelineno-1-84" name="__codelineno-1-84"></a>
+</span><span id="__span-1-85"><a id="__codelineno-1-85" name="__codelineno-1-85"></a><span class="w">  </span><span class="n">NVIC_InitStructure</span><span class="p">.</span><span class="n">NVIC_IRQChannelCmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">;</span><span class="w"> </span><span class="c1">//使能指定的中断通道</span>
+</span><span id="__span-1-86"><a id="__codelineno-1-86" name="__codelineno-1-86"></a><span class="w">  </span><span class="c1">//初始化函数↓</span>
+</span><span id="__span-1-87"><a id="__codelineno-1-87" name="__codelineno-1-87"></a><span class="w">  </span><span class="n">NVIC_Init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">NVIC_InitStructure</span><span class="p">);</span>
+</span><span id="__span-1-88"><a id="__codelineno-1-88" name="__codelineno-1-88"></a>
+</span><span id="__span-1-89"><a id="__codelineno-1-89" name="__codelineno-1-89"></a><span class="w">  </span><span class="c1">//TIM_Cmd(TIM4, ENABLE); //使能定时器4 -- 一开始并不初始化TIM4 因为一使能 一有脉冲数 电机就开始运动了 所以什么时候使用 什么时候使能 在不使用电机时 失能TIM4</span>
+</span><span id="__span-1-90"><a id="__codelineno-1-90" name="__codelineno-1-90"></a><span class="p">}</span>
+</span><span id="__span-1-91"><a id="__codelineno-1-91" name="__codelineno-1-91"></a>
+</span><span id="__span-1-92"><a id="__codelineno-1-92" name="__codelineno-1-92"></a><span class="cm">/**</span>
+</span><span id="__span-1-93"><a id="__codelineno-1-93" name="__codelineno-1-93"></a><span class="cm">  * @brief  让步进电机旋转到指定角度 -- &gt; 上电后默认初始时刻的角度为0°</span>
+</span><span id="__span-1-94"><a id="__codelineno-1-94" name="__codelineno-1-94"></a><span class="cm">  * @param  angle  被设置的角度值</span>
+</span><span id="__span-1-95"><a id="__codelineno-1-95" name="__codelineno-1-95"></a><span class="cm">  * @retval None</span>
+</span><span id="__span-1-96"><a id="__codelineno-1-96" name="__codelineno-1-96"></a><span class="cm">  */</span>
+</span><span id="__span-1-97"><a id="__codelineno-1-97" name="__codelineno-1-97"></a><span class="kt">void</span><span class="w"> </span><span class="nf">StepMontor_Move</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">angle</span><span class="p">)</span>
+</span><span id="__span-1-98"><a id="__codelineno-1-98" name="__codelineno-1-98"></a><span class="p">{</span>
+</span><span id="__span-1-99"><a id="__codelineno-1-99" name="__codelineno-1-99"></a><span class="w">  </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">targetangel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">angle</span><span class="p">;</span><span class="c1">//更新目标值</span>
+</span><span id="__span-1-100"><a id="__codelineno-1-100" name="__codelineno-1-100"></a>
+</span><span id="__span-1-101"><a id="__codelineno-1-101" name="__codelineno-1-101"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">difvalue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">angle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">targetangel</span><span class="p">;</span><span class="c1">//差度值 = 当前角度 - 目标角度</span>
+</span><span id="__span-1-102"><a id="__codelineno-1-102" name="__codelineno-1-102"></a>
+</span><span id="__span-1-103"><a id="__codelineno-1-103" name="__codelineno-1-103"></a><span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">difvalue</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">-</span><span class="n">stepmotor</span><span class="p">.</span><span class="n">pulseangle</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">difvalue</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">pulseangle</span><span class="p">)</span><span class="c1">// 差度值的绝对值 必须大于 单脉冲的角度</span>
+</span><span id="__span-1-104"><a id="__codelineno-1-104" name="__codelineno-1-104"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-1-105"><a id="__codelineno-1-105" name="__codelineno-1-105"></a><span class="w">    </span><span class="cm">/*目标角度 &gt; 0 且 差度值 &lt; 0  ==&gt; 向右转 (举例:当前的角度10° 目标角度15° 差度值 = -5°)*/</span>
+</span><span id="__span-1-106"><a id="__codelineno-1-106" name="__codelineno-1-106"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">angle</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">difvalue</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-1-107"><a id="__codelineno-1-107" name="__codelineno-1-107"></a><span class="w">      </span><span class="n">STEPDIR</span><span class="p">(</span><span class="n">DIR_RIGHT</span><span class="p">);</span>
+</span><span id="__span-1-108"><a id="__codelineno-1-108" name="__codelineno-1-108"></a><span class="w">    </span><span class="cm">/*目标角度 &gt;= 0 且 差度值 &gt; 0  ==&gt; 向左转 (举例:当前的角度10° 目标角度5° 差度值 = 5°)*/</span>
+</span><span id="__span-1-109"><a id="__codelineno-1-109" name="__codelineno-1-109"></a><span class="w">    </span><span class="k">if</span><span class="p">((</span><span class="n">angle</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">difvalue</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-1-110"><a id="__codelineno-1-110" name="__codelineno-1-110"></a><span class="w">      </span><span class="n">STEPDIR</span><span class="p">(</span><span class="n">DIR_LEFT</span><span class="p">);</span>
+</span><span id="__span-1-111"><a id="__codelineno-1-111" name="__codelineno-1-111"></a><span class="w">    </span><span class="cm">/*目标角度 &lt;= 0 且 差度值 &gt; 0  ==&gt; 向右转 (举例:当前的角度-10° 目标角度-5° 差度值 =-5°)*/</span>
+</span><span id="__span-1-112"><a id="__codelineno-1-112" name="__codelineno-1-112"></a><span class="w">    </span><span class="k">if</span><span class="p">((</span><span class="n">angle</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">difvalue</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-1-113"><a id="__codelineno-1-113" name="__codelineno-1-113"></a><span class="w">      </span><span class="n">STEPDIR</span><span class="p">(</span><span class="n">DIR_RIGHT</span><span class="p">);</span>
+</span><span id="__span-1-114"><a id="__codelineno-1-114" name="__codelineno-1-114"></a><span class="w">    </span><span class="cm">/*目标角度 &lt; 0 且 差度值 &gt; 0  ==&gt; 向左转 (举例:当前的角度-10° 目标角度-15° 差度值 = 5°)*/</span>
+</span><span id="__span-1-115"><a id="__codelineno-1-115" name="__codelineno-1-115"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">angle</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">difvalue</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-1-116"><a id="__codelineno-1-116" name="__codelineno-1-116"></a><span class="w">      </span><span class="n">STEPDIR</span><span class="p">(</span><span class="n">DIR_LEFT</span><span class="p">);</span>
+</span><span id="__span-1-117"><a id="__codelineno-1-117" name="__codelineno-1-117"></a>
+</span><span id="__span-1-118"><a id="__codelineno-1-118" name="__codelineno-1-118"></a><span class="w">    </span><span class="n">TIM_Cmd</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span><span class="c1">//使能定时器</span>
+</span><span id="__span-1-119"><a id="__codelineno-1-119" name="__codelineno-1-119"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-120"><a id="__codelineno-1-120" name="__codelineno-1-120"></a><span class="w">  </span><span class="k">else</span>
+</span><span id="__span-1-121"><a id="__codelineno-1-121" name="__codelineno-1-121"></a><span class="w">    </span><span class="n">TIM_Cmd</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="n">DISABLE</span><span class="p">);</span>
+</span><span id="__span-1-122"><a id="__codelineno-1-122" name="__codelineno-1-122"></a><span class="p">}</span>
+</span><span id="__span-1-123"><a id="__codelineno-1-123" name="__codelineno-1-123"></a><span class="cm">/**</span>
+</span><span id="__span-1-124"><a id="__codelineno-1-124" name="__codelineno-1-124"></a><span class="cm">  * @brief  判断步进电机是否移动到位</span>
+</span><span id="__span-1-125"><a id="__codelineno-1-125" name="__codelineno-1-125"></a><span class="cm">  * @param  </span>
+</span><span id="__span-1-126"><a id="__codelineno-1-126" name="__codelineno-1-126"></a><span class="cm">  * @retval </span>
+</span><span id="__span-1-127"><a id="__codelineno-1-127" name="__codelineno-1-127"></a><span class="cm">  */</span>
+</span><span id="__span-1-128"><a id="__codelineno-1-128" name="__codelineno-1-128"></a><span class="n">u8</span><span class="w"> </span><span class="nf">Step_MoveCheck</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-1-129"><a id="__codelineno-1-129" name="__codelineno-1-129"></a><span class="p">{</span>
+</span><span id="__span-1-130"><a id="__codelineno-1-130" name="__codelineno-1-130"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">difvalue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">angle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">targetangel</span><span class="p">;</span>
+</span><span id="__span-1-131"><a id="__codelineno-1-131" name="__codelineno-1-131"></a><span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">difvalue</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">-</span><span class="n">stepmotor</span><span class="p">.</span><span class="n">pulseangle</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">difvalue</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">pulseangle</span><span class="p">)</span>
+</span><span id="__span-1-132"><a id="__codelineno-1-132" name="__codelineno-1-132"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="c1">//没有移动到位</span>
+</span><span id="__span-1-133"><a id="__codelineno-1-133" name="__codelineno-1-133"></a><span class="w">  </span><span class="k">else</span>
+</span><span id="__span-1-134"><a id="__codelineno-1-134" name="__codelineno-1-134"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="c1">//移动到位</span>
+</span><span id="__span-1-135"><a id="__codelineno-1-135" name="__codelineno-1-135"></a><span class="p">}</span>
+</span><span id="__span-1-136"><a id="__codelineno-1-136" name="__codelineno-1-136"></a><span class="cm">/**</span>
+</span><span id="__span-1-137"><a id="__codelineno-1-137" name="__codelineno-1-137"></a><span class="cm">  * @brief  失能步进电机 -- 停止</span>
+</span><span id="__span-1-138"><a id="__codelineno-1-138" name="__codelineno-1-138"></a><span class="cm">  * @param  </span>
+</span><span id="__span-1-139"><a id="__codelineno-1-139" name="__codelineno-1-139"></a><span class="cm">  * @retval </span>
+</span><span id="__span-1-140"><a id="__codelineno-1-140" name="__codelineno-1-140"></a><span class="cm">  */</span>
+</span><span id="__span-1-141"><a id="__codelineno-1-141" name="__codelineno-1-141"></a><span class="kt">void</span><span class="w"> </span><span class="nf">StepMontor_Stop</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-1-142"><a id="__codelineno-1-142" name="__codelineno-1-142"></a><span class="p">{</span>
+</span><span id="__span-1-143"><a id="__codelineno-1-143" name="__codelineno-1-143"></a><span class="w">  </span><span class="n">TIM_Cmd</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="n">DISABLE</span><span class="p">);</span>
+</span><span id="__span-1-144"><a id="__codelineno-1-144" name="__codelineno-1-144"></a><span class="p">}</span>
+</span><span id="__span-1-145"><a id="__codelineno-1-145" name="__codelineno-1-145"></a>
+</span><span id="__span-1-146"><a id="__codelineno-1-146" name="__codelineno-1-146"></a>
+</span><span id="__span-1-147"><a id="__codelineno-1-147" name="__codelineno-1-147"></a><span class="cm">/********************************************</span>
+</span><span id="__span-1-148"><a id="__codelineno-1-148" name="__codelineno-1-148"></a><span class="cm">    设置: 步进电机的旋转速度</span>
+</span><span id="__span-1-149"><a id="__codelineno-1-149" name="__codelineno-1-149"></a><span class="cm">    解释: 发送脉冲的频率是由ARR和PSC决定的 角速度设置为每秒转多少度 - angle °/s  1个脉冲转 步进角(0.225°)</span>
+</span><span id="__span-1-150"><a id="__codelineno-1-150" name="__codelineno-1-150"></a><span class="cm">          1s多少个脉冲 ==&gt; 频率HZ ==&gt; 7200000/PSC+1/ARR+1</span>
+</span><span id="__span-1-151"><a id="__codelineno-1-151" name="__codelineno-1-151"></a><span class="cm">          频率HZ = angle / 步进角(单脉冲的角度) ==&gt; 1s有多少个脉冲</span>
+</span><span id="__span-1-152"><a id="__codelineno-1-152" name="__codelineno-1-152"></a><span class="cm">          步进角 * 频率HZ(单位1/s) = 每1s转多少度 </span>
+</span><span id="__span-1-153"><a id="__codelineno-1-153" name="__codelineno-1-153"></a><span class="cm">    传参：angle °/s</span>
+</span><span id="__span-1-154"><a id="__codelineno-1-154" name="__codelineno-1-154"></a><span class="cm">*********************************************/</span>
+</span><span id="__span-1-155"><a id="__codelineno-1-155" name="__codelineno-1-155"></a><span class="kt">void</span><span class="w"> </span><span class="nf">StepMotor_SetSpeed</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">angle</span><span class="p">)</span>
+</span><span id="__span-1-156"><a id="__codelineno-1-156" name="__codelineno-1-156"></a><span class="p">{</span>
+</span><span id="__span-1-157"><a id="__codelineno-1-157" name="__codelineno-1-157"></a><span class="w">  </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">pulseangle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">360.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">subdiv</span><span class="p">;</span><span class="c1">//根据细分--求出单脉冲的角度 也就是步进角的度数 1600 - 0.225°</span>
+</span><span id="__span-1-158"><a id="__codelineno-1-158" name="__codelineno-1-158"></a>
+</span><span id="__span-1-159"><a id="__codelineno-1-159" name="__codelineno-1-159"></a><span class="w">  </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">speed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">angle</span><span class="p">;</span><span class="c1">//更新目标速度值</span>
+</span><span id="__span-1-160"><a id="__codelineno-1-160" name="__codelineno-1-160"></a>
+</span><span id="__span-1-161"><a id="__codelineno-1-161" name="__codelineno-1-161"></a><span class="w">  </span><span class="cm">/*根据速度求每秒钟的脉冲数 = 每秒钟的角度 / 单脉冲角度*/</span>
+</span><span id="__span-1-162"><a id="__codelineno-1-162" name="__codelineno-1-162"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">pulsenum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">pulseangle</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.5</span><span class="p">;</span><span class="c1">//</span>
+</span><span id="__span-1-163"><a id="__codelineno-1-163" name="__codelineno-1-163"></a>
+</span><span id="__span-1-164"><a id="__codelineno-1-164" name="__codelineno-1-164"></a><span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">pulsenum</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.16</span><span class="p">)</span>
+</span><span id="__span-1-165"><a id="__codelineno-1-165" name="__codelineno-1-165"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-1-166"><a id="__codelineno-1-166" name="__codelineno-1-166"></a><span class="w">    </span><span class="c1">//如果每秒钟脉冲数小于0.16个，则设置速度为每秒0.16个脉冲 -- 连一个脉冲都不到</span>
+</span><span id="__span-1-167"><a id="__codelineno-1-167" name="__codelineno-1-167"></a><span class="w">    </span><span class="n">TIM4</span><span class="o">-&gt;</span><span class="n">PSC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7200</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-1-168"><a id="__codelineno-1-168" name="__codelineno-1-168"></a><span class="w">    </span><span class="n">TIM_SetAutoreload</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="mi">65535</span><span class="p">);</span>
+</span><span id="__span-1-169"><a id="__codelineno-1-169" name="__codelineno-1-169"></a><span class="w">    </span><span class="n">TIM_SetCompare1</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="mi">32768</span><span class="p">);</span>
+</span><span id="__span-1-170"><a id="__codelineno-1-170" name="__codelineno-1-170"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-171"><a id="__codelineno-1-171" name="__codelineno-1-171"></a><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">pulsenum</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span>
+</span><span id="__span-1-172"><a id="__codelineno-1-172" name="__codelineno-1-172"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-1-173"><a id="__codelineno-1-173" name="__codelineno-1-173"></a><span class="w">    </span><span class="c1">//如果脉冲给的速度比 65.536ms 慢,那么我们可以重新修改分频值</span>
+</span><span id="__span-1-174"><a id="__codelineno-1-174" name="__codelineno-1-174"></a><span class="w">    </span><span class="n">TIM4</span><span class="o">-&gt;</span><span class="n">PSC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7200</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-1-175"><a id="__codelineno-1-175" name="__codelineno-1-175"></a><span class="w">    </span><span class="n">TIM_SetAutoreload</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="mf">10000.0f</span><span class="o">/</span><span class="n">pulsenum</span><span class="p">);</span>
+</span><span id="__span-1-176"><a id="__codelineno-1-176" name="__codelineno-1-176"></a><span class="w">    </span><span class="n">TIM_SetCompare1</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="mf">10000.0f</span><span class="o">/</span><span class="n">pulsenum</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
+</span><span id="__span-1-177"><a id="__codelineno-1-177" name="__codelineno-1-177"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-178"><a id="__codelineno-1-178" name="__codelineno-1-178"></a><span class="w">  </span><span class="k">else</span>
+</span><span id="__span-1-179"><a id="__codelineno-1-179" name="__codelineno-1-179"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-1-180"><a id="__codelineno-1-180" name="__codelineno-1-180"></a><span class="w">    </span><span class="c1">//在1us一次的计数速率下，1s内的脉冲个数最快1us一次，最慢65.536ms一次</span>
+</span><span id="__span-1-181"><a id="__codelineno-1-181" name="__codelineno-1-181"></a><span class="w">    </span><span class="n">TIM4</span><span class="o">-&gt;</span><span class="n">PSC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">72</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="c1">//72分频，1us计数一下</span>
+</span><span id="__span-1-182"><a id="__codelineno-1-182" name="__codelineno-1-182"></a><span class="w">    </span><span class="n">TIM_SetAutoreload</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="mf">1000000.0f</span><span class="o">/</span><span class="n">pulsenum</span><span class="p">);</span>
+</span><span id="__span-1-183"><a id="__codelineno-1-183" name="__codelineno-1-183"></a><span class="w">    </span><span class="n">TIM_SetCompare1</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="mf">1000000.0f</span><span class="o">/</span><span class="n">pulsenum</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
+</span><span id="__span-1-184"><a id="__codelineno-1-184" name="__codelineno-1-184"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-185"><a id="__codelineno-1-185" name="__codelineno-1-185"></a>
+</span><span id="__span-1-186"><a id="__codelineno-1-186" name="__codelineno-1-186"></a><span class="p">}</span>
+</span><span id="__span-1-187"><a id="__codelineno-1-187" name="__codelineno-1-187"></a>
+</span><span id="__span-1-188"><a id="__codelineno-1-188" name="__codelineno-1-188"></a><span class="c1">//中断服务函数</span>
+</span><span id="__span-1-189"><a id="__codelineno-1-189" name="__codelineno-1-189"></a><span class="c1">//执行步进电机的旋转和停止</span>
+</span><span id="__span-1-190"><a id="__codelineno-1-190" name="__codelineno-1-190"></a><span class="kt">void</span><span class="w"> </span><span class="nf">TIM4_IRQHandler</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-1-191"><a id="__codelineno-1-191" name="__codelineno-1-191"></a><span class="p">{</span>
+</span><span id="__span-1-192"><a id="__codelineno-1-192" name="__codelineno-1-192"></a><span class="w">  </span><span class="n">TIM_ClearFlag</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="n">TIM_FLAG_Update</span><span class="p">);</span><span class="c1">//清除中断标志位</span>
+</span><span id="__span-1-193"><a id="__codelineno-1-193" name="__codelineno-1-193"></a>
+</span><span id="__span-1-194"><a id="__codelineno-1-194" name="__codelineno-1-194"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">STEPDIRGET</span><span class="p">())</span><span class="c1">//判断 是左转还是右转 </span>
+</span><span id="__span-1-195"><a id="__codelineno-1-195" name="__codelineno-1-195"></a><span class="w">    </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">angle</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">pulseangle</span><span class="p">;</span><span class="c1">//右转 --&gt; 最后得出的角度值 = 之前角度值 + 单脉冲的角度值 </span>
+</span><span id="__span-1-196"><a id="__codelineno-1-196" name="__codelineno-1-196"></a><span class="w">  </span><span class="k">else</span>
+</span><span id="__span-1-197"><a id="__codelineno-1-197" name="__codelineno-1-197"></a><span class="w">    </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">angle</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">pulseangle</span><span class="p">;</span><span class="c1">//右转 --&gt; 最后得出的角度值 = 之前角度值 - 单脉冲的角度值</span>
+</span><span id="__span-1-198"><a id="__codelineno-1-198" name="__codelineno-1-198"></a>
+</span><span id="__span-1-199"><a id="__codelineno-1-199" name="__codelineno-1-199"></a><span class="w">  </span><span class="cm">/*差度值 = 当前角度 - 目标角度*/</span>
+</span><span id="__span-1-200"><a id="__codelineno-1-200" name="__codelineno-1-200"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">difvalue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">angle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">targetangel</span><span class="p">;</span>
+</span><span id="__span-1-201"><a id="__codelineno-1-201" name="__codelineno-1-201"></a>
+</span><span id="__span-1-202"><a id="__codelineno-1-202" name="__codelineno-1-202"></a><span class="w">  </span><span class="cm">/*检测当前角度与目标角度差值，误差在一个±步进角度之间则表示角度一致，关闭定时器*/</span>
+</span><span id="__span-1-203"><a id="__codelineno-1-203" name="__codelineno-1-203"></a><span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">difvalue</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">-</span><span class="n">stepmotor</span><span class="p">.</span><span class="n">pulseangle</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">difvalue</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">stepmotor</span><span class="p">.</span><span class="n">pulseangle</span><span class="p">)</span>
+</span><span id="__span-1-204"><a id="__codelineno-1-204" name="__codelineno-1-204"></a><span class="w">    </span><span class="n">TIM_Cmd</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="n">ENABLE</span><span class="p">);</span><span class="c1">//差度值的绝对值 必须大于 单脉冲的角度==步进角 才会继续打开定时器4  </span>
+</span><span id="__span-1-205"><a id="__codelineno-1-205" name="__codelineno-1-205"></a><span class="w">  </span><span class="k">else</span>
+</span><span id="__span-1-206"><a id="__codelineno-1-206" name="__codelineno-1-206"></a><span class="w">    </span><span class="n">TIM_Cmd</span><span class="p">(</span><span class="n">TIM4</span><span class="p">,</span><span class="w"> </span><span class="n">DISABLE</span><span class="p">);</span>
+</span><span id="__span-1-207"><a id="__codelineno-1-207" name="__codelineno-1-207"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      最后更新:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 27, 2023</span>
+      
+        <br>
+        创建日期:
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 27, 2023</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+
+  <h2 id="__comments">评论</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js"
+        data-repo="Sakura-Ji/Comment"
+        data-repo-id="R_kgDOJx0I-g"
+        data-category="Announcements"
+        data-category-id="DIC_kwDOJx0I-s4CZqEw"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+  </script>
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme) 
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "transparent_dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            回到页面顶部
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../LCD/" class="md-footer__link md-footer__link--prev" aria-label="上一页: STM32之LCD">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                STM32之LCD
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../../MindMaps/Mind/" class="md-footer__link md-footer__link--next" aria-label="下一页: Sakura_JI的知识库">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                Sakura_JI的知识库
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Sakura-Ji CC-BY-4.0
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/Sakura-Ji" target="_blank" rel="noopener" title="Github | Sakura-Ji" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.expand", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "search.share", "navigation.footer", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.726fbb30.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../../javascripts/lovestart.js"></script>
+      
+        <script src="../../../javascripts/Music.js"></script>
+      
+    
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>
