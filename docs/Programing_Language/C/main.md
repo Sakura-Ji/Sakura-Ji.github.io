@@ -1,3 +1,6 @@
+---
+comments: true
+---
 # int main(int argc,char *argv[])
 
 对main的解读:初始学习是，`main`后面一般是`(void)`,这对于初学习C语言的学者是非常友好的，但随着学习的深入，我们要了解

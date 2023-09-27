@@ -1,3 +1,6 @@
+---
+comments: true
+---
 # GPIO
 ---
 ## 前言

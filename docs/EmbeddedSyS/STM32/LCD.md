@@ -1,5 +1,6 @@
-  
-
+---
+comments: true
+---
 # LCD
 
 学习资料:

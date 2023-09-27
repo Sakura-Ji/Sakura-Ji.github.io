@@ -1,3 +1,6 @@
+---
+comments: true
+---
 # IPC通信
 
 ## IPC介绍

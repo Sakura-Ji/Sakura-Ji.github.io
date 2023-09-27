@@ -1,3 +1,6 @@
+---
+comments: true
+---
 # Makefile
 
 ## 什么是Makefile

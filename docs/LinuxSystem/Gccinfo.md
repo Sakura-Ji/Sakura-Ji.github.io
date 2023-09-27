@@ -1,3 +1,6 @@
+---
+comments: true
+---
 # Gcc编译器
 
 > gcc [选项] [文件]
