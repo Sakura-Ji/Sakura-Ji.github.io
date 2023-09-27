@@ -8,7 +8,7 @@
 
 下方图片来源于[《hello 算法》](https://www.hello-algo.com/)可点击图片阅读**栈**这一节的内容，非常详细。
 
-[![栈的规则](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/hello.algo.png)](https://www.hello-algo.com/chapter_stack_and_queue/stack/)
+[![栈的规则](https://pic.imgdb.cn/item/6513da47c458853aef3905eb/hello.algo.png)](https://www.hello-algo.com/chapter_stack_and_queue/stack/)
 
 ## 顺序栈
 

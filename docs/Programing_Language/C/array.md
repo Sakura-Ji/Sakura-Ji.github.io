@@ -54,7 +54,7 @@ int main()
 }
 ```
 
-![](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/array1.png)
+![](https://pic.imgdb.cn/item/6513da41c458853aef39038d/array1.png)
 
 ```c title="冒泡排序法"
 #include <stdio.h>
@@ -87,5 +87,5 @@ int main()
 }
 ```
 
-![](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/main/array2maopao.png)
+![array2maopao](https://pic.imgdb.cn/item/6513da42c458853aef3903ed/array2maopao.png)
 

@@ -41,7 +41,13 @@ nav:
           - EmbeddedSyS/STM32/STM32Introd.md
           - Keil5的使用: EmbeddedSyS/STM32/KeilUse.md
           - 新建第一个程序模板: EmbeddedSyS/STM32/FirstFile.md
-          - GPIO: EmbeddedSyS/STM32/GPIO.md
+          - STM32之GPIO外设: EmbeddedSyS/STM32/GPIO.md
+          - STM32之EXTI外部中断: EmbeddedSyS/STM32/EXTI.md
+          - STM32之TIM定时器: EmbeddedSyS/STM32/TIM.md
+          - STM32之USART串口通信: EmbeddedSyS/STM32/USART.md
+          - STM32之OLED: EmbeddedSyS/STM32/OLED.md
+          - STM32之LCD: EmbeddedSyS/STM32/LCD.md
+          - STM32之步进电机: EmbeddedSyS/STM32/StepMotor.md
     - 思维导图:
         - MindMaps/Mind.md
     - GodTool:
@@ -98,6 +104,10 @@ plugins:
   - tags
 
   - glightbox
+
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: date
 
 #代码块配置
 markdown_extensions:

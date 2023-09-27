@@ -55,7 +55,7 @@ graph LR
 
 [特殊进程 :fontawesome-solid-paper-plane:](#teshu){ .md-button }
 
-![shell-ps](https://jsd.onmicrosoft.cn/npm/sakura-jimap@latest/Mkdocs/shell-ps.png)
+![shell-ps](https://pic.imgdb.cn/item/6513da1ec458853aef38f1a8/shell-ps.png)
 
 **ps 命令:** 类似任务管理器， ps 为我们提供了进程的一次性的查看，它所提供的查看结果并不动态连续的
 
@@ -66,9 +66,9 @@ graph LR
 
 **jobs 命令:** 观察后台进程。
 
-![ps-ef](https://jsd.onmicrosoft.cn/npm/sakura-jimap@latest/Mkdocs/ps-ef.png)
+![ps-ef](https://pic.imgdb.cn/item/6513da21c458853aef38f3d9/ps-ef.png)
 
-![shell-top](https://jsd.onmicrosoft.cn/npm/sakura-jimap@latest/Mkdocs/shell-top.png)
+![shell-top](https://pic.imgdb.cn/item/6513da23c458853aef38f484/shell-top.png)
 
 ### 进程的资源分配
 
@@ -303,7 +303,7 @@ graph LR
         }
         ```
 
-        ![system](https://jsd.onmicrosoft.cn/npm/sakura-jimap@latest/Mkdocs/system.png)
+        ![system](https://pic.imgdb.cn/item/6513ceeec458853aef351fe4/system.png)
         
     === "exec函数族"
 
@@ -402,7 +402,7 @@ graph LR
         
         ```
 
-        ![glob](https://jsd.onmicrosoft.cn/npm/sakura-jimap@latest/Mkdocs/glob.png)
+        ![glob](https://pic.imgdb.cn/item/6513cef0c458853aef352101/glob.png)
     
     === "atexit"
         
@@ -440,7 +440,7 @@ graph LR
         }
 
         ```
-        ![atexit](https://jsd.onmicrosoft.cn/npm/sakura-jimap@latest/Mkdocs/atexit.png)
+        ![atexit](https://pic.imgdb.cn/item/6513ced9c458853aef351431/atexit.png)
 
     
 
@@ -448,7 +448,7 @@ graph LR
 
 **方式一:** 通过运行一个可执行程序，就可以运行一个进程
 
-![Multi-1](https://jsd.onmicrosoft.cn/npm/sakura-jimap@latest/Mkdocs/Multi-1.png)
+![Multi-1](https://pic.imgdb.cn/item/6513da24c458853aef38f4ed/Multi-1.png)
 
 **方式二:** 通过函数 `fork()` 或者 `vfork()`
 
@@ -479,7 +479,7 @@ graph LR
         
         ```
 
-        ![Multi-fork1](https://jsd.onmicrosoft.cn/npm/sakura-jimap@latest/Mkdocs/Multi-fork1.png)
+        ![Multi-fork1](https://pic.imgdb.cn/item/6513da24c458853aef38f590/Multi-fork1.png)
     
     === "初识Vfork"
         
@@ -515,7 +515,7 @@ graph LR
         }
         ```
 
-        ![vfork](https://jsd.onmicrosoft.cn/npm/sakura-jimap@latest/Mkdocs/vfork.png)
+        ![vfork](https://pic.imgdb.cn/item/6513da3bc458853aef39006a/vfork.png)
 
     === "二者的区别"
 
@@ -549,7 +549,7 @@ graph LR
         }
         ```
         
-        ![vfork2](https://jsd.onmicrosoft.cn/npm/sakura-jimap@latest/Mkdocs/vfork2.png)
+        ![vfork2](https://pic.imgdb.cn/item/6513da3bc458853aef3900b5/vfork2.png)
 
 ### 举例
 !!! example
@@ -649,7 +649,7 @@ graph LR
             
             ```
 
-        ![3-fork](https://jsd.onmicrosoft.cn/npm/sakura-jimap@latest/Mkdocs/3-fork.png)
+        ![3-fork](https://pic.imgdb.cn/item/6513da3ac458853aef39000b/3-fork.png)
 
     === "父进程检测子进程状态" 
         
@@ -692,7 +692,7 @@ graph LR
              
             ```
 
-            ![father-son](https://jsd.onmicrosoft.cn/npm/sakura-jimap@latest/Mkdocs/father-son.png)
+            ![father-son](https://pic.imgdb.cn/item/6513cef1c458853aef352242/father-son.png)
         
         === "Test2"
 
@@ -727,7 +727,7 @@ graph LR
             }
 
             ```
-            ![father-son2](https://jsd.onmicrosoft.cn/npm/sakura-jimap@latest/Mkdocs/father-son2.png)
+            ![father-son2](https://pic.imgdb.cn/item/6513cedcc458853aef351683/father-son2.png)
 
 
     === "exec函数族的使用"
@@ -755,7 +755,7 @@ graph LR
             
             ```
             
-            ![Exec-Func](https://jsd.onmicrosoft.cn/npm/sakura-jimap@latest/Mkdocs/Exec-Func.png)
+            ![Exec-Func](https://pic.imgdb.cn/item/6513cef1c458853aef3521ec/Exec-Func.png)
 
         === "与vfork连用"
 
@@ -790,7 +790,7 @@ graph LR
             }
             ```
 
-            ![exec-vfork](https://jsd.onmicrosoft.cn/npm/sakura-jimap@latest/Mkdocs/exec-vfork.png)
+            ![exec-vfork](https://pic.imgdb.cn/item/6513cef1c458853aef352175/exec-vfork.png)
     
     === "顺序播放MP3文件"
 
@@ -851,4 +851,4 @@ graph LR
         }
         
         ```
-        ![Tmp3-4](https://jsd.onmicrosoft.cn/npm/sakura-jimap@latest/Mkdocs/Tmp3-4.png)
+        ![Tmp3-4](https://pic.imgdb.cn/item/6513cedac458853aef35153c/Tmp3-4.png)

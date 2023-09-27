@@ -1,7 +1,5 @@
 # GPIO
-
 ---
-
 ## 前言
 
 ==**STM32上的144个引脚分为:**==
@@ -28,7 +26,7 @@
 * 晶振引脚OSC_OUT 1个：输出引脚 O
 * 106号引脚NC  1个：NO Connect NC引脚悬空或者接地都可以,NC引脚预留是后面H7系列产品升级会在部分NC引脚中做其他功能。
 
-![STM32f103x-pin](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/STM32f103x-pin.png){ width="400" }
+![STM32f103x-pin](https://pic.imgdb.cn/item/6513cebfc458853aef350570/STM32f103x-pin.png){ width="400" }
 
 ==**寄存器:**== 寄存器就是一段特殊的存储器，内核可以通过APB2总线对寄存器进行读写，这样就可以完成输出电平和读取电平的功能了
 
@@ -52,7 +50,7 @@ GPIO(General Purpose Input Output)通用输入输出IO口，是由芯片直接�
 * 在STM32中，所有的GPIO都是挂载在APB2外设的总线上的
 * GPIO的MODE配置(输出模式的速度):GPIO的输出速度可以限制输出引脚的最大翻转速度，是为了低功耗和稳定性而设计的
 
-![GPIO的基本结构](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/GPIOBasicStructure.png)
+![GPIO的基本结构](https://pic.imgdb.cn/item/6513cebfc458853aef3504fd/GPIOBasicStructure.png)
 
 **位带区域**：在STM32中专门分配有一段地址区域，这段地址映射了RAM和外设寄存器所有的位，读写这段地址中的数据，就相当于读写所映射位置的某一位，相当于51中的位寻址操作
 
@@ -100,9 +98,9 @@ GPIO(General Purpose Input Output)通用输入输出IO口，是由芯片直接�
     3. 下拉输入(数字输入)：可读取引脚电平，内部连接下拉电阻，悬空时默认低电平
     4. 模拟输入(模拟输入)：GPIO无效(下图中的左侧的所有寄存器)，引脚直接接入内部ADC
 
-![GPIO数字输入配置](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/GPIONumInputConfig.png)
+![GPIO数字输入配置](https://pic.imgdb.cn/item/6513cebec458853aef350460/GPIONumInputConfig.png)
 
-![GPIO的模拟输入配置](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/GPIOSimInputConfig.png)
+![GPIO的模拟输入配置](https://pic.imgdb.cn/item/6513cebec458853aef3503d2/GPIOSimInputConfig.png)
 
 * 输出模式(数字输出)：
     1. 开漏输出：可输出引脚电平，高电平为高阻态，低电平接VSS
@@ -110,15 +108,15 @@ GPIO(General Purpose Input Output)通用输入输出IO口，是由芯片直接�
     3. 复用开漏输出：由片上外设控制，高电平为高阻态，低电平接VSS
     4. 复用推挽输出：由片上外设控制，高电平接VDD，低电平接VSS
 
-![GPIO的输出配置](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/GPIOOutputConfig.png)
+![GPIO的输出配置](https://pic.imgdb.cn/item/6513cebdc458853aef350363/GPIOOutputConfig.png)
 
-![GPIO的复用输出配置](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/GPIOMultiOutputConfig.png)
+![GPIO的复用输出配置](https://pic.imgdb.cn/item/6513cebdc458853aef350317/GPIOMultiOutputConfig.png)
 
 ---
 
 ## GPIO的使用方法
 
-![GPIO-Config](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/GPIO-Config.png)
+![GPIO-Config](https://pic.imgdb.cn/item/6513cebac458853aef3501eb/GPIO-Config.png)
 
 STM32 的每个 IO 端口都有 7 个寄存器来控制，常用的 IO 端口寄存器只有 4 个`CRL、CRH、IDR、ODR` :
 
@@ -126,7 +124,7 @@ STM32 的每个 IO 端口都有 7 个寄存器来控制，常用的 IO 端口寄
 
     1. ==**端口配置低寄存器(GPIOx_CRL)(x=A..E):**== 
 
-     ![GPIOx-CRL](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/GPIOx-CRL.png)
+     ![GPIOx-CRL](https://pic.imgdb.cn/item/6513cebcc458853aef3502c1/GPIOx-CRL.png)
 
      STM32 的 `CRL` 控制着PA~PG的低 8 位(IO0~IO7)的模式。 每个 IO 端口使用 `CRL` 的 4 个位，高两位为 `CNF`，低两位为 `MODE`
 
@@ -152,7 +150,7 @@ STM32 的每个 IO 端口都有 7 个寄存器来控制，常用的 IO 端口寄
 
     2. ==**端口配置高寄存器(GPIOx_CRH)(x=A..E):**==
 
-     ![GPIOx-CRH](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/GPIOx-CRH.png)
+     ![GPIOx-CRH](https://pic.imgdb.cn/item/6513cebbc458853aef35025b/GPIOx-CRH.png)
 
      STM32 的 `CRH` 控制着PA~PG的低 8 位(IO8~IO15)的模式。 每个 IO 端口使用 `CRH` 的 4 个位，高两位为 `CNF`，低两位为 `MODE`由于和CRL使用一样就不再赘述
 
@@ -160,7 +158,7 @@ STM32 的每个 IO 端口都有 7 个寄存器来控制，常用的 IO 端口寄
 
     3. ==**端口输入数据寄存器(GPIOx_IDR)(x=A..E):**==
 
-     ![GPIOx-IDR](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/GPIOx-IDR.png)
+     ![GPIOx-IDR](https://pic.imgdb.cn/item/6513ceb9c458853aef35017c/GPIOx-IDR.png)
 
      `IDR` 是一个端口输入数据寄存器，只用了低 16 位。该寄存器为只读寄存器，并且只能以 16 位的形式读出
 
@@ -173,7 +171,7 @@ STM32 的每个 IO 端口都有 7 个寄存器来控制，常用的 IO 端口寄
 
     4. ==**端口输出数据寄存器(GPIOx_ODR)(x=A..E):**==
 
-     ![GPIOx-ODR](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/GPIOx-ODR.png)
+     ![GPIOx-ODR](https://pic.imgdb.cn/item/6513ceb9c458853aef35013d/GPIOx-ODR.png)
 
      `ODR `是一个端口输出数据寄存器，也只用了低 16 位。该寄存器为可读写，从该寄存器读出来的数据可以用于判断当前 IO 口的输出状态。而向该寄存器写数据，则可以控制某个 IO 口 的输出电平。
 
@@ -189,349 +187,6 @@ STM32 的每个 IO 端口都有 7 个寄存器来控制，常用的 IO 端口寄
 6. ==**端口位清除寄存器(GPIOx_BRR) (x=A..E)**==
 
 7. ==**端口配置锁定寄存器(GPIOx_LCKR) (x=A..E)**== 
-
----
-
-## GPIO的库函数
-
-**Table** 1. **GPIO** 库函数
-
-| 函数名                     | 描述                                                      |
-| -------------------------- | --------------------------------------------------------- |
-| GPIO_DeInit                | 将外设  GPIOx 寄存器重设为缺省值                          |
-| GPIO_AFIODeInit            | 将复用功能（重映射事件控制和  EXTI 设置）重设为缺省值     |
-| **GPIO_Init**              | 根据  GPIO_InitStruct 中指定的参数初始化外设 GPIOx 寄存器 |
-| GPIO_StructInit            | 把 GPIO_InitStruct 中的每一个参数按缺省值填入             |
-| **GPIO_ReadInputDataBit**  | 读取指定端口管脚的输入                                    |
-| **GPIO_ReadInputData**     | 读取指定的  GPIO 端口输入                                 |
-| **GPIO_ReadOutputDataBit** | 读取指定端口管脚的输出                                    |
-| **GPIO_ReadOutputData**    | 读取指定的  GPIO 端口输出                                 |
-| **GPIO_SetBits**           | 设置指定的数据端口位                                      |
-| **GPIO_ResetBits**         | 清除指定的数据端口位                                      |
-| **GPIO_WriteBit**          | 设置或者清除指定的数据端口位                              |
-| **GPIO_Write**             | 向指定  GPIO 数据端口写入数据                             |
-| GPIO_PinLockConfig         | 锁定  GPIO 管脚设置寄存器                                 |
-| GPIO_EventOutputConfig     | 选择  GPIO 管脚用作事件输出                               |
-| GPIO_EventOutputCmd        | 使能或者失能事件输出                                      |
-| GPIO_PinRemapConfig        | 改变指定管脚的映射                                        |
-| GPIO_EXTILineConfig        | 选择  GPIO 管脚用作外部中断线路                           |
-
----
-
-### GPIO_Init 函数
-
-**Table 2.** 函数 **GPIO_Init** 
-
-| 函数名     | GPIO_Init                                                    |
-| ---------- | ------------------------------------------------------------ |
-| 函数原形   | void GPIO_Init(GPIO_TypeDef* GPIOx,  GPIO_InitTypeDef* GPIO_InitStruct) |
-| 功能描述   | 根据 GPIO_InitStruct 中指定的参数初始化外设 GPIOx 寄存器     |
-| 输入参数 1 | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设         |
-| 输入参数 2 | GPIO_InitStruct：指向结构 GPIO_InitTypeDef  的指针，包含了外设 GPIO 的配置信息参阅  Section：   GPIO_InitTypeDef 查阅更多该参数允许取值范围 |
-| 输出参数   | 无                                                           |
-| 返回值     | 无                                                           |
-| 先决条件   | 无                                                           |
-| 被调用函数 | 无                                                           |
-
-```c title="GPIO_InitTypeDef structure结构体:"
-/*
-GPIO_InitTypeDef 定义于文件"stm32f10x_gpio.h"： 
-*/
-typedef struct { 
-u16 GPIO_Pin; 
-
-GPIOSpeed_TypeDef GPIO_Speed; 
-
-GPIOMode_TypeDef GPIO_Mode; 
-
-} GPIO_InitTypeDef; 
-```
-
----
-
-#### GPIO_Pin
-
-**GPIO_Pin** 该参数选择待设置的 GPIO 管脚，使用操作符“|”可以一次选中多个管脚。可以使用下表中的任意组合。
-
-**Table 3. GPIO_Pin** 值 
-
-| **GPIO_Pin**  |  选中引脚    | 描述 |
-| ------------- | ------------ | ---- |
-| GPIO_Pin_None | 无管脚被选中 |      |
-| GPIO_Pin_0    | 选中管脚 0   |      |
-| GPIO_Pin_1    | 选中管脚 1   |      |
-| GPIO_Pin_2    | 选中管脚 2   |      |
-| GPIO_Pin_3    | 选中管脚 3   |      |
-| GPIO_Pin_4    | 选中管脚 4   |      |
-| GPIO_Pin_5    | 选中管脚 5   |      |
-| GPIO_Pin_6    | 选中管脚 6   |      |
-| GPIO_Pin_7    | 选中管脚 7   |      |
-| GPIO_Pin_8    | 选中管脚 8   |      |
-| GPIO_Pin_9    | 选中管脚 9   |      |
-| GPIO_Pin_10   | 选中管脚 10  |      |
-| GPIO_Pin_11   | 选中管脚 11  |      |
-| GPIO_Pin_12   | 选中管脚 12  |      |
-| GPIO_Pin_13   | 选中管脚 13  |      |
-| GPIO_Pin_14   | 选中管脚 14  |      |
-| GPIO_Pin_15   | 选中管脚 15  |      |
-| GPIO_Pin_All  | 选中全部管脚 |      |
-
----
-
-#### GPIO_Speed 
-
-GPIO_Speed 用以设置选中管脚的速率。Table 184. 给出了该参数可取的值 
-
-**Table 4. GPIO_Speed** 值 
-
-| **GPIO_Speed**   | 描述              |
-| ---------------- | ----------------- |
-| GPIO_Speed_10MHz | 高输出速率  10MHz |
-| GPIO_Speed_2MHz  | 高输出速率  2MHz  |
-| GPIO_Speed_50MHz | 高输出速率  50MHz |
-
----
-
-####  GPIO_Mode 
-
-GPIO_Mode 用以设置选中管脚的工作状态。Table 185. 给出了该参数可取的值 
-
-**Table 5. GPIO_Mode** 值 
-
-| **GPIO_Speed**        |   解释       | 描述 |
-| --------------------- | ------------ | ---- |
-| GPIO_Mode_AIN         | 模拟输入     |      |
-| GPIO_Mode_IN_FLOATING | 浮空输入     |      |
-| GPIO_Mode_IPD         | 下拉输入     |      |
-| GPIO_Mode_IPU         | 上拉输入     |      |
-| GPIO_Mode_Out_OD      | 开漏输出     |      |
-| GPIO_Mode_Out_PP      | 推挽输出     |      |
-| GPIO_Mode_AF_OD       | 复用开漏输出 |      |
-| GPIO_Mode_AF_PP       | 复用推挽输出 |      |
-
-注意： 
-
-* 当某管脚设置为上拉或者下拉输入模式，使用寄存器 Px_BSRR 和 PxBRR 
-
-* GPIO_Mode 允许同时设置 GPIO 方向（输入/输出）和对应的输入/输出设置，：位[7:4]对应 GPIO 方向，位[4:0]对应配置。GPIO 方向有如下索引
-
-  * GPIO 输入模式 = 0x00 
-
-  * GPIO 输出模式 = 0x01 
-
-**Table 6. GPIO_Mode** 的索引和编码 
-
-| **GPIO**方向          | 索引 | 模式             | 设置 | 模式代码 |
-| --------------------- | ---- | ---------------- | ---- | -------- |
-| GPIO Input            | 0x00 | GPIO_Mode_AIN    | 0x00 | 0x00     |
-| GPIO_Mode_IN_FLOATING | 0x04 | 0x04             |      |          |
-| GPIO_Mode_IPD         | 0x08 | 0x28             |      |          |
-| GPIO_Mode_IPU         | 0x08 | 0x48             |      |          |
-| GPIO Output           | 0x01 | GPIO_Mode_Out_OD | 0x04 | 0x14     |
-| GPIO_Mode_Out_PP      | 0x00 | 0x10             |      |          |
-| GPIO_Mode_AF_OD       | 0x0C | 0x1C             |      |          |
-| GPIO_Mode_AF_PP       | 0x08 | 0x18             |      |          |
-
-
-```c title="例"
-/* Configure all the GPIOA in Input Floating mode */ 
-
-GPIO_InitTypeDef GPIO_InitStructure; //初始化结构体
-
-GPIO_InitStructure.GPIO_Pin = GPIO_Pin_All; //定义GPIO口
-
-GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;//设置输出速度？？
-
-GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING; //设置浮空输入
-
-GPIO_Init(GPIOA, &GPIO_InitStructure);//初始化函数
-```
-
----
-
-### GPIO_ReadInputDataBit 函数
-
-**Table 7.** 函数 **GPIO_ReadInputDataBit** 
-
-| 函数名     | GPIO_ReadInputDataBit                                        |
-| ---------- | ------------------------------------------------------------ |
-| 函数原形   | uint8_t GPIO_ReadInputDataBit(GPIO_TypeDef*  GPIOx, uint16_t GPIO_Pin) |
-| 功能描述   | **读取**指定端口管脚的**输入**                               |
-| 输入参数 1 | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设         |
-| 输入参数 2 | GPIO_Pin：待读取的端口位   参阅  Section：GPIO_Pin 查阅更多该参数允许取值范围 |
-| 输出参数   | 无                                                           |
-| 返回值     | 输入端口管脚值                                               |
-| 先决条件   | 无                                                           |
-| 被调用函数 | 无                                                           |
- 
-
-```c title="例"
-/* Reads the seventh pin of the GPIOB and store it in ReadValue variable */ u8 ReadValue; 
-
-ReadValue = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_7); 
-```
-
----
-
-### GPIO_ReadInputData函数 
-
-**Table 8.** 函数 **GPIO_ReadInputData** 
-
-| 函数名     | GPIO_ReadInputData                                   |
-| ---------- | ---------------------------------------------------- |
-| 函数原形   | u16 GPIO_ReadInputData(GPIO_TypeDef*  GPIOx)         |
-| 功能描述   | **读取**指定的  GPIO 端口**输入**                    |
-| 输入参数   | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设 |
-| 输出参数   | 无                                                   |
-| 返回值     | GPIO 输入数据端口值                                  |
-| 先决条件   | 无                                                   |
-| 被调用函数 | 无                                                   |
- 
-
-```c title="例"
-/*Read the GPIOC input data port and store it in ReadValue variable*/ u16 ReadValue; 
-
-ReadValue = GPIO_ReadInputData(GPIOC); 
-```
-
----
-
-### GPIO_ReadOutputDataBit 
-
-**Table 9.** 函数 **GPIO_ReadOutputDataBit** 
-
-| 函数名     | GPIO_ReadOutputDataBit                                       |
-| ---------- | ------------------------------------------------------------ |
-| 函数原形   | u8  GPIO_ReadOutputDataBit(GPIO_TypeDef* GPIOx, u16 GPIO_Pin) |
-| 功能描述   | **读取**指定端口管脚的**输出**                               |
-| 输入参数 1 | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设         |
-| 输入参数 2 | GPIO_Pin：待读取的端口位   参阅  Section：GPIO_Pin 查阅更多该参数允许取值范围 |
-| 输出参数   | 无                                                           |
-| 返回值     | 输出端口管脚值                                               |
-| 先决条件   | 无                                                           |
-| 被调用函数 | 无                                                           |
-
-
-```c title="例"
-/* Reads the seventh pin of the GPIOB and store it in ReadValue variable */ u8 ReadValue; 
-
-ReadValue = GPIO_ReadOutputDataBit(GPIOB, GPIO_Pin_7); 
-```
-
----
-
-### GPIO_ReadOutputData 函数
-
-**Table 10.** 函数 **GPIO_ReadOutputData** 
-
-| 函数名     | GPIO_ReadOutputData                                  |
-| ---------- | ---------------------------------------------------- |
-| 函数原形   | u16 GPIO_ReadOutputData(GPIO_TypeDef*  GPIOx)        |
-| 功能描述   | **读取**指定的  GPIO 端口**输出**                    |
-| 输入参数   | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设 |
-| 输出参数   | 无                                                   |
-| 返回值     | GPIO 输出数据端口值                                  |
-| 先决条件   | 无                                                   |
-| 被调用函数 | 无                                                   |
- 
-
-```c title="例"
-/* Read the GPIOC output data port and store it in ReadValue variable */ u16 ReadValue; 
-
-ReadValue = GPIO_ReadOutputData(GPIOC); 
-```
-
----
-
-### GPIO_SetBits 函数
-
-**Table 11.** 函数 **GPIO_SetBits** 
-
-| 函数名     | GPIO_SetBits                                                 |
-| ---------- | ------------------------------------------------------------ |
-| 函数原形   | void GPIO_SetBits(GPIO_TypeDef* GPIOx, u16  GPIO_Pin)        |
-| 功能描述   | 设置指定的数据端口位                                         |
-| 输入参数 1 | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设         |
-| 输入参数 2 | GPIO_Pin：待设置的端口位该参数可以取 GPIO_Pin_x(x 可以是 0-15)的任意组合参阅 Section：GPIO_Pin 查阅更多该参数允许取值范围 |
-| 输出参数   | 无                                                           |
-| 返回值     | 无                                                           |
-| 先决条件   | 无                                                           |
-| 被调用函数 | 无                                                           |
-
-```c title="例"
-/* Set the GPIOA port pin 10 and pin 15 */ 
-
-GPIO_SetBits(GPIOA, GPIO_Pin_10 | GPIO_Pin_15); 
-```
-
----
-
-### GPIO_ResetBits 
-
-**Table 12.     GPIO_ResetBits**
-
-| 函数名     | GPIO_ResetBits                                               |
-| ---------- | ------------------------------------------------------------ |
-| 函数原形   | void GPIO_ResetBits(GPIO_TypeDef* GPIOx,  u16 GPIO_Pin)      |
-| 功能描述   | 清除指定的数据端口位                                         |
-| 输入参数 1 | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设         |
-| 输入参数 2 | GPIO_Pin：待清除的端口位该参数可以取 GPIO_Pin_x(x 可以是 0-15)的任意组合参阅 Section：GPIO_Pin 查阅更多该参数允许取值范围 |
-| 输出参数   | 无                                                           |
-| 返回值     | 无                                                           |
-| 先决条件   | 无                                                           |
-| 被调用函数 | 无                                                           |
- 
-```c title="例"
-/* Clears the GPIOA port pin 10 and pin 15 */ 
-
-GPIO_ResetBits(GPIOA, GPIO_Pin_10 | GPIO_Pin_15); 
-```
-
----
-
-### GPIO_WriteBit 函数
-
-**Table 13.** 函数 **GPIO_WriteBit** 
-
-| 函数名     | GPIO_WriteBit                                                |
-| ---------- | ------------------------------------------------------------ |
-| 函数原形   | void GPIO_WriteBit(GPIO_TypeDef*  GPIOx, u16 GPIO_Pin, BitAction BitVal) |
-| 功能描述   | 设置或者清除指定的数据端口位                                 |
-| 输入参数 1 | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设         |
-| 输入参数 2 | GPIO_Pin：待设置或者清除指的端口位该参数可以取 GPIO_Pin_x(x 可以是 0-15)的任意组合参阅 Section：GPIO_Pin 查阅更多该参数允许取值范围 |
-| 输入参数 3 | BitVal:  该参数指定了待写入的值该参数必须取枚举  BitAction 的其中一个值   Bit_RESET: 清除数据端口位   Bit_SET: 设置数据端口位 |
-| 输出参数   | 无                                                           |
-| 返回值     | 无                                                           |
-| 先决条件   | 无                                                           |
-| 被调用函数 | 无                                                           |
-
-```c title="例"
-/* Set the GPIOA port pin 15 */ 
-
-GPIO_WriteBit(GPIOA, GPIO_Pin_15, Bit_SET); 
-```
-
----
-
-### GPIO_Write 函数
-
-**Table 14.     GPIO_Write** 
-
-| 函数名     | GPIO_Write                                           |
-| ---------- | ---------------------------------------------------- |
-| 函数原形   | void GPIO_Write(GPIO_TypeDef* GPIOx, u16  PortVal)   |
-| 功能描述   | 向指定 GPIO 数据端口写入数据                         |
-| 输入参数 1 | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设 |
-| 输入参数 2 | PortVal: 待写入端口数据寄存器的值                    |
-| 输出参数   | 无                                                   |
-| 返回值     | 无                                                   |
-| 先决条件   | 无                                                   |
-| 被调用函数 | 无                                                   |
-
-```c title="例"
-/* Write data to GPIOA data port */ 
-GPIO_Write(GPIOA, 0x1101); 
-```
 
 ---
 
@@ -952,19 +607,19 @@ void Delay_s(uint32_t xs)
 
 1. 下图中，**按键按下低电平有效**---->我们就要使GPIO的输入模式默认为上拉输入，也就是在空闲状态下默认高电平，此时不能使用浮空输入是因为 引脚悬空会造成电平不确定，而下拉更不能使用，因为下拉默认低电平，就会造成按键无用
 
-![KEY-IPU](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/KEY-IPU.png)
+![KEY-IPU](https://pic.imgdb.cn/item/6513ceb8c458853aef3500db/KEY-IPU.png)
 
 2. 下图中，**按键按下低电平有效**---->此时因为有个上拉电阻R1的存在，PA0默认高电平，所以此时我们可以使GPIO的输入模式使用上拉输入或者浮空输入都可以
 
-![KEY-IPU-IN-FLOATING](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/KEY-IPU-IN_FLOATING.png)
+![KEY-IPU-IN-FLOATING](https://pic.imgdb.cn/item/6513ceb8c458853aef350082/KEY-IPU-IN_FLOATING.png)
 
 3. 下图中,**按键按下高电平有效**---->我们就要使GPIO的输入模式默认为下拉输入，也就是在空闲状态下默认低电平，此时不能使用浮空输入是因为 引脚悬空会造成电平不确定，而上拉更不能使用，因为上拉默认高电平，就会造成按键无用
 
-![KEY-IPD](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/KEY-IPD.png)
+![KEY-IPD](https://pic.imgdb.cn/item/6513ceb8c458853aef35003d/KEY-IPD.png)
 
 4. 下图中，**按键按下高电平有效**---->此时因为有个下拉电阻R1的存在，PA0默认低电平，所以此时我们可以使GPIO的输入模式使用下拉输入或者浮空输入都可以
 
-![KEY-IPD-IN-FLOATING](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/KEY-IPD-IN_FLOATING.png)
+![KEY-IPD-IN-FLOATING](https://pic.imgdb.cn/item/6513ceb8c458853aef34ffd5/KEY-IPD-IN_FLOATING.png)
 
 **按键的介绍：**
 
@@ -972,7 +627,7 @@ void Delay_s(uint32_t xs)
 
 * 按键抖动：由于按键内部使用的是机械式弹簧片来进行通断的，所以在按下和松手的瞬间会伴随有一连串的抖动
 
-![Key-Dou](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/Key-Dou.png)
+![Key-Dou](https://pic.imgdb.cn/item/6513ceb7c458853aef34ff64/Key-Dou.png)
 
 ---
 
@@ -1375,6 +1030,346 @@ void Delay_s(uint32_t xs)
     }
     ```
     
-![LightSensor](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/LightSensor.png)
+![LightSensor](https://pic.imgdb.cn/item/6513da3ec458853aef3902e2/LightSensor.png)
     
     
+## GPIO的库函数
+
+**Table** 1. **GPIO** 库函数
+
+| 函数名                     | 描述                                                      |
+| -------------------------- | --------------------------------------------------------- |
+| GPIO_DeInit                | 将外设  GPIOx 寄存器重设为缺省值                          |
+| GPIO_AFIODeInit            | 将复用功能（重映射事件控制和  EXTI 设置）重设为缺省值     |
+| **GPIO_Init**              | 根据  GPIO_InitStruct 中指定的参数初始化外设 GPIOx 寄存器 |
+| GPIO_StructInit            | 把 GPIO_InitStruct 中的每一个参数按缺省值填入             |
+| **GPIO_ReadInputDataBit**  | 读取指定端口管脚的输入                                    |
+| **GPIO_ReadInputData**     | 读取指定的  GPIO 端口输入                                 |
+| **GPIO_ReadOutputDataBit** | 读取指定端口管脚的输出                                    |
+| **GPIO_ReadOutputData**    | 读取指定的  GPIO 端口输出                                 |
+| **GPIO_SetBits**           | 设置指定的数据端口位                                      |
+| **GPIO_ResetBits**         | 清除指定的数据端口位                                      |
+| **GPIO_WriteBit**          | 设置或者清除指定的数据端口位                              |
+| **GPIO_Write**             | 向指定  GPIO 数据端口写入数据                             |
+| GPIO_PinLockConfig         | 锁定  GPIO 管脚设置寄存器                                 |
+| GPIO_EventOutputConfig     | 选择  GPIO 管脚用作事件输出                               |
+| GPIO_EventOutputCmd        | 使能或者失能事件输出                                      |
+| GPIO_PinRemapConfig        | 改变指定管脚的映射                                        |
+| GPIO_EXTILineConfig        | 选择  GPIO 管脚用作外部中断线路                           |
+
+---
+
+### GPIO_Init 函数
+
+**Table 2.** 函数 **GPIO_Init** 
+
+| 函数名     | GPIO_Init                                                    |
+| ---------- | ------------------------------------------------------------ |
+| 函数原形   | void GPIO_Init(GPIO_TypeDef* GPIOx,  GPIO_InitTypeDef* GPIO_InitStruct) |
+| 功能描述   | 根据 GPIO_InitStruct 中指定的参数初始化外设 GPIOx 寄存器     |
+| 输入参数 1 | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设         |
+| 输入参数 2 | GPIO_InitStruct：指向结构 GPIO_InitTypeDef  的指针，包含了外设 GPIO 的配置信息参阅  Section：   GPIO_InitTypeDef 查阅更多该参数允许取值范围 |
+| 输出参数   | 无                                                           |
+| 返回值     | 无                                                           |
+| 先决条件   | 无                                                           |
+| 被调用函数 | 无                                                           |
+
+```c title="GPIO_InitTypeDef structure结构体:"
+/*
+GPIO_InitTypeDef 定义于文件"stm32f10x_gpio.h"： 
+*/
+typedef struct { 
+u16 GPIO_Pin; 
+
+GPIOSpeed_TypeDef GPIO_Speed; 
+
+GPIOMode_TypeDef GPIO_Mode; 
+
+} GPIO_InitTypeDef; 
+```
+
+---
+
+#### GPIO_Pin
+
+**GPIO_Pin** 该参数选择待设置的 GPIO 管脚，使用操作符“|”可以一次选中多个管脚。可以使用下表中的任意组合。
+
+**Table 3. GPIO_Pin** 值 
+
+| **GPIO_Pin**  |  选中引脚    | 描述 |
+| ------------- | ------------ | ---- |
+| GPIO_Pin_None | 无管脚被选中 |      |
+| GPIO_Pin_0    | 选中管脚 0   |      |
+| GPIO_Pin_1    | 选中管脚 1   |      |
+| GPIO_Pin_2    | 选中管脚 2   |      |
+| GPIO_Pin_3    | 选中管脚 3   |      |
+| GPIO_Pin_4    | 选中管脚 4   |      |
+| GPIO_Pin_5    | 选中管脚 5   |      |
+| GPIO_Pin_6    | 选中管脚 6   |      |
+| GPIO_Pin_7    | 选中管脚 7   |      |
+| GPIO_Pin_8    | 选中管脚 8   |      |
+| GPIO_Pin_9    | 选中管脚 9   |      |
+| GPIO_Pin_10   | 选中管脚 10  |      |
+| GPIO_Pin_11   | 选中管脚 11  |      |
+| GPIO_Pin_12   | 选中管脚 12  |      |
+| GPIO_Pin_13   | 选中管脚 13  |      |
+| GPIO_Pin_14   | 选中管脚 14  |      |
+| GPIO_Pin_15   | 选中管脚 15  |      |
+| GPIO_Pin_All  | 选中全部管脚 |      |
+
+---
+
+#### GPIO_Speed 
+
+GPIO_Speed 用以设置选中管脚的速率。Table 184. 给出了该参数可取的值 
+
+**Table 4. GPIO_Speed** 值 
+
+| **GPIO_Speed**   | 描述              |
+| ---------------- | ----------------- |
+| GPIO_Speed_10MHz | 高输出速率  10MHz |
+| GPIO_Speed_2MHz  | 高输出速率  2MHz  |
+| GPIO_Speed_50MHz | 高输出速率  50MHz |
+
+---
+
+####  GPIO_Mode 
+
+GPIO_Mode 用以设置选中管脚的工作状态。Table 185. 给出了该参数可取的值 
+
+**Table 5. GPIO_Mode** 值 
+
+| **GPIO_Speed**        |   解释       | 描述 |
+| --------------------- | ------------ | ---- |
+| GPIO_Mode_AIN         | 模拟输入     |      |
+| GPIO_Mode_IN_FLOATING | 浮空输入     |      |
+| GPIO_Mode_IPD         | 下拉输入     |      |
+| GPIO_Mode_IPU         | 上拉输入     |      |
+| GPIO_Mode_Out_OD      | 开漏输出     |      |
+| GPIO_Mode_Out_PP      | 推挽输出     |      |
+| GPIO_Mode_AF_OD       | 复用开漏输出 |      |
+| GPIO_Mode_AF_PP       | 复用推挽输出 |      |
+
+注意： 
+
+* 当某管脚设置为上拉或者下拉输入模式，使用寄存器 Px_BSRR 和 PxBRR 
+
+* GPIO_Mode 允许同时设置 GPIO 方向（输入/输出）和对应的输入/输出设置，：位[7:4]对应 GPIO 方向，位[4:0]对应配置。GPIO 方向有如下索引
+
+  * GPIO 输入模式 = 0x00 
+
+  * GPIO 输出模式 = 0x01 
+
+**Table 6. GPIO_Mode** 的索引和编码 
+
+| **GPIO**方向          | 索引 | 模式             | 设置 | 模式代码 |
+| --------------------- | ---- | ---------------- | ---- | -------- |
+| GPIO Input            | 0x00 | GPIO_Mode_AIN    | 0x00 | 0x00     |
+| GPIO_Mode_IN_FLOATING | 0x04 | 0x04             |      |          |
+| GPIO_Mode_IPD         | 0x08 | 0x28             |      |          |
+| GPIO_Mode_IPU         | 0x08 | 0x48             |      |          |
+| GPIO Output           | 0x01 | GPIO_Mode_Out_OD | 0x04 | 0x14     |
+| GPIO_Mode_Out_PP      | 0x00 | 0x10             |      |          |
+| GPIO_Mode_AF_OD       | 0x0C | 0x1C             |      |          |
+| GPIO_Mode_AF_PP       | 0x08 | 0x18             |      |          |
+
+
+```c title="例"
+/* Configure all the GPIOA in Input Floating mode */ 
+
+GPIO_InitTypeDef GPIO_InitStructure; //初始化结构体
+
+GPIO_InitStructure.GPIO_Pin = GPIO_Pin_All; //定义GPIO口
+
+GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;//设置输出速度？？
+
+GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING; //设置浮空输入
+
+GPIO_Init(GPIOA, &GPIO_InitStructure);//初始化函数
+```
+
+---
+
+### GPIO_ReadInputDataBit 函数
+
+**Table 7.** 函数 **GPIO_ReadInputDataBit** 
+
+| 函数名     | GPIO_ReadInputDataBit                                        |
+| ---------- | ------------------------------------------------------------ |
+| 函数原形   | uint8_t GPIO_ReadInputDataBit(GPIO_TypeDef*  GPIOx, uint16_t GPIO_Pin) |
+| 功能描述   | **读取**指定端口管脚的**输入**                               |
+| 输入参数 1 | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设         |
+| 输入参数 2 | GPIO_Pin：待读取的端口位   参阅  Section：GPIO_Pin 查阅更多该参数允许取值范围 |
+| 输出参数   | 无                                                           |
+| 返回值     | 输入端口管脚值                                               |
+| 先决条件   | 无                                                           |
+| 被调用函数 | 无                                                           |
+ 
+
+```c title="例"
+/* Reads the seventh pin of the GPIOB and store it in ReadValue variable */ u8 ReadValue; 
+
+ReadValue = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_7); 
+```
+
+---
+
+### GPIO_ReadInputData函数 
+
+**Table 8.** 函数 **GPIO_ReadInputData** 
+
+| 函数名     | GPIO_ReadInputData                                   |
+| ---------- | ---------------------------------------------------- |
+| 函数原形   | u16 GPIO_ReadInputData(GPIO_TypeDef*  GPIOx)         |
+| 功能描述   | **读取**指定的  GPIO 端口**输入**                    |
+| 输入参数   | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设 |
+| 输出参数   | 无                                                   |
+| 返回值     | GPIO 输入数据端口值                                  |
+| 先决条件   | 无                                                   |
+| 被调用函数 | 无                                                   |
+ 
+
+```c title="例"
+/*Read the GPIOC input data port and store it in ReadValue variable*/ u16 ReadValue; 
+
+ReadValue = GPIO_ReadInputData(GPIOC); 
+```
+
+---
+
+### GPIO_ReadOutputDataBit 
+
+**Table 9.** 函数 **GPIO_ReadOutputDataBit** 
+
+| 函数名     | GPIO_ReadOutputDataBit                                       |
+| ---------- | ------------------------------------------------------------ |
+| 函数原形   | u8  GPIO_ReadOutputDataBit(GPIO_TypeDef* GPIOx, u16 GPIO_Pin) |
+| 功能描述   | **读取**指定端口管脚的**输出**                               |
+| 输入参数 1 | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设         |
+| 输入参数 2 | GPIO_Pin：待读取的端口位   参阅  Section：GPIO_Pin 查阅更多该参数允许取值范围 |
+| 输出参数   | 无                                                           |
+| 返回值     | 输出端口管脚值                                               |
+| 先决条件   | 无                                                           |
+| 被调用函数 | 无                                                           |
+
+
+```c title="例"
+/* Reads the seventh pin of the GPIOB and store it in ReadValue variable */ u8 ReadValue; 
+
+ReadValue = GPIO_ReadOutputDataBit(GPIOB, GPIO_Pin_7); 
+```
+
+---
+
+### GPIO_ReadOutputData 函数
+
+**Table 10.** 函数 **GPIO_ReadOutputData** 
+
+| 函数名     | GPIO_ReadOutputData                                  |
+| ---------- | ---------------------------------------------------- |
+| 函数原形   | u16 GPIO_ReadOutputData(GPIO_TypeDef*  GPIOx)        |
+| 功能描述   | **读取**指定的  GPIO 端口**输出**                    |
+| 输入参数   | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设 |
+| 输出参数   | 无                                                   |
+| 返回值     | GPIO 输出数据端口值                                  |
+| 先决条件   | 无                                                   |
+| 被调用函数 | 无                                                   |
+ 
+
+```c title="例"
+/* Read the GPIOC output data port and store it in ReadValue variable */ u16 ReadValue; 
+
+ReadValue = GPIO_ReadOutputData(GPIOC); 
+```
+
+---
+
+### GPIO_SetBits 函数
+
+**Table 11.** 函数 **GPIO_SetBits** 
+
+| 函数名     | GPIO_SetBits                                                 |
+| ---------- | ------------------------------------------------------------ |
+| 函数原形   | void GPIO_SetBits(GPIO_TypeDef* GPIOx, u16  GPIO_Pin)        |
+| 功能描述   | 设置指定的数据端口位                                         |
+| 输入参数 1 | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设         |
+| 输入参数 2 | GPIO_Pin：待设置的端口位该参数可以取 GPIO_Pin_x(x 可以是 0-15)的任意组合参阅 Section：GPIO_Pin 查阅更多该参数允许取值范围 |
+| 输出参数   | 无                                                           |
+| 返回值     | 无                                                           |
+| 先决条件   | 无                                                           |
+| 被调用函数 | 无                                                           |
+
+```c title="例"
+/* Set the GPIOA port pin 10 and pin 15 */ 
+
+GPIO_SetBits(GPIOA, GPIO_Pin_10 | GPIO_Pin_15); 
+```
+
+---
+
+### GPIO_ResetBits 
+
+**Table 12.     GPIO_ResetBits**
+
+| 函数名     | GPIO_ResetBits                                               |
+| ---------- | ------------------------------------------------------------ |
+| 函数原形   | void GPIO_ResetBits(GPIO_TypeDef* GPIOx,  u16 GPIO_Pin)      |
+| 功能描述   | 清除指定的数据端口位                                         |
+| 输入参数 1 | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设         |
+| 输入参数 2 | GPIO_Pin：待清除的端口位该参数可以取 GPIO_Pin_x(x 可以是 0-15)的任意组合参阅 Section：GPIO_Pin 查阅更多该参数允许取值范围 |
+| 输出参数   | 无                                                           |
+| 返回值     | 无                                                           |
+| 先决条件   | 无                                                           |
+| 被调用函数 | 无                                                           |
+ 
+```c title="例"
+/* Clears the GPIOA port pin 10 and pin 15 */ 
+
+GPIO_ResetBits(GPIOA, GPIO_Pin_10 | GPIO_Pin_15); 
+```
+
+---
+
+### GPIO_WriteBit 函数
+
+**Table 13.** 函数 **GPIO_WriteBit** 
+
+| 函数名     | GPIO_WriteBit                                                |
+| ---------- | ------------------------------------------------------------ |
+| 函数原形   | void GPIO_WriteBit(GPIO_TypeDef*  GPIOx, u16 GPIO_Pin, BitAction BitVal) |
+| 功能描述   | 设置或者清除指定的数据端口位                                 |
+| 输入参数 1 | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设         |
+| 输入参数 2 | GPIO_Pin：待设置或者清除指的端口位该参数可以取 GPIO_Pin_x(x 可以是 0-15)的任意组合参阅 Section：GPIO_Pin 查阅更多该参数允许取值范围 |
+| 输入参数 3 | BitVal:  该参数指定了待写入的值该参数必须取枚举  BitAction 的其中一个值   Bit_RESET: 清除数据端口位   Bit_SET: 设置数据端口位 |
+| 输出参数   | 无                                                           |
+| 返回值     | 无                                                           |
+| 先决条件   | 无                                                           |
+| 被调用函数 | 无                                                           |
+
+```c title="例"
+/* Set the GPIOA port pin 15 */ 
+
+GPIO_WriteBit(GPIOA, GPIO_Pin_15, Bit_SET); 
+```
+
+---
+
+### GPIO_Write 函数
+
+**Table 14.     GPIO_Write** 
+
+| 函数名     | GPIO_Write                                           |
+| ---------- | ---------------------------------------------------- |
+| 函数原形   | void GPIO_Write(GPIO_TypeDef* GPIOx, u16  PortVal)   |
+| 功能描述   | 向指定 GPIO 数据端口写入数据                         |
+| 输入参数 1 | GPIOx：x 可以是 A，B，C，D 或者 E，来选择 GPIO  外设 |
+| 输入参数 2 | PortVal: 待写入端口数据寄存器的值                    |
+| 输出参数   | 无                                                   |
+| 返回值     | 无                                                   |
+| 先决条件   | 无                                                   |
+| 被调用函数 | 无                                                   |
+
+```c title="例"
+/* Write data to GPIOA data port */ 
+GPIO_Write(GPIOA, 0x1101); 
+```

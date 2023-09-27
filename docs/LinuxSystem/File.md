@@ -323,7 +323,7 @@ EOF是文件结束标志，值为-1。 语句“c=fgetc(fp);”是从文件指�
 * data
 * cal 
 
-![time](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/time.png)
+![time](https://pic.imgdb.cn/item/6513da17c458853aef38ed3b/time.png)
 
 ### 函数
 
@@ -355,7 +355,7 @@ int main()
 
 ```
 
-![time-Func](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/time-Func.png)
+![time-Func](https://pic.imgdb.cn/item/6513da18c458853aef38edf8/time-Func.png)
 
 #### 2.获取本地时间 `localtime`
 
@@ -399,7 +399,7 @@ int main()
 
 ```
 
-![Time-localtime](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/Time-localtime.png)
+![Time-localtime](https://pic.imgdb.cn/item/6513da19c458853aef38ef34/Time-localtime.png)
 
 #### 3.获取格林威治时间`gmtime`
 
@@ -442,7 +442,7 @@ int main()
 
 ```
 
-![time-gtime](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/time-gmtime.png)
+![time-gtime](https://pic.imgdb.cn/item/6513da1ac458853aef38efea/time-gmtime.png)
 
 #### 4.日历转化成本地时间 `ctime`
 
@@ -473,7 +473,7 @@ int main()
 
 ```
 
-![time-ctime](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/time-ctime.png)
+![time-ctime](https://pic.imgdb.cn/item/6513da1bc458853aef38f048/time-ctime.png)
 
 #### 5.将struct tm格式的时间转化为字符串`asctime`
 
@@ -504,7 +504,7 @@ int main()
 
 ```
 
-![time-asctime](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/time-asctime.png)
+![time-asctime](https://pic.imgdb.cn/item/6513da1dc458853aef38f0b0/time-asctime.png)
 
 #### 6.自由格式时间 `strftime`
 
@@ -598,7 +598,7 @@ int main()
 
 ```
 
-![time-strftime](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/time-strftime.png)
+![time-strftime](https://pic.imgdb.cn/item/6513da1ec458853aef38f109/time-strftime.png)
 
 ## 目录操作
 
@@ -893,7 +893,7 @@ int main()
         }
         ```
     
-        ![readdir](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/readdir.png)
+        ![readdir](https://pic.imgdb.cn/item/6513da25c458853aef38f5ff/readdir.png)
     
     === "回眸"
 
@@ -944,7 +944,7 @@ int main()
         
         ```
         
-        ![readdir-d_type](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/readdir-d_type.png){ width="400" }
+        ![readdir-d_type](https://pic.imgdb.cn/item/6513da26c458853aef38f671/readdir-d_type.png){ width="400" }
 
     === "相识"
 
@@ -1011,7 +1011,7 @@ int main()
                 
         ```
         
-        ![readdir-d_type2](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/readdir-d_type2.png)
+        ![readdir-d_type2](https://pic.imgdb.cn/item/6513da27c458853aef38f6c4/readdir-d_type2.png)
 
     === "再聚"
 
@@ -1037,7 +1037,7 @@ int main()
         }
         ```
 
-        ![mkdir-rmdir](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/mkdir-rmdir.png)
+        ![mkdir-rmdir](https://pic.imgdb.cn/item/6513da28c458853aef38f70b/mkdir-rmdir.png)
 
     === "相会"
 
@@ -1071,7 +1071,7 @@ int main()
 
         ```
 
-        ![chmod-getcmd-chdir](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/chmod-getcmd-chdir.png)
+        ![chmod-getcmd-chdir](https://pic.imgdb.cn/item/6513da29c458853aef38f758/chmod-getcmd-chdir.png)
     
     === "约定"
 
@@ -1136,7 +1136,7 @@ int main()
 
         ```
         
-        ![getcmd-txt](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/getcmd-txt.png)
+        ![getcmd-txt](https://pic.imgdb.cn/item/6513da39c458853aef38ffb9/getcmd-txt.png)
 
 ### 项目
 
@@ -1387,7 +1387,7 @@ int main()
         }
         ```
 
-    ![TMP3-1](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/TMP3-1.png)
+    ![TMP3-1](https://pic.imgdb.cn/item/6513ceefc458853aef35209b/TMP3-1.png)
 
 ??? note "字符串数组知识回顾"
 

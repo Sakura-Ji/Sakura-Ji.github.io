@@ -30,7 +30,7 @@
 
 命令:`ipcs`
 
-![ipcs](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/ipcs.png)
+![ipcs](https://pic.imgdb.cn/item/6513ceeec458853aef351fc3/ipcs.png)
 
 常用的`ipcs`命令选项包括：
 
@@ -97,7 +97,7 @@
 * man 7 signal
 * kill -l
 
-![kill-l](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/kill-l.png)
+![kill-l](https://pic.imgdb.cn/item/6513ced8c458853aef3513f9/kill-l.png)
 
 **常见的信号**
 
@@ -174,7 +174,7 @@
               }
             }
             ```
-            ![signal-kill](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/signal-kill.png)
+            ![signal-kill](https://pic.imgdb.cn/item/6513ced8c458853aef351377/signal-kill.png)
         === "Test2"
 
             ```c
@@ -203,7 +203,7 @@
                 return 0;
             }
             ```
-            ![signal-kill2](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/signal-kill2.png)
+            ![signal-kill2](https://pic.imgdb.cn/item/6513ced7c458853aef351335/signal-kill2.png)
         
         === "Test3"
 
@@ -237,7 +237,7 @@
             }
                         
             ```
-            ![signal-kill3](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/signal-kill3.png)
+            ![signal-kill3](https://pic.imgdb.cn/item/6513ced7c458853aef3512df/signal-kill3.png)
 
 
     === "raise"
@@ -308,7 +308,7 @@
                 return 0;
             }
             ```
-            ![alarm](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/alarm.png)
+            ![alarm](https://pic.imgdb.cn/item/6513cec0c458853aef3505e9/alarm.png)
     === "pause"
 
         ```c
@@ -348,7 +348,7 @@
                 return 0;
             }
             ```
-            ![pause](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/pause.png)
+            ![pause](https://pic.imgdb.cn/item/6513cec0c458853aef3505ae/pause.png)
     === "signal"
 
         ```c
@@ -387,7 +387,7 @@
                 return 0;
             }
             ```
-            ![signal-1](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/signal-1.png)
+            ![signal-1](https://pic.imgdb.cn/item/6513ced6c458853aef35126f/signal-1.png)
         
         === "Test2"
 
@@ -413,7 +413,7 @@
             }
                         
             ```
-            ![](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/signal-2.png)
+            ![signal-2](https://pic.imgdb.cn/item/6513ced4c458853aef3511ea/signal-2.png)
         
         === "Test3"
 
@@ -448,7 +448,7 @@
             }
 
             ```
-            ![signal-3](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/signal-3.png)
+            ![signal-3](https://pic.imgdb.cn/item/6513ced4c458853aef3511ac/signal-3.png)
 
 
         
@@ -553,7 +553,7 @@
             
             }
             ```
-            ![pipe1](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/pipe1.png)
+            ![pipe1](https://pic.imgdb.cn/item/6513ced3c458853aef35115f/pipe1.png)
         === "Test2"
 
             ```c
@@ -612,7 +612,7 @@
               }
             }
             ```
-            ![pipe2](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/pipe2.png)
+            ![pipe2](https://pic.imgdb.cn/item/6513ced2c458853aef35110d/pipe2.png)
 
 ## 有名管道 {#Named}
 
@@ -624,7 +624,7 @@
 
 > mkfifo + 文件名.fifo
 
-![mkfifo](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/mkfifo.png)
+![mkfifo](https://pic.imgdb.cn/item/6513ced1c458853aef3510be/mkfifo.png)
 
 **注意事项:**
 
@@ -732,7 +732,7 @@
           return 0;
         }
         ```
-        ![access](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/access.png)
+        ![access](https://pic.imgdb.cn/item/6513ced0c458853aef350ff9/access.png)
 
     === "mkfifo"
 
@@ -854,7 +854,7 @@
             }
 
             ```
-        ![mkfifo2](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/mkfifo2.png)
+        ![mkfifo2](https://pic.imgdb.cn/item/6513cecfc458853aef350fa0/mkfifo2.png)
 
     === "unlink"
 
@@ -1056,7 +1056,7 @@
         }
 
         ```
-    ![mkfifo3](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/mkfifo3.png)
+    ![mkfifo3](https://pic.imgdb.cn/item/6513cecec458853aef350eb2/mkfifo3.png)
 
 ## 共享内存 {#Shared}
 
@@ -1117,7 +1117,7 @@
         }
 
         ```
-        ![shared-memory-key](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/shared-memory-key.png)
+        ![shared-memory-key](https://pic.imgdb.cn/item/6513ceecc458853aef351ebe/shared-memory-key.png)
 
     === "shmget"
 
@@ -1271,7 +1271,7 @@
           return 0;
         }
         ```
-        ![Socket](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/Socket.png)
+        ![Socket](https://pic.imgdb.cn/item/6513cec6c458853aef3508f2/Socket.png)
 
     === "bind"
 
@@ -1425,7 +1425,7 @@
         }
         
         ```
-        ![Bind](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/Bind.png)
+        ![Bind](https://pic.imgdb.cn/item/6513cec5c458853aef35088d/Bind.png)
 
     === "listen"
 
@@ -1489,7 +1489,7 @@
           return 0;
         }
         ```
-        ![Listern](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/Listern.png)
+        ![Listern](https://pic.imgdb.cn/item/6513cec5c458853aef350828/Listern.png)
     
     === "accept"
 
@@ -1569,7 +1569,7 @@
           return 0;
         }
         ```
-        ![accept](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/accept.png)
+        ![accept](https://pic.imgdb.cn/item/6513cec4c458853aef3507d6/accept.png)
         
     === "connect"
         
@@ -1630,7 +1630,7 @@
         }
 
         ```
-        ![Connect](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/Connect.png)
+        ![Connect](https://pic.imgdb.cn/item/6513cec4c458853aef350776/Connect.png)
 
     === "send"
         

@@ -45,6 +45,8 @@ hide:
 
 在此特别感谢B站大神TheCW,感谢在其引导下逐步对Linux系统越来越喜欢和想了解代码的世界。
 
+ [![Sakura_Ji's github activity graph](https://github-readme-activity-graph-sandy.vercel.app/graph?username=Sakura-Ji&theme=dracula)](https://github.com/Sakura-Ji/Sakura-Ji.github.io)
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -59,7 +61,7 @@ body{
 </style>
 </head>
  
-<body background="https://w.wallhaven.cc/full/x6/wallhaven-x6pxjv.png" >
+<body background="https://pic.imgdb.cn/item/6513cc0bc458853aef3437fd/Anya.png" >
 </body>
  
 <script>

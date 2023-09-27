@@ -108,7 +108,7 @@ gcc xxx.c -l pthread -o Test
             }
 
             ```
-            ![create](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/pthread_create.png)
+            ![create](https://pic.imgdb.cn/item/6513cecdc458853aef350d4d/pthread_create.png)
 
         === "举例2"
 
@@ -138,7 +138,7 @@ gcc xxx.c -l pthread -o Test
               return NULL; //结束子线程
             }
             ```
-            ![pthread_create1](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/pthread_create1.png)
+            ![pthread_create1](https://pic.imgdb.cn/item/6513ceccc458853aef350cff/pthread_create1.png)
 
         === "举例3"
 
@@ -169,7 +169,7 @@ gcc xxx.c -l pthread -o Test
               return NULL; //结束子线程
             }
             ```
-            ![pthread_create2](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/pthread_create2.png)
+            ![pthread_create2](https://pic.imgdb.cn/item/6513ceccc458853aef350cc3/pthread_create2.png)
 
     === "pthread_join"
 
@@ -218,7 +218,7 @@ gcc xxx.c -l pthread -o Test
          return NULL; //结束子线程
         }
         ```
-        ![pthread_join](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/pthread_join.png)
+        ![pthread_join](https://pic.imgdb.cn/item/6513ceccc458853aef350c84/pthread_join.png)
         
     === "pthread_exit"
 
@@ -267,7 +267,7 @@ gcc xxx.c -l pthread -o Test
             }
 
             ```
-            ![pthread_exit](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/ptread_exit.png)
+            ![pthread_exit](https://pic.imgdb.cn/item/6513cecbc458853aef350c40/ptread_exit.png)
         === "举例2"
 
             ```c
@@ -307,7 +307,7 @@ gcc xxx.c -l pthread -o Test
             }
 
             ```
-            ![pthread_exit2](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/pthread_exit2.png)
+            ![pthread_exit2](https://pic.imgdb.cn/item/6513cecbc458853aef350bf8/pthread_exit2.png)
             
     === "pthread_self"
 
@@ -355,7 +355,7 @@ gcc xxx.c -l pthread -o Test
         }
 
         ```
-        ![pthread_self](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/pthread_self.png)
+        ![pthread_self](https://pic.imgdb.cn/item/6513cecbc458853aef350bac/pthread_self.png)
 
     === "pthread_cancel"
 
@@ -405,7 +405,7 @@ gcc xxx.c -l pthread -o Test
         }
 
         ```
-        ![pthread_cancel](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/pthread_cancel.png)
+        ![pthread_cancel](https://pic.imgdb.cn/item/6513cecac458853aef350b7f/pthread_cancel.png)
 
     === "pthread_cleanup_push 和 pthread_cleanup_pop"
         
@@ -493,7 +493,7 @@ gcc xxx.c -l pthread -o Test
             }
 
             ```
-            ![pthread_push1](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/pthread_push1.png)
+            ![pthread_push1](https://pic.imgdb.cn/item/6513cecac458853aef350b3b/pthread_push1.png)
 
         === "举例2"
 
@@ -543,7 +543,7 @@ gcc xxx.c -l pthread -o Test
             }
 
             ```
-            ![pthread_push2](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/pthread_push2.png)
+            ![pthread_push2](https://pic.imgdb.cn/item/6513cecac458853aef350ae1/pthread_push2.png)
 
         === "举例3"
 
@@ -587,7 +587,7 @@ gcc xxx.c -l pthread -o Test
             }
 
             ```
-            ![pthread_push3](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/pthread_push3.png)
+            ![pthread_push3](https://pic.imgdb.cn/item/6513cec9c458853aef350a93/pthread_push3.png)
 
         === "举例4"
 
@@ -651,7 +651,7 @@ gcc xxx.c -l pthread -o Test
             }
         
             ```
-            ![pthread_push4](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/pthread_push4.png)
+            ![pthread_push4](https://pic.imgdb.cn/item/6513cec9c458853aef350a5d/pthread_push4.png)
         
     === "pthread_kill"
 
@@ -704,7 +704,7 @@ gcc xxx.c -l pthread -o Test
               }
             }
             ```
-            ![pthread_kill](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/pthread_kill.png)
+            ![pthread_kill](https://pic.imgdb.cn/item/6513cec6c458853aef3509ab/pthread_kill.png)
 
         === "举例2"
 
@@ -749,7 +749,7 @@ gcc xxx.c -l pthread -o Test
             }
 
             ```
-            ![pthread_kill2](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/pthread_kill2.png)
+            ![pthread_kill2](https://pic.imgdb.cn/item/6513cec6c458853aef35095b/pthread_kill2.png)
 
 ### 举例
 
@@ -964,7 +964,7 @@ gcc xxx.c -l pthread -o Test
         }
     
         ```
-    ![Pthread](https://jsd.onmicrosoft.cn/gh/Sakura-Ji/MapDepot/Mkdocs/Pthread.png)    
+    ![Pthread](https://pic.imgdb.cn/item/6513cec8c458853aef350a37/Pthread.png)    
 
 ## 同步和互斥
 
