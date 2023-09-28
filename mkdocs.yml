@@ -45,9 +45,11 @@ nav:
           - STM32之EXTI外部中断: EmbeddedSyS/STM32/EXTI.md
           - STM32之TIM定时器: EmbeddedSyS/STM32/TIM.md
           - STM32之USART串口通信: EmbeddedSyS/STM32/USART.md
+          - STM32之ADC数模转换: EmbeddedSyS/STM32/ADC.md
           - STM32之OLED: EmbeddedSyS/STM32/OLED.md
           - STM32之LCD: EmbeddedSyS/STM32/LCD.md
           - STM32之步进电机: EmbeddedSyS/STM32/StepMotor.md
+            
     - 思维导图:
         - MindMaps/Mind.md
     - GodTool:
