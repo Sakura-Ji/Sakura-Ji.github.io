@@ -18,11 +18,11 @@
         <link rel="prev" href="../USART/">
       
       
-        <link rel="next" href="../OLED/">
+        <link rel="next" href="../I2C/">
       
       
       <link rel="icon" href="../../../images/Cat.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.2">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.3">
     
     
       
@@ -30,7 +30,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.d451bc0e.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.79e020e9.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.a5377069.min.css">
@@ -1420,6 +1420,8 @@
       
         
       
+        
+      
     
     
     
@@ -1934,6 +1936,26 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../I2C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    STM32之I2C通信
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -2987,7 +3009,7 @@
 </span></code></pre></div></td></tr></table></div>
 </blockquote>
 <h3 id="-_1">单次(连续)转换非扫描模式 -- 多通道转换<a class="headerlink" href="#-_1" title="Permanent link">&para;</a></h3>
-<p>本章节不使用DMA这个数据转存小帮手，所以不使用扫描模式，因为EOC是在所有有效通道都转换完成才置1，而转换完成其它的通道时既没有标志位也没有中断的产生，所以不好判断是否这个通道转换完了，所以下方的代码采用单次非扫描模式，采用每次触发时改变通道</p>
+<p>本章节不使用DMA这个数据转存小帮手，所以不使用扫描模式，因为EOC是在所有有效通道都转换完成才置1，而转换完成其它的通道时既没有标志位也没有中断的产生，所以不好判断是否这个通道转换完了，所以下方的代码采用单次非扫描模式，采用每次触发前改变通道</p>
 <p><code>ADC.h</code></p>
 <div class="language-c highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
 <span class="normal"><a href="#__codelineno-4-2">2</a></span>
@@ -3128,7 +3150,7 @@
 </span><span id="__span-5-53"><a id="__codelineno-5-53" name="__codelineno-5-53"></a>
 </span><span id="__span-5-54"><a id="__codelineno-5-54" name="__codelineno-5-54"></a><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">Adc_Getval</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">ADC_Channel</span><span class="p">)</span>
 </span><span id="__span-5-55"><a id="__codelineno-5-55" name="__codelineno-5-55"></a><span class="p">{</span>
-</span><span id="__span-5-56"><a id="__codelineno-5-56" name="__codelineno-5-56"></a><span class="w">   </span><span class="cm">/*2.选择转换的通道*/</span>
+</span><span id="__span-5-56"><a id="__codelineno-5-56" name="__codelineno-5-56"></a><span class="w">   </span><span class="cm">/*选择转换的通道*/</span>
 </span><span id="__span-5-57"><a id="__codelineno-5-57" name="__codelineno-5-57"></a><span class="w">  </span><span class="cm">/*选择规则组通道 因为我们选择非扫描模式 所以要放到序列1上*/</span>
 </span><span id="__span-5-58"><a id="__codelineno-5-58" name="__codelineno-5-58"></a><span class="w">  </span><span class="n">ADC_RegularChannelConfig</span><span class="p">(</span><span class="n">ADC1</span><span class="p">,</span><span class="w"> </span><span class="n">ADC_Channel</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">ADC_SampleTime_55Cycles5</span><span class="p">);</span>
 </span><span id="__span-5-59"><a id="__codelineno-5-59" name="__codelineno-5-59"></a><span class="w">  </span><span class="n">ADC_SoftwareStartConvCmd</span><span class="p">(</span><span class="n">ADC1</span><span class="p">,</span><span class="n">ENABLE</span><span class="p">);</span><span class="c1">//软件触发</span>
@@ -4301,7 +4323,7 @@
   <small>
     
       最后更新:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 28, 2023</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 2, 2023</span>
       
         <br>
         创建日期:
@@ -4377,10 +4399,10 @@
         </div>
         
           <button type="button" class="md-top md-icon" data-md-component="top" hidden>
-            
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
-            回到页面顶部
-          </button>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  回到页面顶部
+</button>
         
       </main>
       
@@ -4408,13 +4430,13 @@
         
         
           
-          <a href="../OLED/" class="md-footer__link md-footer__link--next" aria-label="下一页: STM32之OLED">
+          <a href="../I2C/" class="md-footer__link md-footer__link--next" aria-label="下一页: STM32之I2C通信">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 下一页
               </span>
               <div class="md-ellipsis">
-                STM32之OLED
+                STM32之I2C通信
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -4463,10 +4485,11 @@
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
+    
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.expand", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "search.share", "navigation.footer", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.726fbb30.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.6eac0284.min.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       
