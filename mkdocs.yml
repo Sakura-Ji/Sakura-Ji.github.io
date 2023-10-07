@@ -47,9 +47,12 @@ nav:
           - STM32之USART串口通信: EmbeddedSyS/STM32/USART.md
           - STM32之ADC数模转换: EmbeddedSyS/STM32/ADC.md
           - STM32之I2C通信: EmbeddedSyS/STM32/I2C.md
+          - STM32之SPI通信: EmbeddedSyS/STM32/SPI.md
           - STM32之OLED: EmbeddedSyS/STM32/OLED.md
           - STM32之LCD: EmbeddedSyS/STM32/LCD.md
           - STM32之步进电机: EmbeddedSyS/STM32/StepMotor.md
+          - STM32之WIFI通信(ESP8266): EmbeddedSyS/STM32/ESP8266.md
+          - STM32之使用MQTT协议连接阿里云物联网平台: EmbeddedSyS/STM32/MQTT.md
             
     - 思维导图:
         - MindMaps/Mind.md
