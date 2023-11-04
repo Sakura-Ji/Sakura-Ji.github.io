@@ -53,6 +53,7 @@ nav:
           - STM32之步进电机: EmbeddedSyS/STM32/StepMotor.md
           - STM32之WIFI通信(ESP8266): EmbeddedSyS/STM32/ESP8266.md
           - STM32之使用MQTT协议连接阿里云物联网平台: EmbeddedSyS/STM32/MQTT.md
+          - STM32之CAN通信: EmbeddedSyS/STM32/CAN.md
             
     - 思维导图:
         - MindMaps/Mind.md
